@@ -3,57 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taffi Finance Pro</title>
+<title>Taffi Finance App</title>
 
 <style>
-body{font-family:-apple-system;background:#f4f6f9;padding:15px;max-width:520px;margin:auto;}
-.card{background:white;border-radius:18px;padding:15px;margin-bottom:15px;}
-h3{margin:0 0 10px 0;}
-
-.progress{
-height:8px;
-background:#eee;
-border-radius:10px;
-overflow:hidden;
-margin-top:5px;
-}
-.bar{
-height:100%;
-background:#4a90e2;
+body{
+  font-family:-apple-system;
+  background:#f4f6f9;
+  margin:0;
+  padding:10px;
+  max-width:520px;
+  margin:auto;
 }
 
-.row{display:flex;justify-content:space-between;margin:5px 0;}
-input,select{width:100%;padding:10px;border-radius:10px;border:none;margin-top:5px;}
-button{width:100%;padding:12px;border:none;border-radius:12px;background:#4a90e2;color:white;margin-top:10px;}
-.small{font-size:0.8rem;color:#777;}
+/* 卡片 */
+.card{
+  background:white;
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+/* 標題 */
+.title{
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+/* 圓餅圖 */
+.circle{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:auto;
+}
+
+/* grid */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.box{
+  border-radius:16px;
+  padding:10px;
+  text-align:center;
+}
+
+.pink{background:#f7e6eb;}
+.yellow{background:#f8f1dc;}
+.blue{background:#e4eef7;}
+
+/* input */
+input,select{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-top:5px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#4a90e2;
+  color:white;
+  margin-top:10px;
+}
+
+/* list */
+.list{
+  font-size:0.9rem;
+}
+.item{
+  display:flex;
+  justify-content:space-between;
+  padding:5px 0;
+}
+
+/* bottom nav */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
+  border-top:1px solid #ddd;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- 總覽 -->
+<!-- 主頁 -->
 <div class="card">
-<h3>📊 本月總覽</h3>
-<div class="row">
-<span>剩餘金額</span>
-<span id="remain"></span>
-</div>
-<div class="row">
-<span>每日可用</span>
-<span id="daily"></span>
-</div>
+<div class="title">📊 本月狀況</div>
+
+<div>剩餘：<span id="remain"></span></div>
+<div>每日可用：<span id="daily"></span></div>
+
 </div>
 
 <!-- 記帳 -->
 <div class="card">
-<h3>➕ 記帳</h3>
+<div class="title">➕ 記帳</div>
 
+<input id="name" placeholder="項目">
 <input id="amount" placeholder="金額">
 
 <select id="type">
-<option value="food">🍱 飲食</option>
-<option value="fixed">📱 固定支出</option>
-<option value="fun">🎬 娛樂</option>
+<option value="food">飲食</option>
+<option value="fixed">固定</option>
+<option value="fun">娛樂</option>
 </select>
 
 <select id="pay">
@@ -64,62 +131,80 @@ button{width:100%;padding:12px;border:none;border-radius:12px;background:#4a90e2
 </select>
 
 <button onclick="add()">新增</button>
+
+<div id="list" class="list"></div>
+
 </div>
 
 <!-- 預算 -->
 <div class="card">
-<h3>📊 預算</h3>
+<div class="title">📊 預算</div>
 
-<div>
-飲食：<span id="food"></span>/9000
-<div class="progress"><div id="barFood" class="bar"></div></div>
+<div class="grid">
+
+<div class="box pink">
+飲食
+<div id="c1" class="circle"></div>
+<div id="t1"></div>
 </div>
 
-<div>
-固定：<span id="fixed"></span>/1300
-<div class="progress"><div id="barFixed" class="bar"></div></div>
+<div class="box yellow">
+固定
+<div id="c2" class="circle"></div>
+<div id="t2"></div>
 </div>
 
-<div>
-娛樂：<span id="fun"></span>/5000
-<div class="progress"><div id="barFun" class="bar"></div></div>
+<div class="box blue">
+娛樂
+<div id="c3" class="circle"></div>
+<div id="t3"></div>
 </div>
 
+</div>
 </div>
 
 <!-- 信用卡 -->
 <div class="card">
-<h3>💳 信用卡</h3>
+<div class="title">💳 信用卡</div>
 
-<div class="row"><span>國泰</span><span id="cathay"></span></div>
-<div class="progress"><div id="barC1" class="bar"></div></div>
+國泰
+<input id="pay1" placeholder="還款">
+<div id="cc1" class="circle"></div>
 
-<div class="row"><span>富邦</span><span id="fubon"></span></div>
-<div class="progress"><div id="barC2" class="bar"></div></div>
+富邦
+<input id="pay2">
+<div id="cc2" class="circle"></div>
 
-<div class="row"><span>台新</span><span id="taishin"></span></div>
-<div class="progress"><div id="barC3" class="bar"></div></div>
-
-<input id="payDebt" placeholder="還款金額">
-<button onclick="payDebt()">記錄還款</button>
+台新
+<input id="pay3">
+<div id="cc3" class="circle"></div>
 
 </div>
 
 <!-- 存錢 -->
 <div class="card">
-<h3>🏦 存錢</h3>
+<div class="title">🏦 存錢</div>
 
-機車保養：<span id="s1"></span>/3000
-<div class="progress"><div id="barS1" class="bar"></div></div>
+機車保養
+<input id="s1">
+<div id="sc1" class="circle"></div>
 
-眉毛：<span id="s2"></span>/4500
-<div class="progress"><div id="barS2" class="bar"></div></div>
+眉毛
+<input id="s2">
+<div id="sc2" class="circle"></div>
 
-保險：<span id="s3"></span>/3500
-<div class="progress"><div id="barS3" class="bar"></div></div>
+保險
+<input id="s3">
+<div id="sc3" class="circle"></div>
 
-<button onclick="save()">存錢</button>
+</div>
 
+<!-- 底部 -->
+<div class="nav">
+🏠 主頁
+💳 帳戶
+📊 預算
+⚙️ 設定
 </div>
 
 <script>
@@ -129,81 +214,70 @@ let debt = JSON.parse(localStorage.getItem("debt"))||{cathay:56570,fubon:36773,t
 let savings = JSON.parse(localStorage.getItem("savings"))||{s1:0,s2:0,s3:0};
 
 function add(){
-let amt = Number(amount.value);
+let name = document.getElementById("name").value;
+let amount = Number(document.getElementById("amount").value);
 let type = document.getElementById("type").value;
-let payType = document.getElementById("pay").value;
+let pay = document.getElementById("pay").value;
 
-data.push({amt,type});
+data.push({name,amount,type,date:new Date().toLocaleDateString()});
 
-if(payType!=="cash") debt[payType]+=amt;
+if(pay!=="cash") debt[pay]+=amount;
 
-saveAll();
-render();
-}
-
-function payDebt(){
-let amt = Number(payDebtInput.value);
-debt.cathay -= amt;
-saveAll();
+save();
 render();
 }
 
 function save(){
-savings.s1 += 500;
-saveAll();
-render();
-}
-
-function saveAll(){
 localStorage.setItem("data",JSON.stringify(data));
 localStorage.setItem("debt",JSON.stringify(debt));
 localStorage.setItem("savings",JSON.stringify(savings));
 }
 
+function draw(id,value,total){
+let percent = Math.min(value/total*100,100);
+document.getElementById(id).style.background=
+`conic-gradient(#4a90e2 ${percent}%, #eee ${percent}%)`;
+}
+
 function render(){
 
 let food=0,fixed=0,fun=0;
+let html="";
 
 data.forEach(d=>{
-if(d.type==="food") food+=d.amt;
-if(d.type==="fixed") fixed+=d.amt;
-if(d.type==="fun") fun+=d.amt;
+html+=`<div class="item">${d.date} ${d.name}<span>$${d.amount}</span></div>`;
+if(d.type==="food") food+=d.amount;
+if(d.type==="fixed") fixed+=d.amount;
+if(d.type==="fun") fun+=d.amount;
 });
 
-document.getElementById("food").innerText=food;
-document.getElementById("fixed").innerText=fixed;
-document.getElementById("fun").innerText=fun;
+document.getElementById("list").innerHTML=html;
 
-document.getElementById("barFood").style.width=(food/9000*100)+"%";
-document.getElementById("barFixed").style.width=(fixed/1300*100)+"%";
-document.getElementById("barFun").style.width=(fun/5000*100)+"%";
+draw("c1",food,9000);
+draw("c2",fixed,1300);
+draw("c3",fun,5000);
 
-// 剩餘與每日
+document.getElementById("t1").innerText=`${food}/9000`;
+document.getElementById("t2").innerText=`${fixed}/1300`;
+document.getElementById("t3").innerText=`${fun}/5000`;
+
 let remain = (9000-food)+(1300-fixed)+(5000-fun);
-let today = new Date();
-let last = new Date(today.getFullYear(), today.getMonth()+1, 0);
-let daysLeft = last.getDate()-today.getDate();
+let today=new Date();
+let last=new Date(today.getFullYear(),today.getMonth()+1,0);
+let daysLeft=last.getDate()-today.getDate();
 
 document.getElementById("remain").innerText=remain;
 document.getElementById("daily").innerText=Math.floor(remain/(daysLeft||1));
 
 // 信用卡
-document.getElementById("cathay").innerText=debt.cathay;
-document.getElementById("fubon").innerText=debt.fubon;
-document.getElementById("taishin").innerText=debt.taishin;
-
-document.getElementById("barC1").style.width=(debt.cathay/60000*100)+"%";
-document.getElementById("barC2").style.width=(debt.fubon/50000*100)+"%";
-document.getElementById("barC3").style.width=(debt.taishin/50000*100)+"%";
+draw("cc1",debt.cathay,60000);
+draw("cc2",debt.fubon,50000);
+draw("cc3",debt.taishin,50000);
 
 // 存錢
-document.getElementById("s1").innerText=savings.s1;
-document.getElementById("s2").innerText=savings.s2;
-document.getElementById("s3").innerText=savings.s3;
-
-document.getElementById("barS1").style.width=(savings.s1/3000*100)+"%";
-document.getElementById("barS2").style.width=(savings.s2/4500*100)+"%";
-document.getElementById("barS3").style.width=(savings.s3/3500*100)+"%";
+draw("sc1",savings.s1,3000);
+draw("sc2",savings.s2,4500);
+draw("sc3",savings.s3,3500);
 
 }
 
