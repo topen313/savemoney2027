@@ -3,33 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taffi Finance App</title>
+
+<title>Taffi Finance</title>
 
 <style>
 body{
   font-family:-apple-system;
-  background:#f4f6f9;
+  background:#F5F7FA;
   margin:0;
-  padding:10px;
+  padding:15px;
   max-width:520px;
   margin:auto;
+}
+
+/* 主卡 */
+.main-card{
+  background:#4A6CF7;
+  color:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:15px;
+}
+.big{
+  font-size:28px;
+  font-weight:bold;
+}
+.small{
+  opacity:0.8;
+  margin-top:5px;
 }
 
 /* 卡片 */
 .card{
   background:white;
-  border-radius:20px;
+  border-radius:18px;
   padding:15px;
   margin-bottom:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* 標題 */
 .title{
   font-weight:bold;
   margin-bottom:10px;
 }
 
-/* 圓餅圖 */
+/* 記帳 */
+.row-input{
+  display:flex;
+  gap:6px;
+}
+.row-input input{
+  flex:1;
+}
+
+/* 圓餅 */
 .circle{
   width:90px;
   height:90px;
@@ -37,30 +64,30 @@ body{
   margin:auto;
 }
 
-/* grid */
+/* 預算卡 */
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
-
 .box{
   border-radius:16px;
   padding:10px;
   text-align:center;
 }
 
-.pink{background:#f7e6eb;}
-.yellow{background:#f8f1dc;}
-.blue{background:#e4eef7;}
+/* 顏色 */
+.food{background:#E8F5E9;}
+.fixed{background:#FFF8E1;}
+.fun{background:#E3F2FD;}
 
-/* input */
 input,select{
   width:100%;
   padding:10px;
-  border:none;
   border-radius:10px;
+  border:none;
   margin-top:5px;
+  background:#f1f3f6;
 }
 
 button{
@@ -68,54 +95,56 @@ button{
   padding:12px;
   border:none;
   border-radius:12px;
-  background:#4a90e2;
+  background:#4A6CF7;
   color:white;
   margin-top:10px;
 }
 
 /* list */
-.list{
-  font-size:0.9rem;
-}
+.list{font-size:0.9rem;}
 .item{
   display:flex;
   justify-content:space-between;
   padding:5px 0;
 }
 
-/* bottom nav */
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:white;
-  display:flex;
-  justify-content:space-around;
-  padding:10px;
-  border-top:1px solid #ddd;
+/* 信用卡 */
+.card-block{
+  border-top:1px solid #eee;
+  margin-top:10px;
+  padding-top:10px;
 }
 
+.progress{
+  height:6px;
+  background:#eee;
+  border-radius:10px;
+  margin-top:5px;
+}
+.bar{
+  height:100%;
+  background:#4A6CF7;
+}
 </style>
 </head>
 
 <body>
 
 <!-- 主頁 -->
-<div class="card">
-<div class="title">📊 本月狀況</div>
-
-<div>剩餘：<span id="remain"></span></div>
-<div>每日可用：<span id="daily"></span></div>
-
+<div class="main-card">
+  <div class="small">本月可用</div>
+  <div id="remain" class="big">0</div>
+  <div class="small">每日可用：<span id="daily"></span></div>
 </div>
 
 <!-- 記帳 -->
 <div class="card">
 <div class="title">➕ 記帳</div>
 
+<div class="row-input">
 <input id="name" placeholder="項目">
 <input id="amount" placeholder="金額">
+</div>
 
 <select id="type">
 <option value="food">飲食</option>
@@ -133,7 +162,6 @@ button{
 <button onclick="add()">新增</button>
 
 <div id="list" class="list"></div>
-
 </div>
 
 <!-- 預算 -->
@@ -142,19 +170,19 @@ button{
 
 <div class="grid">
 
-<div class="box pink">
+<div class="box food">
 飲食
 <div id="c1" class="circle"></div>
 <div id="t1"></div>
 </div>
 
-<div class="box yellow">
+<div class="box fixed">
 固定
 <div id="c2" class="circle"></div>
 <div id="t2"></div>
 </div>
 
-<div class="box blue">
+<div class="box fun">
 娛樂
 <div id="c3" class="circle"></div>
 <div id="t3"></div>
@@ -167,17 +195,23 @@ button{
 <div class="card">
 <div class="title">💳 信用卡</div>
 
+<div class="card-block">
 國泰
-<input id="pay1" placeholder="還款">
+<input id="pay1" placeholder="輸入還款">
 <div id="cc1" class="circle"></div>
+</div>
 
+<div class="card-block">
 富邦
 <input id="pay2">
 <div id="cc2" class="circle"></div>
+</div>
 
+<div class="card-block">
 台新
 <input id="pay3">
 <div id="cc3" class="circle"></div>
+</div>
 
 </div>
 
@@ -187,24 +221,16 @@ button{
 
 機車保養
 <input id="s1">
-<div id="sc1" class="circle"></div>
+<div class="progress"><div id="p1" class="bar"></div></div>
 
 眉毛
 <input id="s2">
-<div id="sc2" class="circle"></div>
+<div class="progress"><div id="p2" class="bar"></div></div>
 
 保險
 <input id="s3">
-<div id="sc3" class="circle"></div>
+<div class="progress"><div id="p3" class="bar"></div></div>
 
-</div>
-
-<!-- 底部 -->
-<div class="nav">
-🏠 主頁
-💳 帳戶
-📊 預算
-⚙️ 設定
 </div>
 
 <script>
@@ -214,10 +240,12 @@ let debt = JSON.parse(localStorage.getItem("debt"))||{cathay:56570,fubon:36773,t
 let savings = JSON.parse(localStorage.getItem("savings"))||{s1:0,s2:0,s3:0};
 
 function add(){
-let name = document.getElementById("name").value;
-let amount = Number(document.getElementById("amount").value);
-let type = document.getElementById("type").value;
-let pay = document.getElementById("pay").value;
+let name=document.getElementById("name").value;
+let amount=Number(document.getElementById("amount").value);
+let type=document.getElementById("type").value;
+let pay=document.getElementById("pay").value;
+
+if(!amount)return;
 
 data.push({name,amount,type,date:new Date().toLocaleDateString()});
 
@@ -233,10 +261,10 @@ localStorage.setItem("debt",JSON.stringify(debt));
 localStorage.setItem("savings",JSON.stringify(savings));
 }
 
-function draw(id,value,total){
-let percent = Math.min(value/total*100,100);
+function draw(id,val,total){
+let p=Math.min(val/total*100,100);
 document.getElementById(id).style.background=
-`conic-gradient(#4a90e2 ${percent}%, #eee ${percent}%)`;
+`conic-gradient(#4A6CF7 ${p}%, #eee ${p}%)`;
 }
 
 function render(){
@@ -246,9 +274,9 @@ let html="";
 
 data.forEach(d=>{
 html+=`<div class="item">${d.date} ${d.name}<span>$${d.amount}</span></div>`;
-if(d.type==="food") food+=d.amount;
-if(d.type==="fixed") fixed+=d.amount;
-if(d.type==="fun") fun+=d.amount;
+if(d.type==="food")food+=d.amount;
+if(d.type==="fixed")fixed+=d.amount;
+if(d.type==="fun")fun+=d.amount;
 });
 
 document.getElementById("list").innerHTML=html;
@@ -261,7 +289,8 @@ document.getElementById("t1").innerText=`${food}/9000`;
 document.getElementById("t2").innerText=`${fixed}/1300`;
 document.getElementById("t3").innerText=`${fun}/5000`;
 
-let remain = (9000-food)+(1300-fixed)+(5000-fun);
+let remain=(9000-food)+(1300-fixed)+(5000-fun);
+
 let today=new Date();
 let last=new Date(today.getFullYear(),today.getMonth()+1,0);
 let daysLeft=last.getDate()-today.getDate();
@@ -275,9 +304,9 @@ draw("cc2",debt.fubon,50000);
 draw("cc3",debt.taishin,50000);
 
 // 存錢
-draw("sc1",savings.s1,3000);
-draw("sc2",savings.s2,4500);
-draw("sc3",savings.s3,3500);
+document.getElementById("p1").style.width=(savings.s1/3000*100)+"%";
+document.getElementById("p2").style.width=(savings.s2/4500*100)+"%";
+document.getElementById("p3").style.width=(savings.s3/3500*100)+"%";
 
 }
 
