@@ -3,187 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taffi's Minimal Finance</title>
+<title>Taffi Finance Pro</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Noto+Sans+TC:wght@400;700&display=swap');
 
 :root {
-  --primary: #8E97FD; /* 莫蘭迪紫 */
-  --secondary: #A8E6CF; /* 鼠尾草綠 */
-  --bg: #F9FBFC;
-  --card-bg: #FFFFFF;
-  --text: #4A4A4A;
+  --primary: #8E97FD;
+  --danger: #FF6B6B;
+  --warning: #FFD166;
+  --success: #06D6A0;
+  --bg: #121212;
+  --card: #1E1E26;
+  --text: #E0E0E0;
 }
 
 body {
   font-family: 'Noto Sans TC', sans-serif;
   background: var(--bg);
   color: var(--text);
-  margin: 0; padding: 20px;
+  margin: 0; padding: 15px;
   max-width: 480px; margin: auto;
 }
 
-/* 主卡片：漸層設計 */
-.main-card {
-  background: linear-gradient(135deg, #8E97FD 0%, #B2A4FF 100%);
-  color: white;
-  border-radius: 24px;
+/* 1️⃣ 首頁：核心負債與還款進度 */
+.hero {
+  background: linear-gradient(135deg, #6C63FF 0%, #8E97FD 100%);
+  border-radius: 28px;
   padding: 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 20px rgba(142, 151, 253, 0.3);
-  text-align: center;
-}
-.big { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin: 10px 0; }
-.small { font-size: 14px; opacity: 0.9; font-weight: 300; }
-
-/* 韓式簡約卡片 */
-.card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
 }
+.hero-label { font-size: 13px; opacity: 0.8; font-weight: 400; }
+.total-debt { font-family: 'Montserrat'; font-size: 38px; font-weight: 800; margin: 5px 0; }
+.progress-container { background: rgba(255,255,255,0.2); height: 12px; border-radius: 10px; margin: 15px 0 8px; position: relative; overflow: hidden; }
+.progress-fill { background: #FFF; height: 100%; border-radius: 10px; transition: 0.5s; }
+.hero-footer { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; }
 
-.title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #333; display: flex; align-items: center; }
-.title::before { content: "✨"; margin-right: 8px; }
-
-/* 輸入框優化 */
-input, select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #EEE;
-  background: #FDFDFD;
-  margin-bottom: 10px;
-  font-size: 14px;
-  box-sizing: border-box;
-  outline: none; transition: 0.3s;
+/* 2️⃣ 信用卡區 */
+.card-unit {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 15px;
+  border-left: 5px solid var(--primary);
 }
-input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(142,151,253,0.2); }
+.card-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 700; }
+.limit-bar { height: 6px; background: #333; border-radius: 10px; margin-top: 5px; }
+.limit-fill { height: 100%; border-radius: 10px; background: var(--primary); }
+.warning { border-left-color: var(--danger); }
+.locked-badge { background: var(--danger); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
 
-button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 15px;
-  background: var(--primary);
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-}
-button:active { transform: scale(0.98); background: #7A84E8; }
+/* 3️⃣ 必存清單（存錢進度） */
+.saving-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.saving-box { background: var(--card); padding: 15px; border-radius: 18px; text-align: center; }
+.saving-val { color: var(--success); font-family: 'Montserrat'; font-weight: 800; font-size: 18px; margin-top: 5px; }
 
-/* 預算進度條取代圓餅圖 (更現代) */
-.budget-item { margin-bottom: 15px; }
-.budget-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
-.progress-bg { height: 10px; background: #F0F0F0; border-radius: 10px; overflow: hidden; }
-.progress-bar { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.5s; }
+/* 選項與按鈕 */
+.section-title { font-size: 18px; font-weight: 700; margin: 20px 0 10px; display: flex; align-items: center; }
+.plan-card { background: #2A2A35; border-radius: 15px; padding: 15px; font-size: 14px; line-height: 1.6; color: #BBB; }
+.highlight { color: var(--primary); font-weight: 700; }
 
-/* 記帳清單：精緻字體 */
-.list { border-top: 1px solid #F5F5F5; margin-top: 15px; }
-.item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 0; border-bottom: 1px solid #F9F9F9; font-size: 14px;
-}
-.item span { font-weight: 500; color: var(--primary); }
+input { width: 100%; padding: 12px; border-radius: 12px; border: none; background: #2A2A35; color: white; margin-bottom: 10px; box-sizing: border-box; }
+button { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--primary); color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
 
 </style>
 </head>
 <body>
 
-<div class="main-card">
-  <div class="small">剩餘可用額度</div>
-  <div id="remain" class="big">0</div>
-  <div class="small">今天可以花：<span id="daily" style="font-weight:700"></span> 元</div>
+<div class="hero">
+  <div class="hero-label">💳 總負債 (Total Debt)</div>
+  <div id="totalDebt" class="total-debt">$115,343</div>
+  <div class="hero-label">🔥 本月還款目標：$15,000</div>
+  <div class="progress-container">
+    <div id="repayBar" class="progress-fill" style="width: 0%"></div>
+  </div>
+  <div class="hero-footer">
+    <span id="paidAmt">已還: $0</span>
+    <span id="repayPercent">0%</span>
+  </div>
 </div>
 
-<div class="card">
-  <div class="title">快速記帳</div>
-  <input id="name" placeholder="今天買了什麼？">
-  <div style="display:flex; gap:10px;">
-    <input id="amount" type="number" placeholder="金額">
-    <select id="type">
-      <option value="food">🍽️ 飲食</option>
-      <option value="fixed">🏠 固定</option>
-      <option value="fun">🥂 娛樂</option>
-    </select>
-  </div>
-  <select id="pay">
-    <option value="cash">💵 現金</option>
-    <option value="cathay">💳 國泰</option>
-    <option value="fubon">💳 富邦</option>
-    <option value="taishin">💳 台新</option>
-  </select>
-  <button onclick="add()">記錄一筆</button>
-  <div id="list" class="list"></div>
+<div class="section-title">💳 信用卡即時狀態</div>
+<div id="cardList"></div>
+
+<div class="section-title">🏦 每月必存 (Must Save)</div>
+<div class="saving-grid">
+  <div class="saving-box">機車保養<div class="saving-val">$3,000</div></div>
+  <div class="saving-box">眉毛<div class="saving-val">$4,500</div></div>
+  <div class="saving-box">保險<div class="saving-val">$3,500</div></div>
 </div>
 
-<div class="card">
-  <div class="title">預算進度</div>
-  <div class="budget-item">
-    <div class="budget-info"><span>飲食</span><span id="t1"></span></div>
-    <div class="progress-bg"><div id="b1" class="progress-bar"></div></div>
-  </div>
-  <div class="budget-item">
-    <div class="budget-info"><span>固定</span><span id="t2"></span></div>
-    <div class="progress-bg"><div id="b2" class="progress-bar" style="background:#FFD166"></div></div>
-  </div>
-  <div class="budget-item">
-    <div class="budget-info"><span>娛樂</span><span id="t3"></span></div>
-    <div class="progress-bg"><div id="b3" class="progress-bar" style="background:#A8E6CF"></div></div>
-  </div>
+<div class="section-title">🐾 彈性儲蓄 (Ongoing)</div>
+<div class="saving-grid">
+  <div class="saving-box">Taffi 醫療<div class="saving-val">$2,500</div></div>
+  <div class="saving-box">旅遊金<div class="saving-val">$3,500</div></div>
 </div>
+
+<div class="section-title">💡 AI 還款策略 (雪球法)</div>
+<div class="plan-card">
+  根據目前的債務結構，建議優先處理 <span class="highlight">台新 (22,000)</span>。<br>
+  本月 $15,000 分配建議：<br>
+  📍 <span class="highlight">台新: $10,000</span> (加速解鎖)<br>
+  📍 國泰: $3,000 / 富邦: $2,000
+</div>
+
+<div class="section-title">➕ 記錄還款</div>
+<input type="number" id="payAmount" placeholder="輸入今日還款金額">
+<select id="targetCard" style="width:100%; padding:12px; border-radius:12px; background:#2A2A35; color:white; border:none;">
+  <option value="cathay">國泰</option>
+  <option value="taishin">台新</option>
+  <option value="fubon">富邦</option>
+</select>
+<button onclick="recordRepay()">更新還款進度</button>
 
 <script>
-// (邏輯與原本相同，僅調整渲染方式)
-let data = JSON.parse(localStorage.getItem("data"))||[];
-let debt = JSON.parse(localStorage.getItem("debt"))||{cathay:56570,fubon:36773,taishin:22000};
+// 初始化數據 (根據妳提供的 3/30 狀態)
+let status = JSON.parse(localStorage.getItem("taffi_finance_v2")) || {
+  paidThisMonth: 0,
+  debt: {
+    cathay: { bal: 56570, limit: 60000, locked: false },
+    taishin: { bal: 22000, limit: 50000, locked: true },
+    fubon: { bal: 36773, limit: 50000, locked: false }
+  }
+};
 
-function add(){
-  let name=document.getElementById("name").value;
-  let amount=Number(document.getElementById("amount").value);
-  let type=document.getElementById("type").value;
-  let pay=document.getElementById("pay").value;
-  if(!amount)return;
-  data.unshift({name,amount,type,date:new Date().toLocaleDateString()});
-  if(pay!=="cash") debt[pay]+=amount;
-  save(); render();
-  document.getElementById("name").value="";
-  document.getElementById("amount").value="";
+function recordRepay() {
+  let amt = Number(document.getElementById("payAmount").value);
+  let card = document.getElementById("targetCard").value;
+  if(!amt) return;
+  
+  status.paidThisMonth += amt;
+  status.debt[card].bal -= amt;
+  
+  localStorage.setItem("taffi_finance_v2", JSON.stringify(status));
+  render();
+  document.getElementById("payAmount").value = "";
 }
 
-function save(){
-  localStorage.setItem("data",JSON.stringify(data));
-  localStorage.setItem("debt",JSON.stringify(debt));
+function render() {
+  let total = status.debt.cathay.bal + status.debt.taishin.bal + status.debt.fubon.bal;
+  document.getElementById("totalDebt").innerText = `$${total.toLocaleString()}`;
+  
+  let p = Math.min((status.paidThisMonth / 15000) * 100, 100);
+  document.getElementById("repayBar").style.width = p + "%";
+  document.getElementById("paidAmt").innerText = `已還: $${status.paidThisMonth.toLocaleString()}`;
+  document.getElementById("repayPercent").innerText = Math.floor(p) + "%";
+
+  let cardHtml = "";
+  for(let key in status.debt) {
+    let c = status.debt[key];
+    let useRate = Math.floor((c.bal / c.limit) * 100);
+    let nameMap = {cathay: '國泰', taishin: '台新', fubon: '富邦'};
+    
+    cardHtml += `
+      <div class="card-unit ${useRate > 80 ? 'warning' : ''}">
+        <div class="card-header">
+          <span>${nameMap[key]}${c.locked ? '<span class="locked-badge">鎖卡⚠️</span>' : ''}</span>
+          <span>$${c.bal.toLocaleString()}</span>
+        </div>
+        <div class="hero-label">額度使用率: ${useRate}%</div>
+        <div class="limit-bar"><div class="limit-fill" style="width:${useRate}%; background:${useRate > 90 ? '#FF6B6B' : '#8E97FD'}"></div></div>
+      </div>
+    `;
+  }
+  document.getElementById("cardList").innerHTML = cardHtml;
 }
 
-function render(){
-  let food=0,fixed=0,fun=0,html="";
-  data.slice(0,5).forEach(d=>{
-    html+=`<div class="item">${d.name}<span>$${d.amount}</span></div>`;
-    if(d.type==="food")food+=d.amount;
-    if(d.type==="fixed")fixed+=d.amount;
-    if(d.type==="fun")fun+=d.amount;
-  });
-  document.getElementById("list").innerHTML=html;
-
-  const updateBar = (id, textId, val, total) => {
-    let p = Math.min(val/total*100, 100);
-    document.getElementById(id).style.width = p + "%";
-    document.getElementById(textId).innerText = `$${val} / $${total}`;
-  };
-
-  updateBar("b1", "t1", food, 9000);
-  updateBar("b2", "t2", fixed, 1300);
-  updateBar("b3", "t3", fun, 5000);
-
-  let remain = (9000-food)+(1300-fixed)+(5000-fun);
-  let daysLeft = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate() - new Date().getDate();
-  document.getElementById("remain").innerText = `$${remain.toLocaleString()}`;
-  document.getElementById("daily").innerText = Math.floor(remain/(daysLeft||1));
-}
 render();
 </script>
 </body>
