@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>維恩消費計畫 V35 FINAL</title>
+<title>維恩消費計畫 V36 FINAL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
 :root {
-  --primary: #6C63FF; --danger: #FF3B30; --success: #34C759; --info: #007AFF; --warning: #FF9500;
+  --primary: #6C63FF; --danger: #FF3B30; --success: #34C759; --warning: #FF9500;
   --bg: #F0F2F5; --card: #FFFFFF; --text: #444B59; --border: #E9EDF5;
 }
 
 body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 60px; overflow-x: hidden; }
 
-/* --- 側邊選單 (維持原樣) --- */
+/* --- 側邊選單 --- */
 #sideNav { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 15px 0 30px rgba(0,0,0,0.1); }
 #sideNav.open { left: 0; }
 .nav-header { padding: 40px 25px 20px; border-bottom: 1px solid #F1F5F9; }
-.nav-header h2 { font-weight: 900; color: var(--primary); margin: 0; }
-.nav-item { display: flex; align-items: center; margin: 10px 15px; padding: 15px 20px; color: #64748B; text-decoration: none; font-weight: 800; border-radius: 14px; }
+.nav-header h2 { font-weight: 900; color: var(--primary); margin: 0; font-size: 20px; }
+.nav-item { display: flex; align-items: center; margin: 5px 15px; padding: 15px 20px; color: #64748B; text-decoration: none; font-weight: 800; border-radius: 14px; }
 .nav-item.active { background: var(--primary); color: white; }
 #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; z-index: 1500; }
 
@@ -30,13 +30,12 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
 
 .container { padding: 15px; max-width: 500px; margin: auto; }
 
-/* --- 今日可用卡片 (修正：動畫背景) --- */
+/* --- 今日可用卡片 (含動畫) --- */
 .status-card { 
     background: linear-gradient(135deg, #1E293B 0%, #334155 100%); 
     color: white; border-radius: 28px; padding: 25px; margin-bottom: 20px; 
     display: flex; justify-content: space-between; align-items: center;
     position: relative; overflow: hidden;
-    box-shadow: 0 10px 25px rgba(30, 41, 59, 0.2);
 }
 .status-card::after {
     content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -46,7 +45,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .status-val { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: #4ADE80; z-index: 1; }
 
-/* --- 預算監控 (維持原樣) --- */
+/* --- 預算監控 (含三分之一變色邏輯) --- */
 .section-header { font-size: 14px; font-weight: 900; color: #8E94A0; margin: 25px 0 12px 5px; }
 .budget-card { background: white; border-radius: 24px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
 .b-row { display: flex; justify-content: space-between; align-items: center; }
@@ -54,52 +53,47 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
 .b-amt { font-family: 'Montserrat'; font-size: 20px; font-weight: 900; color: var(--primary); }
 .b-detail { font-size: 11px; color: #A0A6B1; font-weight: 500; margin-top: 4px; display: block; margin-bottom: 12px; }
 .progress-bg { height: 8px; background: #F0F2F5; border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--primary); transition: 0.5s; }
+.progress-fill { height: 100%; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* --- 快速記帳區 (修正：常用標籤與美化輸入) --- */
+/* --- 快速記帳區 --- */
 .quick-panel { background: #E9EDF2; border-radius: 32px; padding: 20px; border: 1px solid #D1D9E6; margin-bottom: 25px; }
 .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
 .cat-item { background: white; border-radius: 18px; padding: 12px 2px; text-align: center; border: 1px solid #CBD5E1; cursor: pointer; font-weight: 800; font-size: 11px; }
 .cat-item.active { background: var(--primary); color: white; border-color: transparent; }
-
 .input-box { background: white; border-radius: 26px; padding: 20px; border: 1px solid #CBD5E1; margin-bottom: 15px; text-align: center; }
 .tag-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 15px; }
 .tag-pill { background: #F1F5F9; color: #64748B; font-size: 12px; padding: 6px 14px; border-radius: 20px; font-weight: 800; cursor: pointer; }
-.input-hint { color: #A0A6B1; font-size: 14px; font-weight: 800; margin-bottom: 12px; display: block; }
-.name-input { width: 100%; border: none; border-bottom: 1.5px solid #F1F5F9; font-size: 18px; font-weight: 900; text-align: center; outline: none; margin-bottom: 15px; color: #1E293B; }
-.amt-wrapper { display: flex; align-items: baseline; justify-content: center; gap: 5px; }
-.amt-symbol { font-family: 'Montserrat'; font-size: 24px; font-weight: 900; color: #CBD5E1; }
+.amt-wrapper { display: flex; align-items: baseline; justify-content: center; gap: 5px; margin-top: 10px; }
 .amt-input { width: 180px; border: none; font-family: 'Montserrat'; font-size: 52px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; }
-
 .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .pay-btn { background: white; border-radius: 15px; padding: 15px; font-weight: 800; font-size: 14px; border: 1px solid #CBD5E1; cursor: pointer; text-align: center; }
 .pay-btn.active { background: var(--primary); color: white; }
 
-/* --- 信用卡帳單 (維持原樣) --- */
-.bank-card { background: white; border-radius: 24px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
-.pay-input-group { display: flex; gap: 10px; margin-top: 15px; }
-.pay-field { flex: 1; border: 1.5px solid #F1F5F9; border-radius: 12px; padding: 8px; font-family: 'Montserrat'; font-weight: 800; text-align: center; outline: none; background: #F8FAFC; }
-.pay-action-btn { background: var(--text); color: white; border: none; border-radius: 12px; padding: 0 18px; font-weight: 900; font-size: 13px; cursor: pointer; }
-
-/* --- 存錢計畫 (修正：視覺優化) --- */
+/* --- 存錢計畫區 (含無限存項目) --- */
 .save-item { background: white; border-radius: 24px; padding: 22px; margin-bottom: 12px; border: 1px solid var(--border); border-left: 8px solid var(--primary); }
 .save-item.inf { border-left-color: var(--warning); }
-.save-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.save-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .save-title-box { display: flex; flex-direction: column; }
-.save-label { font-weight: 900; font-size: 18px; color: #1E293B; }
-.save-goal-text { font-size: 12px; color: #A0A6B1; font-weight: 800; margin-top: 2px; }
 .save-num { font-family: 'Montserrat'; font-size: 28px; font-weight: 900; color: var(--primary); }
 .save-num.inf-text { color: var(--warning); }
+.pay-field { flex: 1; border: 1.5px solid #F1F5F9; border-radius: 12px; padding: 10px; font-family: 'Montserrat'; font-weight: 800; text-align: center; outline: none; background: #F8FAFC; }
+.pay-action-btn { background: var(--text); color: white; border: none; border-radius: 12px; padding: 0 18px; font-weight: 900; font-size: 13px; cursor: pointer; }
 
 .final-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary); color: white; font-weight: 900; font-size: 18px; border: none; margin-top: 15px; box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3); }
+
+/* --- 信用卡區 --- */
+.bank-card { background: white; border-radius: 24px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
 </style>
 </head>
 <body>
 
 <div id="sideNav">
-    <div class="nav-header"><h2>維恩計畫</h2></div>
+    <div class="nav-header"><h2>維恩計畫</h2><p style="font-size:11px; color:#94A3B8; font-weight:700;">PRO V36 FINAL</p></div>
     <a href="#" class="nav-item active">🏠 儀表板看板</a>
+    <a href="#" class="nav-item">📝 消費明細紀錄</a>
+    <a href="#" class="nav-item">💳 信用卡繳款歷史</a>
     <a href="#" class="nav-item">📈 消費趨勢圖</a>
+    <a href="#" class="nav-item">💾 資料匯出備份</a>
 </div>
 <div id="overlay" onclick="toggleMenu()"></div>
 
@@ -117,6 +111,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
         </div>
     </div>
 
+    <div class="section-header">📊 預算監控 (接近 1/3 會變色警示)</div>
     <div id="budgetArea"></div>
 
     <div class="section-header">✍️ 快速記帳</div>
@@ -129,14 +124,8 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
         </div>
         <div class="input-box">
             <div id="tagBox" class="tag-container"></div>
-            
-            <span class="input-hint">💡 輸入內容 (如：午餐)</span>
-            <input type="text" id="itemName" class="name-input" placeholder="點擊標籤或手動輸入">
-            
-            <div class="amt-wrapper">
-                <span class="amt-symbol">$</span>
-                <input type="number" id="itemAmt" class="amt-input" placeholder="0" inputmode="decimal">
-            </div>
+            <input type="text" id="itemName" style="width:100%; border:none; border-bottom:1.5px solid #F1F5F9; font-size:18px; font-weight:900; text-align:center; outline:none;" placeholder="點擊標籤或輸入名稱">
+            <div class="amt-wrapper"><span style="font-family:'Montserrat'; font-weight:900; color:#CBD5E1;">$</span><input type="number" id="itemAmt" class="amt-input" placeholder="0" inputmode="decimal"></div>
         </div>
         <div class="pay-grid">
             <div class="pay-btn" onclick="setPay('cash', this, '#64748B')">💵 現金</div>
@@ -150,7 +139,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
     <div class="section-header">💳 信用卡帳單</div>
     <div id="bankArea"></div>
 
-    <div class="section-header">🏦 存錢計畫</div>
+    <div class="section-header">🏦 存錢計畫 (含無限存旅遊金)</div>
     <div id="saveArea"></div>
 </div>
 
@@ -164,10 +153,10 @@ const tags = {
     fixed: ["Gogoro", "加油", "iCloud", "電信費"]
 };
 
-let db = JSON.parse(localStorage.getItem("taffi_v35")) || {
+let db = JSON.parse(localStorage.getItem("taffi_v36")) || {
     budgets: {
         food: { goal: 9000, detail: "每月伙食預算", spent: 180 },
-        fun: { goal: 5000, detail: "美甲 $1,400、羽球 $500、購物 $2,000、健身 $1,080", spent: 0 },
+        fun: { goal: 5000, detail: "美甲 $1,400、羽球 $500、購物 $2,000、健身 $1,080", spent: 2500 }, // 故意設高觸發警示
         taffi: { goal: 3000, detail: "飼料 $1,000、美容 $1,000、其他 $1,000", spent: 0 },
         fixed: { goal: 1300, detail: "電信 $500、Gogoro $499、iCloud $301", spent: 1300 }
     },
@@ -180,7 +169,8 @@ let db = JSON.parse(localStorage.getItem("taffi_v35")) || {
         { name: "機車保養", target: 3000, bal: 0, type: "fix" },
         { name: "年度保險", target: 12000, bal: 0, type: "fix" },
         { name: "眉毛美容", target: 4500, bal: 0, type: "fix" },
-        { name: "Taffi 醫療金", target: "無限存", bal: 0, type: "inf" }
+        { name: "Taffi 醫療金", target: "無限存", bal: 0, type: "inf" },
+        { name: "旅遊基金", target: "無限存", bal: 0, type: "inf" } // 新增旅遊金
     ]
 };
 
@@ -214,20 +204,25 @@ function setPay(pay, el, color) {
 }
 
 function render() {
-    // 預算區
+    // 預算區 (變色邏輯)
     let bHtml = "";
     const icons = { food: "🍽️ 食物", fun: "🎯 娛樂", taffi: "🐶 Taffi", fixed: "🏠 日常支出" };
     for(let k in db.budgets) {
         let b = db.budgets[k];
+        let ratio = b.spent / b.goal;
+        let barColor = "var(--primary)"; // 預設紫色
+        if (ratio >= 0.8) barColor = "var(--danger)"; // 超過 80% 紅色
+        else if (ratio >= 0.33) barColor = "var(--warning)"; // 超過 1/3 橘紅色
+
         bHtml += `<div class="budget-card">
             <div class="b-row"><b>${icons[k]}</b><span class="b-amt">$${(b.goal - b.spent).toLocaleString()}</span></div>
             <span class="b-detail">${b.detail}</span>
-            <div class="progress-bg"><div class="progress-fill" style="width:${(b.spent/b.goal)*100}%"></div></div>
+            <div class="progress-bg"><div class="progress-fill" style="width:${ratio*100}%; background:${barColor}"></div></div>
         </div>`;
     }
     document.getElementById('budgetArea').innerHTML = bHtml;
 
-    // 銀行區 (帶繳款功能)
+    // 信用卡區
     let bankHtml = "";
     for(let k in db.banks) {
         let b = db.banks[k];
@@ -237,28 +232,28 @@ function render() {
                 <div style="font-family:'Montserrat';font-weight:900;color:${b.color}">$${(b.bal - b.paid).toLocaleString()}</div>
             </div>
             <div class="progress-bg"><div class="progress-fill" style="width:${(b.paid/b.bal)*100}%; background:${b.color}"></div></div>
-            <div class="pay-input-group">
-                <input type="number" id="pay_amt_${k}" class="pay-field" placeholder="繳款金額">
-                <button class="pay-action-btn" onclick="payCard('${k}')">繳款</button>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <input type="number" id="pay_amt_${k}" class="pay-field" placeholder="繳款">
+                <button class="pay-action-btn" onclick="payCard('${k}')">確認</button>
             </div>
         </div>`;
     }
     document.getElementById('bankArea').innerHTML = bankHtml;
 
-    // 存錢區 (修正樣式)
+    // 存錢區
     let sHtml = "";
     db.savings.forEach((s, idx) => {
         sHtml += `<div class="save-item ${s.type==='inf'?'inf':''}">
             <div class="save-header">
                 <div class="save-title-box">
-                    <span class="save-label">${s.name}</span>
-                    <span class="save-goal-text">${s.type==='fix'?'目標 $'+s.target.toLocaleString():'無限存計畫'}</span>
+                    <span style="font-weight:900; font-size:18px;">${s.name}</span>
+                    <span style="font-size:12px; color:#A0A6B1; font-weight:800;">${s.type==='fix'?'固定存：目標 $'+s.target.toLocaleString():'無限存計畫'}</span>
                 </div>
                 <span class="save-num ${s.type==='inf'?'inf-text':''}">$${s.bal.toLocaleString()}</span>
             </div>
             <div style="display:flex; gap:10px;">
-                <input type="number" id="save_in_${idx}" class="pay-field" placeholder="存入金額">
-                <button class="pay-action-btn" style="background:var(--primary)" onclick="doSave(${idx})">確認存入</button>
+                <input type="number" id="save_in_${idx}" class="pay-field" placeholder="存入">
+                <button class="pay-action-btn" style="background:var(--primary)" onclick="doSave(${idx})">存入</button>
             </div>
         </div>`;
     });
@@ -277,7 +272,7 @@ function doSave(idx) {
 
 function submitExpense() {
     let amt = Number(document.getElementById('itemAmt').value);
-    if(!amt || !currentPay) return alert("請填寫金額並選擇支付方式");
+    if(!amt || !currentPay) return alert("請填寫金額並選擇方式");
     db.budgets[currentCat].spent += amt;
     if(currentPay !== 'cash') db.banks[currentPay].bal += amt;
     saveAndRender();
@@ -285,7 +280,7 @@ function submitExpense() {
 }
 
 function saveAndRender() {
-    localStorage.setItem("taffi_v35", JSON.stringify(db));
+    localStorage.setItem("taffi_v36", JSON.stringify(db));
     render();
 }
 
@@ -294,4 +289,3 @@ render();
 </script>
 </body>
 </html>
-
