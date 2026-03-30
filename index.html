@@ -3,64 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>維恩消費計畫 V21</title>
+<title>維恩消費計畫 V22</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
 :root {
   --primary: #6C63FF; --danger: #FF5E5E; --warning: #FFA000; --success: #27AE60;
-  --bg: #F4F7F9; --card: #FFFFFF; --text: #334155; --border: #E2E8F0;
-  --cathay: #00A650; --taishin: #DA2128; --fubon: #0067B1;
+  --bg: #F8FAFC; --card: #FFFFFF; --text: #334155; --border: #E2E8F0;
 }
+
 body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
 
 /* 側選單 */
-#sideNav { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; z-index: 1000; padding-top: 60px; transition: 0.4s; box-shadow: 10px 0 30px rgba(0,0,0,0.05); }
+#sideNav { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: white; z-index: 1000; padding-top: 60px; transition: 0.3s; box-shadow: 10px 0 30px rgba(0,0,0,0.05); }
 #sideNav a { display: block; padding: 18px 30px; color: #64748B; text-decoration: none; font-weight: 700; border-left: 4px solid transparent; }
 #sideNav a.active-link { background: #F8FAFC; color: var(--primary); border-left-color: var(--primary); }
 .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(2px); display: none; z-index: 999; }
 
-/* 導航 */
 .top-bar { display: flex; align-items: center; padding: 15px 20px; background: white; position: sticky; top: 0; z-index: 900; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .menu-icon { font-size: 20px; cursor: pointer; padding: 8px 12px; border-radius: 10px; background: #F1F5F9; margin-right: 12px; }
 
-.main-content { padding: 20px; max-width: 500px; margin: auto; padding-bottom: 100px; }
-.page { display: none; animation: fadeIn 0.3s ease; }
+.main-content { padding: 15px; max-width: 500px; margin: auto; padding-bottom: 100px; }
+.page { display: none; }
 .page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.section-title { font-size: 13px; font-weight: 900; color: #94A3B8; margin: 25px 0 12px 5px; letter-spacing: 1.5px; }
+.section-title { font-size: 13px; font-weight: 900; color: #94A3B8; margin: 25px 0 12px 5px; letter-spacing: 1px; }
 
-/* 預算與核取清單 */
-.budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-.budget-mini { background: white; padding: 16px; border-radius: 20px; border: 1px solid var(--border); }
-.check-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.check-item { font-size: 10px; background: #F1F5F9; padding: 4px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; color: #94A3B8; }
-.check-item.done { background: #DCFCE7; color: #15803D; border-color: #BBF7D0; text-decoration: line-through; }
+/* 預算區：大標題、進度條、勾選框 */
+.budget-mini { background: white; padding: 18px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); margin-bottom: 12px; }
+.b-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
+.b-title { font-size: 18px; font-weight: 900; color: #1E293B; }
+.b-rem { font-family: 'Montserrat'; font-size: 18px; font-weight: 900; }
+.b-spent { font-size: 11px; color: #64748B; font-weight: 700; margin-bottom: 8px; }
+.progress-container { height: 8px; background: #F1F5F9; border-radius: 4px; overflow: hidden; }
+.progress-bar { height: 100%; transition: 0.5s; }
 
-/* 記帳區 */
-.quick-box { background: #E2E8F0; border-radius: 28px; padding: 20px; border: 1px solid #CBD5E1; margin-bottom: 30px; }
-.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.cat-btn { background: white; border-radius: 15px; padding: 10px 5px; text-align: center; cursor: pointer; color: #64748B; border: 1px solid #CBD5E1; }
-.cat-btn.active { background: var(--primary); color: white; border-color: transparent; }
-.cat-btn span { display: block; font-size: 10px; font-weight: 700; margin-top: 4px; }
+.check-label { font-size: 12px; color: #64748B; display: flex; align-items: center; gap: 5px; margin-top: 10px; cursor: pointer; font-weight: 700; }
+.check-label input { width: 16px; height: 16px; accent-color: var(--success); }
 
-.input-label { font-size: 11px; font-weight: 800; color: #64748B; margin-top: 15px; display: block; padding-left: 5px; }
-.text-input { width: 100%; border: none; border-bottom: 1.5px solid #94A3B8; background: transparent; padding: 8px 5px; font-size: 16px; font-weight: 700; color: #1E293B; outline: none; margin-bottom: 10px; }
-.amount-input { width: 100%; border: none; border-bottom: 2.5px solid #94A3B8; font-family: 'Montserrat'; font-size: 40px; font-weight: 900; text-align: center; color: var(--primary); outline: none; margin: 10px 0; background: transparent; }
+/* 快速記帳：內容欄位與記憶按鈕 */
+.quick-box { background: #E2E8F0; border-radius: 32px; padding: 20px; border: 1px solid #CBD5E1; margin-bottom: 30px; }
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 15px; }
+.cat-btn { background: white; border-radius: 15px; padding: 10px 2px; text-align: center; cursor: pointer; border: 1px solid #CBD5E1; transition: 0.2s; }
+.cat-btn.active { background: var(--primary); color: white; border-color: transparent; transform: translateY(-2px); }
+.cat-btn span { display: block; font-size: 10px; font-weight: 800; margin-top: 3px; }
 
-.pay-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; }
-.pay-btn { background: white; border: 1px solid #CBD5E1; border-radius: 12px; padding: 12px; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; }
-.pay-btn.active { color: white; border-color: transparent; }
+.input-group { background: white; border-radius: 20px; padding: 15px; margin-bottom: 15px; border: 1px solid #CBD5E1; }
+.text-input { width: 100%; border: none; font-size: 16px; font-weight: 700; outline: none; text-align: center; color: #334155; margin-bottom: 10px; border-bottom: 1px solid #F1F5F9; padding-bottom: 5px; }
+.history-tags { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; }
+.tag-btn { background: #F1F5F9; color: #64748B; font-size: 11px; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-weight: 700; }
 
-/* 存錢筒 */
-.jar-card { border-radius: 22px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); background: white; }
-.jar-fixed { border-top: 6px solid var(--primary); }
-.jar-infinite { border-top: 6px solid var(--warning); background: #FFFAF5; }
-.target-tag { font-size: 10px; background: #EEF2FF; color: var(--primary); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+.amount-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 36px; font-weight: 900; text-align: center; color: var(--primary); outline: none; background: transparent; }
 
-.submit-btn { width: 100%; padding: 18px; border-radius: 18px; background: var(--primary); color: white; font-weight: 900; font-size: 16px; border: none; margin-top: 20px; cursor: pointer; box-shadow: 0 5px 15px rgba(108, 99, 255, 0.2); }
-.history-item { background: white; border-radius: 18px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
-.del-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #FEE2E2; color: #EF4444; border-radius: 8px; font-weight: 800; cursor: pointer; }
+.pay-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.pay-btn { background: white; border: 1px solid #CBD5E1; border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 800; text-align: center; cursor: pointer; }
+
+/* 存錢筒：寬度優化 */
+.jar-card { padding: 18px; background: white; border-radius: 22px; margin-bottom: 10px; border: 1px solid var(--border); position: relative; }
+.jar-input { width: 100px; padding: 8px; border-radius: 10px; border: 1px solid #E2E8F0; font-family: 'Montserrat'; font-weight: 700; outline: none; position: absolute; right: 18px; top: 18px; text-align: right; }
+.jar-target { font-size: 11px; color: #94A3B8; font-weight: 700; margin-top: 5px; display: block; }
+
+.daily-info { background: #1E293B; color: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.submit-btn { width: 100%; padding: 18px; border-radius: 18px; background: var(--primary); color: white; font-weight: 900; font-size: 16px; border: none; margin-top: 20px; }
+
 </style>
 </head>
 <body>
@@ -70,7 +75,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
     <a href="#" onclick="showPage('main', '維恩消費計畫')" class="active-link">🏠 預算與記帳</a>
     <a href="#" onclick="showPage('expense', '消費明細紀錄')">🛍️ 消費明細紀錄</a>
     <a href="#" onclick="showPage('repay', '繳款明細紀錄')">📜 繳款明細紀錄</a>
-    <div style="padding: 30px;"><button onclick="if(confirm('重置嗎？')){localStorage.clear();location.reload();}" style="color:#F87171; border:none; background:none; font-weight:700; cursor:pointer;">重置數據庫</button></div>
+    <div style="padding: 30px;"><button onclick="localStorage.clear();location.reload();" style="color:#F87171; border:none; background:none; font-weight:700;">重置數據庫</button></div>
 </div>
 <div class="menu-overlay" onclick="toggleMenu()"></div>
 
@@ -81,31 +86,33 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
 
 <div class="main-content">
     <div id="page-main" class="page active">
-        <div class="section-title">📊 預算監控 & 固定支出清單</div>
-        <div class="budget-grid" id="budgetArea"></div>
+        <div id="dailyStatus" class="daily-info"></div>
+
+        <div class="section-title">📊 預算監控 (支出大類)</div>
+        <div id="budgetArea"></div>
 
         <div class="section-title">✍️ 快速記帳</div>
         <div class="quick-box">
             <div class="cat-grid">
-                <div class="cat-btn" onclick="selectCat('food', this)">🍽️<span>食物</span></div>
-                <div class="cat-btn" onclick="selectCat('fun', this)">🎯<span>娛樂</span></div>
-                <div class="cat-btn" onclick="selectCat('taffi_pay', this)">🐶<span>Taffi</span></div>
-                <div class="cat-btn" onclick="selectCat('fixed', this)">🏠<span>固定</span></div>
+                <div class="cat-btn" onclick="selectCat('food', this, '🍽️ 食物')">🍽️<span>食物</span></div>
+                <div class="cat-btn" onclick="selectCat('fun', this, '🎯 娛樂')">🎯<span>娛樂</span></div>
+                <div class="cat-btn" onclick="selectCat('taffi_pay', this, '🐶 Taffi')">🐶<span>Taffi</span></div>
+                <div class="cat-btn" onclick="selectCat('fixed', this, '🏠 固定')">🏠<span>固定</span></div>
             </div>
             
-            <label class="input-label">📝 消費內容 (如: 晚餐、飼料、房租)</label>
-            <input type="text" id="itemName" class="text-input" placeholder="點擊填寫...">
-            
-            <label class="input-label">💰 金額</label>
-            <input type="number" id="mainAmount" class="amount-input" inputmode="decimal" placeholder="0">
-            
+            <div class="input-group">
+                <div id="historyTags" class="history-tags"></div>
+                <input type="text" id="itemName" class="text-input" placeholder="💡 輸入消費內容 (如：午餐)">
+                <input type="number" id="mainAmount" class="amount-input" inputmode="decimal" placeholder="$ 0">
+            </div>
+
             <div class="pay-grid">
                 <div class="pay-btn" id="pay_cash" onclick="selectPay('cash', this, '#64748B')">💵 現金</div>
-                <div class="pay-btn" id="pay_cathay" onclick="selectPay('cathay', this, 'var(--cathay)')">💳 國泰</div>
-                <div class="pay-btn" id="pay_taishin" onclick="selectPay('taishin', this, 'var(--taishin)')">💳 台新</div>
-                <div class="pay-btn" id="pay_fubon" onclick="selectPay('fubon', this, 'var(--fubon)')">💳 富邦</div>
+                <div class="pay-btn" id="pay_cathay" onclick="selectPay('cathay', this, '#00A650')">💳 國泰</div>
+                <div class="pay-btn" id="pay_taishin" onclick="selectPay('taishin', this, '#DA2128')">💳 台新</div>
+                <div class="pay-btn" id="pay_fubon" onclick="selectPay('fubon', this, '#0067B1')">💳 富邦</div>
             </div>
-            <button class="submit-btn" onclick="submitExpense()">送出紀錄</button>
+            <button class="submit-btn" onclick="submitExpense()">送出支出紀錄</button>
         </div>
 
         <div class="section-title">💳 信用卡帳單</div>
@@ -114,31 +121,30 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: va
         <div class="section-title">🏦 存錢計畫</div>
         <div id="savingsArea"></div>
     </div>
-
-    <div id="page-expense" class="page"><div id="expenseHistoryArea"></div></div>
-    <div id="page-repay" class="page"><div id="repayHistoryArea"></div></div>
 </div>
 
 <script>
 let selectedCat = ''; let selectedPay = '';
-let db = JSON.parse(localStorage.getItem("taffi_finance_v21")) || {
+let db = JSON.parse(localStorage.getItem("taffi_finance_v22")) || {
     budgets: { food: 9000, fun: 5000, taffi_pay: 2500, fixed: 1300 },
-    fixedCheck: { 
-        food: ["咖啡", "零食"], 
-        fun: ["訂閱費"], 
-        taffi_pay: ["美容"], 
-        fixed: ["房租", "電話費", "保險", "貸款"] 
-    },
-    doneChecks: [],
+    done: { food: false, fun: false, taffi_pay: false, fixed: false },
     expenses: [],
+    itemHistory: ["午餐", "晚餐", "飲料", "停車費", "Taffi零食", "加油"],
     banks: {
-        cathay: { name: "國泰世華", bal: 56570, color: "var(--cathay)", add: 0 },
-        taishin: { name: "台新(鎖)", bal: 22000, color: "var(--taishin)", add: 0 },
-        fubon: { name: "富邦銀行", bal: 36773, color: "var(--fubon)", add: 0 }
+        cathay: { name: "國泰世華", bal: 56570, color: "#00A650", add: 0 },
+        taishin: { name: "台新(鎖)", bal: 22000, color: "#DA2128", add: 0 },
+        fubon: { name: "富邦銀行", bal: 36773, color: "#0067B1", add: 0 }
     },
     savings: {
-        fixed: [{ name: "機車保養", current: 0, target: 3000 }, { name: "年度保險", current: 0, target: 12000 }, { name: "眉毛美容", current: 0, target: 4500 }],
-        infinite: [{ name: "Taffi 醫療金", current: 0 }, { name: "旅遊基金", current: 0 }]
+        fixed: [
+            { name: "機車保養", current: 0, target: 3000 },
+            { name: "年度保險", current: 0, target: 12000 },
+            { name: "眉毛美容", current: 0, target: 4500 }
+        ],
+        infinite: [
+            { name: "Taffi 醫療金", current: 0 },
+            { name: "旅遊基金", current: 0 }
+        ]
     },
     repayHistory: []
 };
@@ -151,13 +157,11 @@ function toggleMenu() {
 }
 
 function showPage(p, title) {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById('page-' + p).classList.add('active');
-    document.getElementById('pageTitle').innerText = title;
-    if(p !== 'main') toggleMenu(); render();
+    if(p !== 'main') return alert("本演示僅限主頁面優化");
+    toggleMenu(); render();
 }
 
-function selectCat(v, el) {
+function selectCat(v, el, label) {
     selectedCat = v;
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
@@ -165,40 +169,33 @@ function selectCat(v, el) {
 
 function selectPay(v, el, color) {
     selectedPay = v;
-    document.querySelectorAll('.pay-btn').forEach(b => { b.classList.remove('active'); b.style.backgroundColor = ''; });
-    el.classList.add('active'); el.style.backgroundColor = color;
+    document.querySelectorAll('.pay-btn').forEach(b => { b.classList.remove('active'); b.style.backgroundColor = ''; b.style.color = ''; });
+    el.classList.add('active'); el.style.backgroundColor = color; el.style.color = 'white';
 }
 
-function toggleCheck(item) {
-    if(db.doneChecks.includes(item)) {
-        db.doneChecks = db.doneChecks.filter(i => i !== item);
-    } else {
-        db.doneChecks.push(item);
-    }
-    save(); render();
-}
-
-function save() { localStorage.setItem("taffi_finance_v21", JSON.stringify(db)); }
+function save() { localStorage.setItem("taffi_finance_v22", JSON.stringify(db)); }
 
 function submitExpense() {
+    let name = document.getElementById('itemName').value;
     let amt = Number(document.getElementById('mainAmount').value);
-    let name = document.getElementById('itemName').value || "未命名支出";
-    if(!selectedCat || !amt || !selectedPay) return alert("請填寫類別、金額與支付方式");
-    db.expenses.unshift({
-        id: Date.now(),
-        date: new Date().toLocaleString('zh-TW', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}),
-        amt, name, cat: selectedCat, pay: selectedPay
-    });
+    if(!selectedCat || !amt || !selectedPay || !name) return alert("請填寫完整內容、金額與分類");
+    
+    db.expenses.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), name, amt, cat: selectedCat, pay: selectedPay });
     if(selectedPay !== 'cash') { db.banks[selectedPay].bal += amt; db.banks[selectedPay].add += amt; }
-    save(); render(); 
-    document.getElementById('mainAmount').value = '';
+    
+    // 記憶功能：如果不重複就存入歷史
+    if(!db.itemHistory.includes(name)) {
+        db.itemHistory.unshift(name);
+        db.itemHistory = db.itemHistory.slice(0, 10);
+    }
+    
+    save(); render();
     document.getElementById('itemName').value = '';
+    document.getElementById('mainAmount').value = '';
 }
 
-function deleteExpense(id) {
-    let item = db.expenses.find(e => e.id === id);
-    if(item && item.pay !== 'cash') { db.banks[item.pay].bal -= item.amt; db.banks[item.pay].add -= item.amt; }
-    db.expenses = db.expenses.filter(e => e.id !== id);
+function toggleDone(cat) {
+    db.done[cat] = !db.done[cat];
     save(); render();
 }
 
@@ -206,30 +203,43 @@ function render() {
     let sums = { food: 0, fun: 0, taffi_pay: 0, fixed: 0 };
     db.expenses.forEach(e => sums[e.cat] += e.amt);
     const catNames = { food: "🍽️ 食物", fun: "🎯 娛樂", taffi_pay: "🐶 Taffi", fixed: "🏠 固定" };
-    
-    // 預算與核取清單
+
+    // 每日可用計算
+    let daysInMonth = 31; let today = new Date().getDate(); let daysLeft = Math.max(1, daysInMonth - today + 1);
+    let totalRem = 0; for(let k in db.budgets) totalRem += (db.budgets[k] - sums[k]);
+    let dailyAvail = Math.floor(totalRem / daysLeft);
+    document.getElementById('dailyStatus').innerHTML = `<div style="font-size:12px; font-weight:700;">剩 ${daysLeft} 天</div><div style="text-align:right;"><small>每日可用</small><br><b style="font-family:'Montserrat'; font-size:24px; color:${dailyAvail<500?'var(--danger)':'#4ADE80'}">$${dailyAvail.toLocaleString()}</b></div>`;
+
+    // 預算區
     let bHtml = "";
     for(let k in db.budgets) {
+        let isDone = db.done[k];
         let spent = sums[k], rem = db.budgets[k] - spent;
-        let checks = db.fixedCheck[k].map(item => `<div class="check-item ${db.doneChecks.includes(item)?'done':''}" onclick="toggleCheck('${item}')">${item}</div>`).join('');
-        bHtml += `<div class="budget-mini">
-            <span class="b-title">${catNames[k]}</span>
-            <span class="b-rem" style="color:${rem<0?'var(--danger)':'#1E293B'}">剩 $${rem.toLocaleString()}</span>
-            <div class="check-list">${checks}</div>
-        </div>`;
+        let pct = isDone ? 100 : Math.min(100, (spent / db.budgets[k]) * 100);
+        bHtml += `
+            <div class="budget-mini" style="opacity:${isDone ? 0.6 : 1}">
+                <div class="b-header">
+                    <span class="b-title">${catNames[k]}</span>
+                    <span class="b-rem" style="color:${rem < 0 ? 'var(--danger)' : 'var(--primary)'}">${isDone ? '✅ 已結清' : (rem < 0 ? '超支' : '剩 $'+rem.toLocaleString())}</span>
+                </div>
+                <div class="progress-container"><div class="progress-bar" style="width:${pct}%; background:${rem < 0 ? 'var(--danger)' : 'var(--primary)'}"></div></div>
+                <label class="check-label"><input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleDone('${k}')"> 已繳完 / 已花完</label>
+            </div>`;
     }
     document.getElementById("budgetArea").innerHTML = bHtml;
+
+    // 常用記憶標籤
+    let hHtml = "";
+    db.itemHistory.forEach(h => { hHtml += `<div class="tag-btn" onclick="document.getElementById('itemName').value='${h}'">${h}</div>`; });
+    document.getElementById("historyTags").innerHTML = hHtml;
 
     // 銀行
     let bankHtml = "";
     for(let k in db.banks) {
         let b = db.banks[k];
-        bankHtml += `<div class="bank-card" style="border-top: 5px solid ${b.color}">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <b style="font-size:15px;">${b.name}</b><span class="bank-tag" style="color:${b.color}">$${b.bal.toLocaleString()}</span>
-            </div>
-            <div style="font-size:10px; color:var(--danger); margin:5px 0; font-weight:700;">本月刷: +$${b.add.toLocaleString()}</div>
-            <input type="number" style="width:100%; padding:8px; border-radius:10px; border:1px solid #E2E8F0;" placeholder="繳款金額" onchange="let v=Number(this.value); if(v){db.banks['${k}'].bal-=v; db.repayHistory.unshift({id:Date.now(), date:new Date().toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}), bank:db.banks['${k}'].name, amount:v}); save(); render();}">
+        bankHtml += `<div class="bank-card" style="border-left: 8px solid ${b.color}">
+            <b>${b.name}</b> <span style="font-family:'Montserrat'; font-weight:900; color:${b.color}">$${b.bal.toLocaleString()}</span>
+            <input type="number" class="jar-input" placeholder="繳款" onchange="let v=Number(this.value); if(v){db.banks['${k}'].bal-=v; save(); render();}">
         </div>`;
     }
     document.getElementById("bankArea").innerHTML = bankHtml;
@@ -237,27 +247,22 @@ function render() {
     // 存錢筒
     let sHtml = "";
     db.savings.fixed.forEach((s, i) => {
-        sHtml += `<div class="jar-card jar-fixed">
-            <div style="display:flex; justify-content:space-between;"><b style="font-size:14px;">${s.name}</b> <span class="target-tag">目標 $${s.target.toLocaleString()}</span></div>
-            <span style="display:block; font-family:'Montserrat'; font-size:24px; font-weight:900; color:var(--primary); margin:8px 0;">$${s.current.toLocaleString()}</span>
-            <input type="number" style="width:100%; padding:8px; border-radius:10px; border:1px solid #E2E8F0;" placeholder="存入" onchange="db.savings.fixed[${i}].current+=Number(this.value);save();render();">
+        let pct = Math.min(100, (s.current / s.target) * 100);
+        sHtml += `<div class="jar-card" style="border-top: 4px solid var(--primary)">
+            <b>${s.name}</b><input type="number" class="jar-input" placeholder="存入" onchange="db.savings.fixed[${i}].current+=Number(this.value);save();render();">
+            <span class="jar-target">目標: $${s.target.toLocaleString()}</span>
+            <div style="font-family:'Montserrat'; font-size:22px; font-weight:900; color:var(--primary);">$${s.current.toLocaleString()}</div>
+            <div class="progress-container" style="height:4px; margin-top:8px;"><div class="progress-bar" style="width:${pct}%; background:var(--primary)"></div></div>
         </div>`;
     });
     db.savings.infinite.forEach((s, i) => {
-        sHtml += `<div class="jar-card jar-infinite">
-            <b>${s.name}</b>
-            <span style="display:block; font-family:'Montserrat'; font-size:24px; font-weight:900; color:var(--warning); margin:8px 0;">$${s.current.toLocaleString()}</span>
-            <input type="number" style="width:100%; padding:8px; border-radius:10px; border:1px solid #E2E8F0;" placeholder="存入" onchange="db.savings.infinite[${i}].current+=Number(this.value);save();render();">
+        sHtml += `<div class="jar-card" style="border-top: 4px solid var(--warning); background:#FFFBF5;">
+            <b>${s.name}</b><input type="number" class="jar-input" placeholder="存入" onchange="db.savings.infinite[${i}].current+=Number(this.value);save();render();">
+            <span class="jar-target">無限累積中</span>
+            <div style="font-family:'Montserrat'; font-size:22px; font-weight:900; color:var(--warning);">$${s.current.toLocaleString()}</div>
         </div>`;
     });
     document.getElementById("savingsArea").innerHTML = sHtml;
-
-    // 歷史紀錄
-    let eHtml = "";
-    db.expenses.forEach(h => {
-        eHtml += `<div class="history-item"><div><small style="color:#94A3B8;">${h.date} (${h.pay})</small><br><b>${h.name}</b> <span style="font-size:11px; color:#64748B;">#${catNames[h.cat]}</span></div><div style="display:flex; align-items:center; gap:12px;"><b style="font-family:'Montserrat'; color:var(--danger);">$${h.amt.toLocaleString()}</b><div class="del-btn" onclick="deleteExpense(${h.id})">×</div></div></div>`;
-    });
-    document.getElementById("expenseHistoryArea").innerHTML = eHtml || "<div style='text-align:center; padding:50px; color:#94A3B8;'>尚未有紀錄</div>";
 }
 render();
 </script>
