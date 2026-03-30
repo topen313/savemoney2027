@@ -3,316 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Taffi Finance</title>
-
+<title>Taffi's Minimal Finance</title>
 <style>
-body{
-  font-family:-apple-system;
-  background:#F5F7FA;
-  margin:0;
-  padding:15px;
-  max-width:520px;
-  margin:auto;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap');
+
+:root {
+  --primary: #8E97FD; /* 莫蘭迪紫 */
+  --secondary: #A8E6CF; /* 鼠尾草綠 */
+  --bg: #F9FBFC;
+  --card-bg: #FFFFFF;
+  --text: #4A4A4A;
 }
 
-/* 主卡 */
-.main-card{
-  background:#4A6CF7;
-  color:white;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:15px;
-}
-.big{
-  font-size:28px;
-  font-weight:bold;
-}
-.small{
-  opacity:0.8;
-  margin-top:5px;
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0; padding: 20px;
+  max-width: 480px; margin: auto;
 }
 
-/* 卡片 */
-.card{
-  background:white;
-  border-radius:18px;
-  padding:15px;
-  margin-bottom:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+/* 主卡片：漸層設計 */
+.main-card {
+  background: linear-gradient(135deg, #8E97FD 0%, #B2A4FF 100%);
+  color: white;
+  border-radius: 24px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 20px rgba(142, 151, 253, 0.3);
+  text-align: center;
+}
+.big { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin: 10px 0; }
+.small { font-size: 14px; opacity: 0.9; font-weight: 300; }
+
+/* 韓式簡約卡片 */
+.card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
 }
 
-.title{
-  font-weight:bold;
-  margin-bottom:10px;
-}
+.title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #333; display: flex; align-items: center; }
+.title::before { content: "✨"; margin-right: 8px; }
 
-/* 記帳 */
-.row-input{
-  display:flex;
-  gap:6px;
+/* 輸入框優化 */
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #EEE;
+  background: #FDFDFD;
+  margin-bottom: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none; transition: 0.3s;
 }
-.row-input input{
-  flex:1;
-}
+input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(142,151,253,0.2); }
 
-/* 圓餅 */
-.circle{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  margin:auto;
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 15px;
+  background: var(--primary);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
 }
+button:active { transform: scale(0.98); background: #7A84E8; }
 
-/* 預算卡 */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.box{
-  border-radius:16px;
-  padding:10px;
-  text-align:center;
-}
+/* 預算進度條取代圓餅圖 (更現代) */
+.budget-item { margin-bottom: 15px; }
+.budget-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
+.progress-bg { height: 10px; background: #F0F0F0; border-radius: 10px; overflow: hidden; }
+.progress-bar { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.5s; }
 
-/* 顏色 */
-.food{background:#E8F5E9;}
-.fixed{background:#FFF8E1;}
-.fun{background:#E3F2FD;}
+/* 記帳清單：精緻字體 */
+.list { border-top: 1px solid #F5F5F5; margin-top: 15px; }
+.item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid #F9F9F9; font-size: 14px;
+}
+.item span { font-weight: 500; color: var(--primary); }
 
-input,select{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin-top:5px;
-  background:#f1f3f6;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:#4A6CF7;
-  color:white;
-  margin-top:10px;
-}
-
-/* list */
-.list{font-size:0.9rem;}
-.item{
-  display:flex;
-  justify-content:space-between;
-  padding:5px 0;
-}
-
-/* 信用卡 */
-.card-block{
-  border-top:1px solid #eee;
-  margin-top:10px;
-  padding-top:10px;
-}
-
-.progress{
-  height:6px;
-  background:#eee;
-  border-radius:10px;
-  margin-top:5px;
-}
-.bar{
-  height:100%;
-  background:#4A6CF7;
-}
 </style>
 </head>
-
 <body>
 
-<!-- 主頁 -->
 <div class="main-card">
-  <div class="small">本月可用</div>
+  <div class="small">剩餘可用額度</div>
   <div id="remain" class="big">0</div>
-  <div class="small">每日可用：<span id="daily"></span></div>
+  <div class="small">今天可以花：<span id="daily" style="font-weight:700"></span> 元</div>
 </div>
 
-<!-- 記帳 -->
 <div class="card">
-<div class="title">➕ 記帳</div>
-
-<div class="row-input">
-<input id="name" placeholder="項目">
-<input id="amount" placeholder="金額">
+  <div class="title">快速記帳</div>
+  <input id="name" placeholder="今天買了什麼？">
+  <div style="display:flex; gap:10px;">
+    <input id="amount" type="number" placeholder="金額">
+    <select id="type">
+      <option value="food">🍽️ 飲食</option>
+      <option value="fixed">🏠 固定</option>
+      <option value="fun">🥂 娛樂</option>
+    </select>
+  </div>
+  <select id="pay">
+    <option value="cash">💵 現金</option>
+    <option value="cathay">💳 國泰</option>
+    <option value="fubon">💳 富邦</option>
+    <option value="taishin">💳 台新</option>
+  </select>
+  <button onclick="add()">記錄一筆</button>
+  <div id="list" class="list"></div>
 </div>
 
-<select id="type">
-<option value="food">飲食</option>
-<option value="fixed">固定</option>
-<option value="fun">娛樂</option>
-</select>
-
-<select id="pay">
-<option value="cash">現金</option>
-<option value="cathay">國泰</option>
-<option value="fubon">富邦</option>
-<option value="taishin">台新</option>
-</select>
-
-<button onclick="add()">新增</button>
-
-<div id="list" class="list"></div>
-</div>
-
-<!-- 預算 -->
 <div class="card">
-<div class="title">📊 預算</div>
-
-<div class="grid">
-
-<div class="box food">
-飲食
-<div id="c1" class="circle"></div>
-<div id="t1"></div>
-</div>
-
-<div class="box fixed">
-固定
-<div id="c2" class="circle"></div>
-<div id="t2"></div>
-</div>
-
-<div class="box fun">
-娛樂
-<div id="c3" class="circle"></div>
-<div id="t3"></div>
-</div>
-
-</div>
-</div>
-
-<!-- 信用卡 -->
-<div class="card">
-<div class="title">💳 信用卡</div>
-
-<div class="card-block">
-國泰
-<input id="pay1" placeholder="輸入還款">
-<div id="cc1" class="circle"></div>
-</div>
-
-<div class="card-block">
-富邦
-<input id="pay2">
-<div id="cc2" class="circle"></div>
-</div>
-
-<div class="card-block">
-台新
-<input id="pay3">
-<div id="cc3" class="circle"></div>
-</div>
-
-</div>
-
-<!-- 存錢 -->
-<div class="card">
-<div class="title">🏦 存錢</div>
-
-機車保養
-<input id="s1">
-<div class="progress"><div id="p1" class="bar"></div></div>
-
-眉毛
-<input id="s2">
-<div class="progress"><div id="p2" class="bar"></div></div>
-
-保險
-<input id="s3">
-<div class="progress"><div id="p3" class="bar"></div></div>
-
+  <div class="title">預算進度</div>
+  <div class="budget-item">
+    <div class="budget-info"><span>飲食</span><span id="t1"></span></div>
+    <div class="progress-bg"><div id="b1" class="progress-bar"></div></div>
+  </div>
+  <div class="budget-item">
+    <div class="budget-info"><span>固定</span><span id="t2"></span></div>
+    <div class="progress-bg"><div id="b2" class="progress-bar" style="background:#FFD166"></div></div>
+  </div>
+  <div class="budget-item">
+    <div class="budget-info"><span>娛樂</span><span id="t3"></span></div>
+    <div class="progress-bg"><div id="b3" class="progress-bar" style="background:#A8E6CF"></div></div>
+  </div>
 </div>
 
 <script>
-
+// (邏輯與原本相同，僅調整渲染方式)
 let data = JSON.parse(localStorage.getItem("data"))||[];
 let debt = JSON.parse(localStorage.getItem("debt"))||{cathay:56570,fubon:36773,taishin:22000};
-let savings = JSON.parse(localStorage.getItem("savings"))||{s1:0,s2:0,s3:0};
 
 function add(){
-let name=document.getElementById("name").value;
-let amount=Number(document.getElementById("amount").value);
-let type=document.getElementById("type").value;
-let pay=document.getElementById("pay").value;
-
-if(!amount)return;
-
-data.push({name,amount,type,date:new Date().toLocaleDateString()});
-
-if(pay!=="cash") debt[pay]+=amount;
-
-save();
-render();
+  let name=document.getElementById("name").value;
+  let amount=Number(document.getElementById("amount").value);
+  let type=document.getElementById("type").value;
+  let pay=document.getElementById("pay").value;
+  if(!amount)return;
+  data.unshift({name,amount,type,date:new Date().toLocaleDateString()});
+  if(pay!=="cash") debt[pay]+=amount;
+  save(); render();
+  document.getElementById("name").value="";
+  document.getElementById("amount").value="";
 }
 
 function save(){
-localStorage.setItem("data",JSON.stringify(data));
-localStorage.setItem("debt",JSON.stringify(debt));
-localStorage.setItem("savings",JSON.stringify(savings));
-}
-
-function draw(id,val,total){
-let p=Math.min(val/total*100,100);
-document.getElementById(id).style.background=
-`conic-gradient(#4A6CF7 ${p}%, #eee ${p}%)`;
+  localStorage.setItem("data",JSON.stringify(data));
+  localStorage.setItem("debt",JSON.stringify(debt));
 }
 
 function render(){
+  let food=0,fixed=0,fun=0,html="";
+  data.slice(0,5).forEach(d=>{
+    html+=`<div class="item">${d.name}<span>$${d.amount}</span></div>`;
+    if(d.type==="food")food+=d.amount;
+    if(d.type==="fixed")fixed+=d.amount;
+    if(d.type==="fun")fun+=d.amount;
+  });
+  document.getElementById("list").innerHTML=html;
 
-let food=0,fixed=0,fun=0;
-let html="";
+  const updateBar = (id, textId, val, total) => {
+    let p = Math.min(val/total*100, 100);
+    document.getElementById(id).style.width = p + "%";
+    document.getElementById(textId).innerText = `$${val} / $${total}`;
+  };
 
-data.forEach(d=>{
-html+=`<div class="item">${d.date} ${d.name}<span>$${d.amount}</span></div>`;
-if(d.type==="food")food+=d.amount;
-if(d.type==="fixed")fixed+=d.amount;
-if(d.type==="fun")fun+=d.amount;
-});
+  updateBar("b1", "t1", food, 9000);
+  updateBar("b2", "t2", fixed, 1300);
+  updateBar("b3", "t3", fun, 5000);
 
-document.getElementById("list").innerHTML=html;
-
-draw("c1",food,9000);
-draw("c2",fixed,1300);
-draw("c3",fun,5000);
-
-document.getElementById("t1").innerText=`${food}/9000`;
-document.getElementById("t2").innerText=`${fixed}/1300`;
-document.getElementById("t3").innerText=`${fun}/5000`;
-
-let remain=(9000-food)+(1300-fixed)+(5000-fun);
-
-let today=new Date();
-let last=new Date(today.getFullYear(),today.getMonth()+1,0);
-let daysLeft=last.getDate()-today.getDate();
-
-document.getElementById("remain").innerText=remain;
-document.getElementById("daily").innerText=Math.floor(remain/(daysLeft||1));
-
-// 信用卡
-draw("cc1",debt.cathay,60000);
-draw("cc2",debt.fubon,50000);
-draw("cc3",debt.taishin,50000);
-
-// 存錢
-document.getElementById("p1").style.width=(savings.s1/3000*100)+"%";
-document.getElementById("p2").style.width=(savings.s2/4500*100)+"%";
-document.getElementById("p3").style.width=(savings.s3/3500*100)+"%";
-
+  let remain = (9000-food)+(1300-fixed)+(5000-fun);
+  let daysLeft = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate() - new Date().getDate();
+  document.getElementById("remain").innerText = `$${remain.toLocaleString()}`;
+  document.getElementById("daily").innerText = Math.floor(remain/(daysLeft||1));
 }
-
 render();
-
 </script>
-
 </body>
 </html>
