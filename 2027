@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taffi 家的財務指揮中心</title>
+
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont; background:#f7f9fc; max-width:600px; margin:auto; padding:20px;}
+h1 { text-align:center; font-size:1.5rem;}
+.card { background:white; padding:20px; border-radius:12px; margin-bottom:20px;}
+input { width:100%; padding:10px; margin-top:5px;}
+button { width:100%; padding:15px; background:#4a90e2; color:white; border:none; border-radius:8px; }
+.result { background:#e8f5e9; display:none; padding:15px; border-radius:10px;}
+.warning { color:red; font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<h1>💰 Taffi 財務指揮中心</h1>
+
+<div class="card">
+<h2>📅 月初分配</h2>
+
+<label>本月收入</label>
+<input id="income" type="number" value="37000">
+
+<p style="color:#666;">建議固定支出：</p>
+
+<p>📱 固定帳單：約 $1,300</p>
+<p>🐶 Taffi：$3,000</p>
+<p>🍱 食物：$9,000</p>
+<p>🎯 娛樂：$5,000</p>
+
+<p><b>👉 建議可還債：約 <span id="debtAbility">0</span></b></p>
+</div>
+
+<div class="card">
+<h2>📉 月底結算</h2>
+
+<label>🐶 Taffi（預算3000）</label>
+<input id="dog">
+
+<label>🍱 食物（預算9000）</label>
+<input id="food">
+
+<label>🎯 娛樂（預算5000）</label>
+<input id="fun">
+
+<button onclick="calc()">計算結果</button>
+</div>
+
+<div id="result" class="result">
+<h2>🎉 結果</h2>
+
+<p>🐶 存入Taffi：<span id="taffi"></span></p>
+<p>💰 存入緊急金：<span id="emg"></span></p>
+<p>📉 超支：<span id="over"></span></p>
+
+<hr>
+<h3>總結餘：<span id="total"></span></h3>
+</div>
+
+<script>
+
+function calcAbility(){
+let income = Number(document.getElementById("income").value) || 0;
+let fixed = 1300 + 3000 + 9000 + 5000;
+
+let remain = income - fixed;
+document.getElementById("debtAbility").innerText = remain;
+}
+calcAbility();
+
+function calc(){
+
+let dog = Number(document.getElementById("dog").value)||0;
+let food = Number(document.getElementById("food").value)||0;
+let fun = Number(document.getElementById("fun").value)||0;
+
+// 預算
+let bDog=3000, bFood=9000, bFun=5000;
+
+// 剩餘
+let leftDog = bDog - dog;
+let leftFood = bFood - food;
+let leftFun = bFun - fun;
+
+// 存錢
+let toTaffi = leftDog>0?leftDog:0;
+let toEmergency = (leftFood>0?leftFood:0)+(leftFun>0?leftFun:0);
+
+// 超支
+let over = 0;
+if(leftDog<0) over+=leftDog;
+if(leftFood<0) over+=leftFood;
+if(leftFun<0) over+=leftFun;
+
+document.getElementById("taffi").innerText = toTaffi;
+document.getElementById("emg").innerText = toEmergency;
+document.getElementById("over").innerText = over;
+document.getElementById("total").innerText = toTaffi+toEmergency;
+
+document.getElementById("result").style.display="block";
+}
+
+</script>
+
+</body>
+</html>
