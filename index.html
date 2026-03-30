@@ -7,75 +7,115 @@
 <title>Taffi 財務中心</title>
 
 <style>
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
-  background: #f2f4f8;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: #f5f6f8;
   margin: 0;
-  padding: 20px;
-  max-width: 600px;
+  padding: 16px;
+  max-width: 500px;
   margin: auto;
 }
 
-h1 {
+/* 標題 */
+.header {
+  background: #dbe7f3;
+  padding: 12px;
+  border-radius: 16px;
   text-align: center;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
+  font-weight: bold;
+  color: #3b6ea8;
+  margin-bottom: 15px;
 }
 
+/* 卡片 */
 .card {
   background: white;
-  border-radius: 16px;
-  padding: 18px;
+  border-radius: 18px;
+  padding: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
 }
 
-label {
-  font-size: 0.85rem;
-  color: #666;
+/* 勾選區 */
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed #eee;
 }
 
-input {
-  width: 100%;
+.item:last-child { border-bottom: none; }
+
+.amount {
+  color: #555;
+  font-weight: bold;
+}
+
+/* Step */
+.step {
+  color: #4a90e2;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 彩色卡 */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.box {
+  border-radius: 16px;
   padding: 12px;
-  margin-top: 5px;
-  margin-bottom: 12px;
+  text-align: center;
+}
+
+.box input {
+  width: 100%;
+  padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: none;
+  background: #fff;
+  margin-top: 10px;
+  text-align: center;
   font-size: 1rem;
 }
 
+/* 顏色 */
+.pink { background: #f7e6eb; border: 2px solid #f3c6d2; }
+.yellow { background: #f8f1dc; border: 2px solid #f2d58a; }
+.purple { background: #efe5f5; border: 2px solid #d7bce8; }
+.blue { background: #e4eef7; border: 2px solid #bcd3ea; }
+
+.budget {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 6px;
+}
+
+/* 按鈕 */
 button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  border-radius: 12px;
   border: none;
+  background: #4a90e2;
   color: white;
   font-size: 1rem;
-  border-radius: 12px;
+  margin-top: 15px;
 }
 
+/* 結果 */
 .result {
   display: none;
-}
-
-.progress {
-  height: 8px;
-  background: #eee;
-  border-radius: 10px;
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  background: linear-gradient(90deg, #4a90e2, #6fc3ff);
+  background: #e8f5e9;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  margin-top: 8px;
+  margin: 8px 0;
 }
 
 .green { color: #2e7d32; font-weight: bold; }
@@ -86,48 +126,75 @@ button {
 
 <body>
 
-<h1>💰 Taffi 財務中心</h1>
+<div class="header">
+總收入：<span id="incomeText">37000</span>
+</div>
 
 <div class="card">
-<h3>📊 本月能力</h3>
+<div class="step">固定支出確認</div>
 
-<label>收入</label>
-<input id="income" type="number" value="37000" oninput="calcAbility()">
+<div class="item">
+<span>📱 固定帳單</span>
+<span class="amount">$1,300</span>
+</div>
 
-<div class="row">
-<span>可還債金額</span>
-<span id="ability" class="green">0</span>
+<div class="item">
+<span>🐶 Taffi</span>
+<span class="amount">$3,000</span>
+</div>
+
+<div class="item">
+<span>🍱 食物</span>
+<span class="amount">$9,000</span>
+</div>
+
+<div class="item">
+<span>🎯 娛樂</span>
+<span class="amount">$5,000</span>
 </div>
 
 </div>
 
 <div class="card">
-<h3>📉 月底輸入</h3>
 
-<label>🐶 Taffi（3000）</label>
+<div class="step">Step 2：月結算</div>
+
+<div class="grid">
+
+<div class="box pink">
+🐶<br>狗狗支出
 <input id="dog">
+<div class="budget">預算 3000</div>
+</div>
 
-<div class="progress"><div id="barDog" class="bar"></div></div>
-
-<label>🍱 食物（9000）</label>
+<div class="box yellow">
+🍱<br>餐飲
 <input id="food">
+<div class="budget">預算 9000</div>
+</div>
 
-<div class="progress"><div id="barFood" class="bar"></div></div>
+<div class="box purple">
+🛍️<br>購物
+<input id="shop">
+<div class="budget">預算 2000</div>
+</div>
 
-<label>🎯 娛樂（5000）</label>
+<div class="box blue">
+🎬<br>娛樂
 <input id="fun">
+<div class="budget">預算 3000</div>
+</div>
 
-<div class="progress"><div id="barFun" class="bar"></div></div>
+</div>
 
 <button onclick="calc()">計算</button>
 
 </div>
 
 <div id="result" class="card result">
-<h3>🎉 本月結果</h3>
 
 <div class="row">
-<span>🐶 Taffi存入</span>
+<span>🐶 存入Taffi</span>
 <span id="taffi" class="green"></span>
 </div>
 
@@ -143,7 +210,7 @@ button {
 
 <hr>
 
-<div class="row" style="font-size:1.2rem;">
+<div class="row">
 <span>總結餘</span>
 <span id="total"></span>
 </div>
@@ -152,52 +219,33 @@ button {
 
 <script>
 
-function calcAbility(){
-let income = Number(document.getElementById("income").value)||0;
-let fixed = 1300 + 3000 + 9000 + 5000;
-document.getElementById("ability").innerText = income - fixed;
-}
-
-function updateBar(id, spent, budget){
-let percent = Math.min((spent / budget)*100,100);
-document.getElementById(id).style.width = percent + "%";
-}
-
 function calc(){
 
 let dog = Number(document.getElementById("dog").value)||0;
 let food = Number(document.getElementById("food").value)||0;
+let shop = Number(document.getElementById("shop").value)||0;
 let fun = Number(document.getElementById("fun").value)||0;
 
-let bDog=3000, bFood=9000, bFun=5000;
-
-updateBar("barDog", dog, bDog);
-updateBar("barFood", food, bFood);
-updateBar("barFun", fun, bFun);
+let bDog=3000, bFood=9000, bShop=2000, bFun=3000;
 
 let leftDog=bDog-dog;
 let leftFood=bFood-food;
+let leftShop=bShop-shop;
 let leftFun=bFun-fun;
 
-let toTaffi = leftDog>0?leftDog:0;
-let toEmergency = (leftFood>0?leftFood:0)+(leftFun>0?leftFun:0);
+let taffi = leftDog>0?leftDog:0;
+let emg = (leftFood>0?leftFood:0)+(leftShop>0?leftShop:0)+(leftFun>0?leftFun:0);
 
-let over = 0;
+let over=0;
 if(leftDog<0) over+=leftDog;
 if(leftFood<0) over+=leftFood;
+if(leftShop<0) over+=leftShop;
 if(leftFun<0) over+=leftFun;
 
-document.getElementById("taffi").innerText = toTaffi;
-document.getElementById("emg").innerText = toEmergency;
-document.getElementById("over").innerText = over;
-document.getElementById("total").innerText = toTaffi+toEmergency;
+document.getElementById("taffi").innerText=taffi;
+document.getElementById("emg").innerText=emg;
+document.getElementById("over").innerText=over;
+document.getElementById("total").innerText=taffi+emg;
 
 document.getElementById("result").style.display="block";
 }
-
-calcAbility();
-
-</script>
-
-</body>
-</html>
