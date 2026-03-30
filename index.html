@@ -3,249 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Taffi 財務中心</title>
+<title>Taffi 財務中心 Pro</title>
 
 <style>
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont;
-  background: #f5f6f8;
-  margin: 0;
-  padding: 16px;
-  max-width: 500px;
-  margin: auto;
-}
-
-/* 標題 */
-.header {
-  background: #dbe7f3;
-  padding: 12px;
-  border-radius: 16px;
-  text-align: center;
-  font-weight: bold;
-  color: #3b6ea8;
-  margin-bottom: 15px;
-}
-
-/* 卡片 */
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-/* 勾選區 */
-.item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px dashed #eee;
-}
-
-.item:last-child { border-bottom: none; }
-
-.amount {
-  color: #555;
-  font-weight: bold;
-}
-
-/* Step */
-.step {
-  color: #4a90e2;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* 彩色卡 */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.box {
-  border-radius: 16px;
-  padding: 12px;
-  text-align: center;
-}
-
-.box input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #fff;
-  margin-top: 10px;
-  text-align: center;
-  font-size: 1rem;
-}
-
-/* 顏色 */
-.pink { background: #f7e6eb; border: 2px solid #f3c6d2; }
-.yellow { background: #f8f1dc; border: 2px solid #f2d58a; }
-.purple { background: #efe5f5; border: 2px solid #d7bce8; }
-.blue { background: #e4eef7; border: 2px solid #bcd3ea; }
-
-.budget {
-  font-size: 0.8rem;
-  color: #777;
-  margin-top: 6px;
-}
-
-/* 按鈕 */
-button {
-  width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
-  background: #4a90e2;
-  color: white;
-  font-size: 1rem;
-  margin-top: 15px;
-}
-
-/* 結果 */
-.result {
-  display: none;
-  background: #e8f5e9;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.green { color: #2e7d32; font-weight: bold; }
-.red { color: #d32f2f; font-weight: bold; }
-
+body {font-family:-apple-system;background:#f5f6f8;padding:15px;max-width:520px;margin:auto;}
+.card {background:white;border-radius:16px;padding:15px;margin-bottom:15px;}
+.header {background:#dbe7f3;padding:12px;border-radius:15px;text-align:center;margin-bottom:15px;}
+.grid {display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.box {padding:10px;border-radius:14px;text-align:center;}
+.pink{background:#f7e6eb;}
+.yellow{background:#f8f1dc;}
+.blue{background:#e4eef7;}
+.purple{background:#efe5f5;}
+input,select{width:100%;padding:10px;border:none;border-radius:10px;margin-top:5px;}
+button{width:100%;padding:12px;border:none;border-radius:10px;background:#4a90e2;color:white;margin-top:10px;}
+.row{display:flex;justify-content:space-between;margin:6px 0;}
+.green{color:#2e7d32;}
+.red{color:#d32f2f;}
+.warn{background:#fff3cd;padding:10px;border-radius:10px;margin-top:10px;color:#856404;}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-總收入：<span id="incomeText">37000</span>
+💳 信用卡總負債：<span id="totalDebt">0</span>
 </div>
 
+<!-- 記帳 -->
 <div class="card">
-<div class="step">固定支出確認</div>
+<h3>➕ 記帳</h3>
+<input id="amount" placeholder="金額">
+<select id="category">
+<option value="food">🍱 食物</option>
+<option value="fun">🎬 娛樂</option>
+<option value="dog">🐶 Taffi</option>
+</select>
 
-<div class="item">
-<span>📱 固定帳單</span>
-<span class="amount">$1,300</span>
+<select id="pay">
+<option value="cash">現金</option>
+<option value="cathay">國泰</option>
+<option value="taishin">台新</option>
+<option value="fubon">富邦</option>
+</select>
+
+<button onclick="add()">新增</button>
 </div>
 
-<div class="item">
-<span>🐶 Taffi</span>
-<span class="amount">$3,000</span>
-</div>
-
-<div class="item">
-<span>🍱 食物</span>
-<span class="amount">$9,000</span>
-</div>
-
-<div class="item">
-<span>🎯 娛樂</span>
-<span class="amount">$5,000</span>
-</div>
-
-</div>
-
+<!-- 信用卡 -->
 <div class="card">
+<h3>💳 信用卡</h3>
 
-<div class="step">Step 2：月結算</div>
-
-<div class="grid">
-
-<div class="box pink">
-🐶<br>狗狗支出
-<input id="dog">
-<div class="budget">預算 3000</div>
-</div>
-
-<div class="box yellow">
-🍱<br>餐飲
-<input id="food">
-<div class="budget">預算 9000</div>
-</div>
-
-<div class="box purple">
-🛍️<br>購物
-<input id="shop">
-<div class="budget">預算 2000</div>
-</div>
-
-<div class="box blue">
-🎬<br>娛樂
-<input id="fun">
-<div class="budget">預算 3000</div>
-</div>
+<div class="row"><span>國泰</span><span id="cathay"></span></div>
+<div class="row"><span>台新（鎖卡）</span><span id="taishin"></span></div>
+<div class="row"><span>富邦</span><span id="fubon"></span></div>
 
 </div>
 
-<button onclick="calc()">計算</button>
+<!-- 清債 -->
+<div class="card">
+<h3>🔥 清債建議</h3>
+<div id="suggest"></div>
+</div>
+
+<!-- 存錢 -->
+<div class="card">
+<h3>🏦 存錢計畫</h3>
+
+<div class="row"><span>機車保養</span><span id="s1"></span></div>
+<div class="row"><span>眉毛</span><span id="s2"></span></div>
+<div class="row"><span>保險</span><span id="s3"></span></div>
+
+<div class="row"><span>🐶 Taffi醫療</span><span id="s4"></span></div>
+<div class="row"><span>✈️ 旅遊</span><span id="s5"></span></div>
+
+<button onclick="saveMoney()">本月存入</button>
 
 </div>
 
-<div id="result" class="card result">
-
-<div class="row">
-<span>🐶 存入Taffi</span>
-<span id="taffi" class="green"></span>
+<!-- 模式 -->
+<div class="card">
+<h3>⚙️ 模式</h3>
+<button onclick="toggleMode()">切換清債模式</button>
+<div id="modeText"></div>
 </div>
 
-<div class="row">
-<span>💰 緊急金</span>
-<span id="emg" class="green"></span>
-</div>
-
-<div class="row">
-<span>⚠️ 超支</span>
-<span id="over" class="red"></span>
-</div>
-
-<hr>
-
-<div class="row">
-<span>總結餘</span>
-<span id="total"></span>
-</div>
-
-</div>
+<!-- 警告 -->
+<div id="warnBox" class="warn" style="display:none;"></div>
 
 <script>
 
-function calc(){
+// 初始化
+let data = JSON.parse(localStorage.getItem("data"))||[];
+let debt = JSON.parse(localStorage.getItem("debt"))||{
+cathay:56570,
+taishin:22000,
+fubon:36773
+};
 
-let dog = Number(document.getElementById("dog").value)||0;
-let food = Number(document.getElementById("food").value)||0;
-let shop = Number(document.getElementById("shop").value)||0;
-let fun = Number(document.getElementById("fun").value)||0;
+let savings = JSON.parse(localStorage.getItem("savings"))||{
+s1:0,s2:0,s3:0,s4:0,s5:0
+};
 
-let bDog=3000, bFood=9000, bShop=2000, bFun=3000;
+let mode = localStorage.getItem("mode")||"debt";
 
-let leftDog=bDog-dog;
-let leftFood=bFood-food;
-let leftShop=bShop-shop;
-let leftFun=bFun-fun;
+// 記帳
+function add(){
+let amount = Number(amountInput.value);
+let cat = category.value;
+let payType = pay.value;
 
-let taffi = leftDog>0?leftDog:0;
-let emg = (leftFood>0?leftFood:0)+(leftShop>0?leftShop:0)+(leftFun>0?leftFun:0);
+data.push({amount,cat,payType});
 
-let over=0;
-if(leftDog<0) over+=leftDog;
-if(leftFood<0) over+=leftFood;
-if(leftShop<0) over+=leftShop;
-if(leftFun<0) over+=leftFun;
-
-document.getElementById("taffi").innerText=taffi;
-document.getElementById("emg").innerText=emg;
-document.getElementById("over").innerText=over;
-document.getElementById("total").innerText=taffi+emg;
-
-document.getElementById("result").style.display="block";
+// 刷卡 → 加負債
+if(payType!=="cash"){
+debt[payType]+=amount;
 }
+
+saveAll();
+render();
+}
+
+// 存錢
+function saveMoney(){
+
+let remain = 10000; // 可調整
+
+if(mode==="debt"){
+savings.s4 += 1500;
+}else{
+savings.s4 += 2000;
+savings.s5 += 3000;
+}
+
+saveAll();
+render();
+}
+
+// 模式切換
+function toggleMode(){
+mode = mode==="debt"?"normal":"debt";
+saveAll();
+render();
+}
+
+// 儲存
+function saveAll(){
+localStorage.setItem("data",JSON.stringify(data));
+localStorage.setItem("debt",JSON.stringify(debt));
+localStorage.setItem("savings",JSON.stringify(savings));
+localStorage.setItem("mode",mode);
+}
+
+// 渲染
+function render(){
+
+document.getElementById("cathay").innerText=debt.cathay;
+document.getElementById("taishin").innerText=debt.taishin;
+document.getElementById("fubon").innerText=debt.fubon;
+
+document.getElementById("totalDebt").innerText=
+debt.cathay+debt.taishin+debt.fubon;
+
+// 清債建議
+let suggest="優先還：台新 → 國泰 → 富邦";
+document.getElementById("suggest").innerText=suggest;
+
+// 存錢顯示
+for(let i=1;i<=5;i++){
+document.getElementById("s"+i).innerText=savings["s"+i];
+}
+
+// 模式顯示
+document.getElementById("modeText").innerText=
+mode==="debt"?"🔥 清債模式":"🌱 正常模式";
+
+// ⚠️ 衝突提醒
+let warn="";
+if(mode==="debt" && savings.s5>2000){
+warn="⚠️ 本月卡債優先，建議降低旅遊存款";
+}
+
+if(warn){
+document.getElementById("warnBox").style.display="block";
+document.getElementById("warnBox").innerText=warn;
+}else{
+document.getElementById("warnBox").style.display="none";
+}
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
