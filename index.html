@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taffi Ultra Finance - V5 Platinum</title>
+<title>Taffi Ultra Finance - V6 Savings</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Noto+Sans+TC:wght@400;700&display=swap');
 
@@ -11,44 +11,39 @@
   --primary: #6C63FF; --danger: #FF5E5E; --warning: #FFA000; --success: #27AE60;
   --bg: #F0F2F5; --card: #FFFFFF; --text: #333; --border: #E8EBF0;
   --cathay: #00A650; --taishin: #DA2128; --fubon: #0067B1;
+  --saving-infinite: #A594F9;
 }
 
 body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; max-width: 500px; margin: auto; padding-bottom: 50px; }
 
-/* 月份導航 */
+/* 月份與頂部 */
 .month-selector { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px; scrollbar-width: none; }
 .month-btn { padding: 8px 18px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: #888; cursor: pointer; white-space: nowrap; font-size: 14px; }
 .month-btn.active { background: var(--primary); color: white; font-weight: 700; box-shadow: 0 4px 10px rgba(108, 99, 255, 0.2); border: none; }
 
-/* 頂部總覽 */
 .header-card { background: linear-gradient(135deg, #6C63FF 0%, #8E97FD 100%); border-radius: 25px; padding: 22px; margin-bottom: 20px; color: white; box-shadow: 0 8px 20px rgba(108,99,255,0.15); }
-.header-label { font-size: 12px; opacity: 0.9; margin-bottom: 5px; }
 .total-val { font-family: 'Montserrat'; font-size: 32px; font-weight: 800; }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-.stat-box { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid var(--border); }
-.stat-val { font-family: 'Montserrat'; font-size: 20px; font-weight: 700; color: var(--primary); }
-
-/* 信用卡專用卡片 */
-.bank-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid var(--border); border-left: 6px solid #ccc; }
+/* 信用卡卡片 */
+.bank-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); border-left: 6px solid #ccc; }
 .bank-card.cathay { border-left-color: var(--cathay); }
 .bank-card.taishin { border-left-color: var(--taishin); }
 .bank-card.fubon { border-left-color: var(--fubon); }
-.bank-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.bank-name { font-weight: 700; font-size: 16px; }
-.debt-bar-bg { height: 10px; background: #EEE; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-.debt-bar-fill { height: 100%; transition: 0.5s; }
 
-/* 表單與按鈕 */
+/* 存錢筒專用樣式 */
+.saving-group-title { font-size: 13px; color: #888; margin: 15px 0 8px 5px; font-weight: 700; }
+.saving-item { background: var(--card); padding: 15px; border-radius: 18px; margin-bottom: 10px; border: 1px solid var(--border); }
+.progress-bg { height: 8px; background: #F0F2F7; border-radius: 10px; overflow: hidden; margin: 8px 0; }
+.progress-fill { height: 100%; background: var(--primary); transition: 0.5s; }
+.infinite-fill { background: var(--saving-infinite); width: 100% !important; opacity: 0.6; } /* 無上限的條僅作裝飾 */
+
+/* 表單與清單 */
 .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 18px; border: 1px solid var(--border); }
 input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #FAFBFF; color: var(--text); margin-bottom: 10px; box-sizing: border-box; }
-.btn { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--primary); color: white; font-weight: 700; cursor: pointer; transition: 0.2s; }
-.btn:active { transform: scale(0.98); }
-.btn-outline { background: none; border: 1px solid var(--border); color: #888; font-size: 12px; padding: 5px 10px; width: auto; border-radius: 8px; }
+.btn { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
+.btn-outline { background: none; border: 1px solid var(--border); color: #888; font-size: 11px; padding: 4px 8px; border-radius: 6px; }
 
-/* 清單 */
-.list-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F5F5F5; font-size: 14px; }
-.date-label { font-size: 10px; color: #AAA; }
+.list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F5F5F5; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -56,28 +51,17 @@ input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px sol
 <div class="month-selector" id="monthNav"></div>
 
 <div class="header-card">
-    <div class="header-label">💰 <span id="displayMonth"></span> 月剩餘總預算</div>
+    <div style="font-size:12px; opacity:0.9;">💰 <span id="displayMonth"></span> 月剩餘總預算</div>
     <div id="monthlyRemain" class="total-val">$0</div>
 </div>
 
-<div class="grid-2">
-    <div class="stat-box">
-        <div class="header-label" style="color:#888;">📅 本週伙食剩餘</div>
-        <div id="weekFood" class="stat-val">$0</div>
-    </div>
-    <div class="stat-box">
-        <div class="header-label" style="color:#888;">💡 今日可用預算</div>
-        <div id="dailyBurn" class="stat-val" style="color:var(--warning)">$0</div>
-    </div>
-</div>
-
 <div class="card">
-    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
         <span style="font-weight:700;">✍️ 快速記帳</span>
-        <button class="btn-outline" onclick="clearCurrentMonth()">清空本月</button>
+        <button class="btn-outline" onclick="exportData()">💾 備份數據</button>
     </div>
     <input type="text" id="itemName" placeholder="項目 (例如: 午餐)">
-    <div class="grid-2">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <input type="number" id="itemPrice" placeholder="金額">
         <select id="itemCat">
             <option value="food">🍽️ 食物 (9k)</option>
@@ -93,25 +77,27 @@ input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px sol
         <option value="fubon">💳 富邦 (10日結)</option>
     </select>
     <button class="btn" onclick="addExpense()">確認新增</button>
-    <div id="historyList" style="margin-top:15px; max-height: 150px; overflow-y: auto;"></div>
+    <div id="historyList" style="margin-top:12px; max-height: 120px; overflow-y: auto;"></div>
 </div>
 
 <div style="font-weight:700; margin: 20px 0 10px; color:#666;">💳 信用卡負債監控</div>
 <div id="bankArea"></div>
 
-<div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0 10px;">
-    <span style="font-weight:700; color:#666;">🏦 存錢筒計畫</span>
-    <button class="btn-outline" onclick="exportData()">💾 備份資料</button>
-</div>
-<div class="card" id="savingsArea"></div>
+<div style="font-weight:700; margin: 20px 0 5px; color:#666;">🏦 存錢筒計劃</div>
+
+<div class="saving-group-title">🎯 目標導向 (存滿為止)</div>
+<div id="targetSavingsArea"></div>
+
+<div class="saving-group-title">🌊 無上限累積 (長期儲備)</div>
+<div id="infiniteSavingsArea"></div>
 
 <script>
 const months = [4, 5, 6, 7, 8, 9, 10, 11, 12];
 let currentMonth = new Date().getMonth() + 1;
 if(currentMonth < 4) currentMonth = 4;
 
-// --- 初始化資料 (從 LocalStorage 讀取) ---
-let db = JSON.parse(localStorage.getItem("taffi_finance_v5")) || {
+// --- 初始化資料 (整合無上限存錢筒) ---
+let db = JSON.parse(localStorage.getItem("taffi_finance_v6")) || {
     data: {},
     budgets: { food: 9000, fun: 5000, taffi: 2500, fixed: 1300 },
     banks: {
@@ -120,18 +106,17 @@ let db = JSON.parse(localStorage.getItem("taffi_finance_v5")) || {
         fubon: { name: "富邦銀行", bal: 36773, limit: 50000, due: 10, color: "var(--fubon)" }
     },
     savings: [
-        { name: "機車保養", target: 3000, current: 0 },
-        { name: "眉毛美容", target: 4500, current: 0 },
-        { name: "Taffi 醫療金", target: 10000, current: 0 }
+        { name: "機車保養", target: 3000, current: 0, type: "target" },
+        { name: "保險費", target: 12000, current: 0, type: "target" },
+        { name: "眉毛美容", target: 4500, current: 0, type: "target" },
+        { name: "Taffi 醫療金", target: 0, current: 0, type: "infinite" },
+        { name: "旅遊金", target: 0, current: 0, type: "infinite" }
     ]
 };
 
-function save() { localStorage.setItem("taffi_finance_v5", JSON.stringify(db)); }
+function save() { localStorage.setItem("taffi_finance_v6", JSON.stringify(db)); }
 
-function switchMonth(m) {
-    currentMonth = m;
-    render();
-}
+function switchMonth(m) { currentMonth = m; render(); }
 
 function addExpense() {
     let name = document.getElementById("itemName").value || "未命名";
@@ -139,10 +124,8 @@ function addExpense() {
     let cat = document.getElementById("itemCat").value;
     let pay = document.getElementById("itemPay").value;
     if(!price) return;
-
     if(!db.data[currentMonth]) db.data[currentMonth] = { expenses: [] };
     db.data[currentMonth].expenses.unshift({ name, price, cat, pay, date: new Date().toLocaleDateString() });
-    
     if(pay !== 'cash') db.banks[pay].bal += price;
     save(); render();
     document.getElementById("itemName").value = "";
@@ -155,75 +138,75 @@ function updatePay(bankKey, amt) {
     save(); render();
 }
 
-function clearCurrentMonth() {
-    if(confirm(`${currentMonth}月的帳目將被清空，確定嗎？`)) {
-        if(db.data[currentMonth]) db.data[currentMonth].expenses = [];
-        save(); render();
-    }
+function updateSaving(index, amt) {
+    if(!amt) return;
+    db.savings[index].current += Number(amt);
+    save(); render();
 }
 
 function render() {
     renderMonthNav();
     document.getElementById("displayMonth").innerText = currentMonth;
     let expenses = (db.data[currentMonth] && db.data[currentMonth].expenses) ? db.data[currentMonth].expenses : [];
-    
     let sums = { food: 0, fun: 0, taffi: 0, fixed: 0 };
     expenses.forEach(e => sums[e.cat] += e.price);
 
-    // 1. 計算剩餘與日均
-    let now = new Date();
-    let daysInMonth = new Date(now.getFullYear(), currentMonth, 0).getDate();
-    let today = (now.getMonth() + 1 === currentMonth) ? now.getDate() : 1;
-    let daysLeft = Math.max(1, daysInMonth - today + 1);
     let totalRemain = (db.budgets.food - sums.food) + (db.budgets.fun - sums.fun);
-    
     document.getElementById("monthlyRemain").innerText = `$${totalRemain.toLocaleString()}`;
-    document.getElementById("dailyBurn").innerText = `$${Math.floor(totalRemain / daysLeft)}`;
-    document.getElementById("weekFood").innerText = `$${Math.max(0, 2250 - (sums.food % 2250)).toLocaleString()}`;
 
-    // 2. 信用卡監控 (橫向進度條)
+    // 1. 銀行渲染
     let bankHtml = "";
     for(let k in db.banks) {
         let b = db.banks[k];
         let ratio = Math.min((b.bal / b.limit) * 100, 100);
-        let isDueSoon = (b.due - today <= 3 && b.due >= today && now.getMonth()+1 === currentMonth);
-        
-        bankHtml += `<div class="bank-card ${k}" style="${isDueSoon ? 'box-shadow: 0 0 10px rgba(255,0,0,0.2); border: 1px solid var(--danger);' : ''}">
-            <div class="bank-header">
-                <span class="bank-name">${b.name} <small style="color:#999; font-weight:normal;">(${b.due}日結)</small></span>
+        bankHtml += `<div class="bank-card ${k}">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span class="bank-name">${b.name} <small>(${b.due}日結)</small></span>
                 <span style="font-weight:700; color:${b.color}">$${b.bal.toLocaleString()}</span>
             </div>
-            <div class="debt-bar-bg"><div class="debt-bar-fill" style="width:${ratio}%; background:${b.color}"></div></div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:11px; color:#888;">額度使用率: ${Math.floor(ratio)}%</span>
-                <input type="number" placeholder="還款" style="width:80px; margin:0; padding:5px; font-size:12px;" onchange="updatePay('${k}', this.value); this.value=''">
-            </div>
+            <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${b.color}"></div></div>
+            <input type="number" placeholder="還款" style="width:70px; margin:0; padding:4px; font-size:11px;" onchange="updatePay('${k}', this.value); this.value=''">
         </div>`;
     }
     document.getElementById("bankArea").innerHTML = bankHtml;
 
-    // 3. 存錢筒
-    let saveHtml = "";
-    db.savings.forEach((s) => {
-        let p = Math.min((s.current / s.target) * 100, 100);
-        saveHtml += `<div style="margin-bottom:12px;">
-            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                <span>${s.name}</span><span>$${s.current.toLocaleString()}</span>
-            </div>
-            <div style="height:6px; background:#F0F2F7; border-radius:10px;"><div style="width:${p}%; height:100%; background:var(--primary); border-radius:10px;"></div></div>
-        </div>`;
+    // 2. 存錢筒分區渲染
+    let targetHtml = "";
+    let infiniteHtml = "";
+    db.savings.forEach((s, i) => {
+        if(s.type === "target") {
+            let p = Math.min((s.current / s.target) * 100, 100);
+            targetHtml += `<div class="saving-item">
+                <div style="display:flex; justify-content:space-between; font-size:13px;">
+                    <span>${s.name} <small style="color:#999;">(目標 ${s.target})</small></span>
+                    <b>$${s.current.toLocaleString()}</b>
+                </div>
+                <div class="progress-bg"><div class="progress-fill" style="width:${p}%"></div></div>
+                <input type="number" placeholder="存入金額" style="width:100%; margin:0; padding:6px; font-size:12px;" onchange="updateSaving(${i}, this.value); this.value=''">
+            </div>`;
+        } else {
+            infiniteHtml += `<div class="saving-item" style="border-left: 6px solid var(--saving-infinite);">
+                <div style="display:flex; justify-content:space-between; font-size:13px;">
+                    <span style="font-weight:700;">${s.name}</span>
+                    <b style="color:var(--primary); font-size:16px;">$${s.current.toLocaleString()}</b>
+                </div>
+                <div class="progress-bg"><div class="progress-fill infinite-fill"></div></div>
+                <input type="number" placeholder="存入金額" style="width:100%; margin:0; padding:6px; font-size:12px;" onchange="updateSaving(${i}, this.value); this.value=''">
+            </div>`;
+        }
     });
-    document.getElementById("savingsArea").innerHTML = saveHtml;
+    document.getElementById("targetSavingsArea").innerHTML = targetHtml;
+    document.getElementById("infiniteSavingsArea").innerHTML = infiniteHtml;
 
-    // 4. 歷史清單
+    // 3. 歷史清單
     let hist = "";
     expenses.forEach(e => {
         hist += `<div class="list-item">
-            <div><div class="date-label">${e.date}</div><b>${e.name}</b></div>
-            <span style="color:${e.pay!=='cash'?'var(--danger)':'#333'}">$${e.price.toLocaleString()}</span>
+            <span style="font-size:12px;">${e.name}</span>
+            <span style="font-weight:700;">$${e.price.toLocaleString()}</span>
         </div>`;
     });
-    document.getElementById("historyList").innerHTML = hist || '<div style="text-align:center; color:#CCC; font-size:12px; padding:10px;">暫無資料</div>';
+    document.getElementById("historyList").innerHTML = hist || '<div style="text-align:center; color:#CCC; font-size:11px; padding:10px;">尚無帳目</div>';
 }
 
 function renderMonthNav() {
@@ -237,7 +220,7 @@ function renderMonthNav() {
 function exportData() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
     const a = document.createElement('a');
-    a.href = dataStr; a.download = "taffi_finance_backup.json"; a.click();
+    a.href = dataStr; a.download = "taffi_v6_backup.json"; a.click();
 }
 
 render();
