@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>維恩計畫 V51 FRESH</title>
+    <title>維恩計畫 V52 INTERACTIVE</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -11,7 +11,6 @@
             --bg: #F8FAFC;
             --surface: #FFFFFF;
             --primary: #6366F1;
-            --primary-light: #EEF2FF;
             --success: #22C55E;
             --danger: #EF4444;
             --warning: #F59E0B;
@@ -23,126 +22,103 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: all 0.2s ease; }
         body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 50px; }
 
-        /* 頂部導覽 */
         .top-nav {
-            position: sticky; top: 0; background: rgba(255, 255, 255, 0.8);
+            position: sticky; top: 0; background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px); padding: 15px 20px; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
         }
-        .menu-btn { font-size: 24px; cursor: pointer; color: var(--primary); }
-        .month-selector {
-            border: none; background: var(--primary-light); color: var(--primary);
-            padding: 6px 12px; border-radius: 12px; font-weight: 900; font-size: 14px;
-        }
-
-        /* 側邊選單 */
-        #sideNav {
-            position: fixed; left: -100%; top: 0; width: 280px; height: 100%;
-            background: var(--surface); z-index: 2000; padding: 40px 20px;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.05); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #sideNav.open { left: 0; }
-        .nav-item {
-            padding: 15px; margin-bottom: 8px; border-radius: 15px;
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--text-sub);
-        }
-        .nav-item.active { background: var(--primary); color: white; }
+        .month-selector { border: none; background: #EEF2FF; color: var(--primary); padding: 6px 12px; border-radius: 12px; font-weight: 900; }
 
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 核心狀態卡片 */
+        /* 核心卡片 */
         .status-card {
-            background: var(--surface); border-radius: 30px; padding: 25px;
-            margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-            border: 1px solid var(--border); position: relative; overflow: hidden;
+            background: var(--surface); border-radius: 25px; padding: 20px;
+            margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            border: 1px solid var(--border); border-left: 6px solid var(--primary);
         }
-        .status-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary);
-        }
-        .status-val { font-family: 'Montserrat'; font-size: 36px; font-weight: 900; color: var(--primary); }
-        .daily-tip { font-size: 13px; font-weight: 700; color: var(--success); background: #F0FDF4; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-top: 8px; }
+        .status-val { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--primary); }
 
-        /* 預算區域 */
+        /* 通用卡片樣式 */
+        .card { background: var(--surface); border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); }
         .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 25px 0 12px 5px; letter-spacing: 1px; }
-        .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
-        .progress-bg { height: 8px; background: #F1F5F9; border-radius: 10px; margin-top: 12px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 10px; transition: 1s ease-out; }
-        .sub-item-list { font-size: 11px; color: var(--text-sub); margin-top: 8px; padding-left: 5px; line-height: 1.6; }
 
-        /* 快速記帳面板 */
-        .quick-panel { background: #FFFFFF; border-radius: 32px; padding: 24px; border: 1px solid var(--primary); box-shadow: 0 15px 35px rgba(99, 102, 241, 0.1); margin-bottom: 20px; }
-        .cat-grid { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
-        .cat-item { 
-            background: var(--bg); border-radius: 15px; padding: 10px 18px; white-space: nowrap;
-            font-weight: 800; font-size: 13px; color: var(--text-sub); cursor: pointer; border: 1px solid var(--border);
+        /* 預算進度條 */
+        .progress-bg { height: 8px; background: #F1F5F9; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 10px; }
+
+        /* 動作按鈕 */
+        .action-btn { 
+            padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 900; 
+            border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;
         }
-        .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05); }
+        .btn-repay { background: #F0FDF4; color: var(--success); }
+        .btn-save { background: #EEF2FF; color: var(--primary); }
 
-        .template-row { display: flex; gap: 8px; margin-bottom: 15px; justify-content: center; }
-        .temp-btn { background: var(--primary-light); border: none; padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 800; color: var(--primary); cursor: pointer; }
+        /* 快速記帳 */
+        .quick-panel { background: #FFFFFF; border-radius: 25px; padding: 20px; border: 1px solid var(--primary); margin-bottom: 20px; }
+        .cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
+        .cat-item { background: var(--bg); border-radius: 12px; padding: 8px 15px; white-space: nowrap; font-weight: 800; font-size: 12px; border: 1px solid var(--border); cursor: pointer; }
+        .cat-item.active { background: var(--primary); color: white; }
 
-        .amt-box { text-align: center; margin-bottom: 20px; }
-        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; }
+        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 36px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; }
         
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .pay-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 5px; font-weight: 800; font-size: 11px; text-align: center; cursor: pointer; }
-        .pay-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .pay-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 2px; font-weight: 800; font-size: 11px; text-align: center; cursor: pointer; }
+        .pay-btn.active { background: var(--text-main); color: white; }
 
-        .submit-btn { 
-            width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; 
-            font-weight: 900; font-size: 17px; border: none; margin-top: 15px; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-        }
-        .submit-btn:active { transform: scale(0.96); }
+        .submit-btn { width: 100%; padding: 16px; border-radius: 15px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 15px; cursor: pointer; }
 
-        /* 銀行負債 */
-        .bank-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9; margin-bottom: 5px; }
-        .usage-bar { height: 4px; background: #F1F5F9; border-radius: 2px; width: 100%; margin-top: 5px; overflow: hidden; }
-
-        /* 明細 */
+        /* 明細項目 */
         .history-item { 
-            background: var(--surface); margin-bottom: 8px; padding: 16px; border-radius: 20px;
+            background: var(--surface); margin-bottom: 8px; padding: 15px; border-radius: 15px;
             display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);
         }
-        .del-tag { color: var(--danger); font-size: 11px; font-weight: 900; background: #FEF2F2; padding: 4px 8px; border-radius: 8px; cursor: pointer; }
+        .type-tag { font-size: 10px; padding: 2px 6px; border-radius: 5px; font-weight: 900; margin-right: 5px; }
+        .tag-expense { background: #FEE2E2; color: var(--danger); }
+        .tag-repay { background: #DCFCE7; color: var(--success); }
+        .tag-save { background: #DBEAFE; color: var(--primary); }
 
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); display: none; z-index: 1500; }
+        /* 彈出視窗 */
+        .modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 25px; border-radius: 25px; z-index: 3000;
+            width: 85%; max-width: 350px; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2500; display: none; }
+
+        /* 導覽列 */
+        .bottom-bar {
+            position: fixed; bottom: 0; width: 100%; background: white; 
+            display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid var(--border);
+        }
+        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); cursor: pointer; }
+        .tab.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
-<div id="sideNav">
-    <div style="margin-bottom:30px;"><h2 style="color:var(--primary); margin:0;">維恩計畫</h2><p style="color:var(--text-sub); font-size:12px;">V51 Fresh Clean</p></div>
-    <div class="nav-item active" onclick="switchPage('main', this)">🏠 儀表板看板</div>
-    <div class="nav-item" onclick="switchPage('history', this)">📝 消費明細紀錄</div>
-</div>
-<div id="overlay" onclick="toggleMenu()"></div>
-
 <div class="top-nav">
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <div style="font-weight:900; color:var(--text-main); font-size:14px; letter-spacing:1px;">維恩記帳 V51</div>
+    <div style="font-weight:900; color:var(--text-main);">維恩計畫 V52</div>
     <select id="monthPicker" class="month-selector" onchange="changeMonth()">
-        <option value="1">1月</option><option value="2">2月</option><option value="3" selected>3月</option>
-        <option value="4">4月</option>
+        <option value="3" selected>3月預算</option><option value="4">4月預算</option>
     </select>
 </div>
 
 <div class="container">
     <div id="mainPage" class="page active">
         <div class="status-card">
-            <div id="daysLeft" style="font-size:13px; font-weight:800; color:var(--text-sub);">計算天數中...</div>
-            <div style="margin: 10px 0;">
-                <span id="totalAvailable" class="status-val">$0</span>
-                <br><small style="color:var(--text-sub); font-weight:700;">本月可用餘額總計</small>
-            </div>
-            <div id="dailyAllowance" class="daily-tip">今日剩餘額度: $--</div>
+            <div id="daysLeft" style="font-size:12px; font-weight:800; color:var(--text-sub);"></div>
+            <div id="totalAvailable" class="status-val">$0</div>
+            <small style="color:var(--text-sub); font-weight:700;">剩餘總預算</small>
+            <div id="dailyAllowance" style="color:var(--success); font-weight:800; font-size:13px; margin-top:5px;"></div>
         </div>
 
-        <div class="section-header">📊 預算監控 (含細項)</div>
+        <div class="section-header">📊 預算監控</div>
         <div id="budgetArea"></div>
 
         <div class="section-header">✍️ 快速記帳</div>
@@ -153,13 +129,8 @@
                 <div class="cat-item" onclick="changeCat('taffi', this)">🐶 Taffi</div>
                 <div class="cat-item" onclick="changeCat('fixed', this)">日常</div>
             </div>
-            <div class="template-row">
-                <button class="temp-btn" onclick="quickFill('早餐', 60)">🍳 早餐 60</button>
-                <button class="temp-btn" onclick="quickFill('午餐', 120)">🍱 午餐 120</button>
-                <button class="temp-btn" onclick="quickFill('手搖飲', 55)">🥤 手搖 55</button>
-            </div>
             <div class="amt-box">
-                <input type="text" id="itemName" style="width:100%; border:none; color:var(--text-main); font-size:15px; font-weight:700; text-align:center; outline:none; background:transparent;" placeholder="輸入內容...">
+                <input type="text" id="itemName" style="width:100%; border:none; color:var(--text-main); font-size:14px; font-weight:700; text-align:center; outline:none; background:transparent;" placeholder="輸入消費內容...">
                 <input type="number" id="itemAmt" class="amt-input" placeholder="0">
             </div>
             <div class="pay-grid">
@@ -168,37 +139,52 @@
                 <div class="pay-btn" onclick="setPay('taishin', this)">💳 台新</div>
                 <div class="pay-btn" onclick="setPay('fubon', this)">💳 富邦</div>
             </div>
-            <button class="submit-btn" onclick="submitExpense()">確認紀錄</button>
+            <button class="submit-btn" onclick="submitExpense()">送出消費紀錄</button>
         </div>
 
-        <div class="section-header">💳 信用卡負債監控 (額度使用率)</div>
+        <div class="section-header">💳 信用卡還款 (慢慢還)</div>
         <div id="bankArea"></div>
 
-        <div class="section-header">🏦 存錢目標計畫</div>
+        <div class="section-header">🏦 存錢累積</div>
         <div id="saveArea"></div>
     </div>
 
     <div id="historyPage" class="page">
-        <div class="section-header">📜 消費明細紀錄 (點擊❌還原金額)</div>
+        <div class="section-header">📜 往來明細 (含消費、還款、存款)</div>
         <div id="historyList"></div>
-        <button class="submit-btn" style="background:var(--text-main)" onclick="switchPage('main')">返回儀表板</button>
     </div>
+</div>
+
+<div id="modalOverlay"></div>
+<div id="actionModal" class="modal">
+    <h3 id="modalTitle" style="margin-top:0;">標題</h3>
+    <p id="modalSub" style="font-size:12px; color:var(--text-sub);"></p>
+    <input type="number" id="modalAmt" class="amt-input" style="font-size:32px; border-bottom:2px solid var(--primary); margin: 20px 0;" placeholder="0">
+    <div style="display:flex; gap:10px;">
+        <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main);" onclick="closeModal()">取消</button>
+        <button id="modalConfirmBtn" class="submit-btn" style="margin:0;">確認執行</button>
+    </div>
+</div>
+
+<div class="bottom-bar">
+    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
+    <div class="tab" onclick="switchPage('history', this)">📝 往來明細</div>
 </div>
 
 <script>
     let currentMonth = "3";
     let currentCat = 'food';
     let currentPay = '';
+    let activeAction = {}; // 暫存目前正在還款或存款的對象
 
-    // 銀行初始負債資料 (依妳要求加入)
-    let db = JSON.parse(localStorage.getItem("taffi_v51")) || {
+    let db = JSON.parse(localStorage.getItem("taffi_v52")) || {
         months: {
             "3": { 
                 budgets: { 
-                    food: {goal:9000, spent:0, sub:"每月伙食開銷", icon:"🍽️", details:""}, 
-                    fun: {goal:4000, spent:0, sub:"娛樂開銷", icon:"🎯", details:"美甲($1.4k)、羽球($500)、購物($2k)、健身($1080)"}, 
-                    taffi: {goal:3000, spent:0, sub:"Taffi 專用", icon:"🐶", details:"飼料($1k)、美容($1k)、其他($1k)"}, 
-                    fixed: {goal:1300, spent:0, sub:"固定日常支出", icon:"🏠", details:"電信($500)、Gogoro($499)、iCloud($300)"} 
+                    food: {goal:9000, spent:0, sub:"每月伙食", icon:"🍽️", details:""}, 
+                    fun: {goal:4000, spent:0, sub:"娛樂", icon:"🎯", details:"美甲、羽球、健身"}, 
+                    taffi: {goal:3000, spent:0, sub:"Taffi", icon:"🐶", details:"飼料、美容"}, 
+                    fixed: {goal:1300, spent:0, sub:"日常", icon:"🏠", details:"電信、Gogoro"} 
                 },
                 history: []
             }
@@ -209,11 +195,11 @@
             fubon: { name: "富邦銀行", limit: 50000, bal: 36773, color: "#F59E0B" }
         },
         savings: [
-            { name: "眉毛美容", target: 4500, bal: 0, type: "fixed" },
-            { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
-            { name: "年度保險", target: 12000, bal: 0, type: "fixed" },
-            { name: "旅遊金", target: "無限存", bal: 0, type: "inf" },
-            { name: "Taffi 存款", target: "無限存", bal: 0, type: "inf" }
+            { id: 0, name: "眉毛美容", target: 4500, bal: 0, type: "fixed" },
+            { id: 1, name: "機車保養", target: 3000, bal: 0, type: "fixed" },
+            { id: 2, name: "年度保險", target: 12000, bal: 0, type: "fixed" },
+            { id: 3, name: "旅遊金", target: "無限存", bal: 0, type: "inf" },
+            { id: 4, name: "Taffi 存款", target: "無限存", bal: 0, type: "inf" }
         ]
     };
 
@@ -221,61 +207,45 @@
         let mData = db.months[currentMonth] || { budgets: {}, history: [] };
         let totalRem = 0;
         
-        // 預算監控 (建議 1: 智能警報在此實現)
+        // 預算
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
             let rem = b.goal - b.spent;
             totalRem += rem;
-            let ratio = (b.spent / b.goal) * 100;
-            let fillColor = ratio >= 90 ? 'var(--danger)' : 'var(--primary)';
-            
-            bHtml += `<div class="card" style="${ratio >= 95 ? 'border: 1px solid var(--danger); box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                    <div><b style="font-size:15px;">${b.icon} ${k === 'food' ? '食物預算' : k === 'fun' ? '娛樂預算' : k === 'taffi' ? 'Taffi 預算' : '日常支出'}</b><br>
-                    <span style="font-size:11px; color:var(--text-sub)">${b.sub}</span></div>
-                    <div style="text-align:right;"><span style="font-family:'Montserrat'; font-weight:900; font-size:20px; color:var(--text-main);">$${rem.toLocaleString()}</span></div>
+            let ratio = Math.min((b.spent / b.goal) * 100, 100);
+            bHtml += `<div class="card">
+                <div style="display:flex; justify-content:space-between;">
+                    <b>${b.icon} ${k.toUpperCase()}</b>
+                    <b style="font-family:Montserrat">$${rem.toLocaleString()}</b>
                 </div>
-                <div class="progress-bg"><div class="progress-fill" style="width:${Math.min(ratio, 100)}%; background:${fillColor}"></div></div>
-                <div class="sub-item-list">${b.details}</div>
+                <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${ratio > 90 ? 'var(--danger)':'var(--primary)'}"></div></div>
+                <div style="font-size:11px; color:var(--text-sub)">${b.details || b.sub}</div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 建議功能 3: 日均支出計算
-        const now = new Date();
-        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-        const daysLeft = lastDay - now.getDate() + 1;
-        const daily = Math.max(0, Math.floor(totalRem / daysLeft));
-        document.getElementById('daysLeft').innerText = `本月剩餘 ${daysLeft - 1} 天`;
-        document.getElementById('dailyAllowance').innerText = `今日平均額度: $${daily.toLocaleString()}`;
-
-        // 銀行負債欄位 (含額度百分比)
+        // 銀行還款
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
-            let rate = (b.bal / b.limit) * 100;
-            bankHtml += `<div class="card" style="padding:15px;">
-                <div class="bank-row">
-                    <b style="color:var(--text-main)">${b.name}</b>
-                    <span style="font-family:'Montserrat'; font-weight:900; color:${b.color}">$${b.bal.toLocaleString()}</span>
+            bankHtml += `<div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><b style="font-size:15px;">${b.name}</b><br><small style="color:var(--text-sub)">剩餘負債: $${b.bal.toLocaleString()}</small></div>
+                    <button class="action-btn btn-repay" onclick="openActionModal('repay', '${k}')">💸 還款</button>
                 </div>
-                <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-sub); margin-top:5px;">
-                    <span>額度 $${b.limit.toLocaleString()}</span><span>已使用 ${rate.toFixed(1)}%</span>
-                </div>
-                <div class="usage-bar"><div style="height:100%; width:${Math.min(rate, 100)}%; background:${b.color}"></div></div>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
 
-        // 存錢
+        // 存款目標
         let sHtml = "";
-        db.savings.forEach(s => {
-            sHtml += `<div class="card" style="padding:15px; border-left: 5px solid ${s.type === 'fixed' ? 'var(--primary)' : 'var(--warning)'}">
+        db.savings.forEach((s, idx) => {
+            sHtml += `<div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div><b style="font-size:14px;">${s.name}</b><br><small style="color:var(--text-sub)">${s.target === "無限存" ? "✨ 無限存" : "🎯 目標 $" + s.target.toLocaleString()}</small></div>
-                    <span style="font-family:'Montserrat'; font-weight:900; font-size:18px; color:var(--primary)">$${s.bal.toLocaleString()}</span>
+                    <div><b>${s.name}</b><br><small style="color:var(--text-sub)">目前累計: $${s.bal.toLocaleString()}</small></div>
+                    <button class="action-btn btn-save" onclick="openActionModal('save', ${idx})">💰 存入</button>
                 </div>
             </div>`;
         });
@@ -284,56 +254,110 @@
         // 明細
         let hHtml = "";
         mData.history.forEach((h, idx) => {
+            let tag = h.type === 'repay' ? '<span class="type-tag tag-repay">還款</span>' : h.type === 'save' ? '<span class="type-tag tag-save">存款</span>' : '<span class="type-tag tag-expense">支出</span>';
+            let color = h.type === 'expense' ? 'var(--danger)' : 'var(--success)';
+            let sign = h.type === 'expense' ? '-' : '+';
             hHtml += `<div class="history-item">
-                <div><b>${h.name}</b><br><small style="color:var(--text-sub)">${h.time} | ${h.payName}</small></div>
-                <div style="text-align:right;"><b style="color:var(--danger); font-family:'Montserrat';">-$${h.amt.toLocaleString()}</b><br><span class="del-tag" onclick="deleteItem(${idx})">❌ 刪除</span></div>
+                <div>${tag}<b>${h.name}</b><br><small style="color:var(--text-sub)">${h.time} | ${h.payName || ''}</small></div>
+                <div style="text-align:right;"><b style="color:${color}; font-family:Montserrat">${sign}$${h.amt.toLocaleString()}</b><br><span style="font-size:10px; color:var(--text-sub); cursor:pointer" onclick="deleteItem(${idx})">撤銷</span></div>
             </div>`;
         });
-        document.getElementById('historyList').innerHTML = hHtml || "<p style='text-align:center; padding:30px; color:var(--text-sub)'>目前尚無紀錄</p>";
+        document.getElementById('historyList').innerHTML = hHtml || "<p style='text-align:center; padding:20px;'>尚無紀錄</p>";
+
+        // 日均
+        const now = new Date();
+        const daysLeft = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate() + 1;
+        document.getElementById('daysLeft').innerText = `距離月底還有 ${daysLeft-1} 天`;
+        document.getElementById('dailyAllowance').innerText = `今日預算：$${Math.floor(totalRem/daysLeft).toLocaleString()}`;
     }
 
-    function quickFill(name, amt) {
-        document.getElementById('itemName').value = name;
-        document.getElementById('itemAmt').value = amt;
+    // 彈窗邏輯
+    function openActionModal(type, target) {
+        activeAction = { type, target };
+        const modal = document.getElementById('actionModal');
+        const overlay = document.getElementById('modalOverlay');
+        const title = document.getElementById('modalTitle');
+        const sub = document.getElementById('modalSub');
+        
+        if(type === 'repay') {
+            title.innerText = "信用卡還款";
+            sub.innerText = "正在為 " + db.banks[target].name + " 繳款";
+        } else {
+            title.innerText = "存入目標金額";
+            sub.innerText = "存入項目：" + db.savings[target].name;
+        }
+        
+        modal.style.display = 'block';
+        overlay.style.display = 'block';
+        document.getElementById('modalConfirmBtn').onclick = confirmAction;
     }
 
-    function deleteItem(idx) {
-        if(!confirm("確定要還原這筆消費嗎？")) return;
-        let item = db.months[currentMonth].history[idx];
-        db.months[currentMonth].budgets[item.cat].spent -= item.amt;
-        if(item.pay !== 'cash') db.banks[item.pay].bal -= item.amt;
-        db.months[currentMonth].history.splice(idx, 1);
+    function confirmAction() {
+        const amt = Number(document.getElementById('modalAmt').value);
+        if(!amt) return;
+        
+        const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        if(activeAction.type === 'repay') {
+            db.banks[activeAction.target].bal -= amt;
+            db.months[currentMonth].history.unshift({ type: 'repay', name: db.banks[activeAction.target].name + "還款", amt: amt, time: time });
+        } else {
+            db.savings[activeAction.target].bal += amt;
+            db.months[currentMonth].history.unshift({ type: 'save', name: db.savings[activeAction.target].name + "存款", amt: amt, time: time });
+        }
+        
+        document.getElementById('modalAmt').value = "";
+        closeModal();
         saveAndRender();
     }
 
+    function closeModal() {
+        document.getElementById('actionModal').style.display = 'none';
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    // 基礎記帳功能
     function submitExpense() {
         let a = Number(document.getElementById('itemAmt').value);
         let n = document.getElementById('itemName').value || "日常支出";
-        if(!a || !currentPay) return alert("請輸入金額並選擇支付管道");
+        if(!a || !currentPay) return alert("請選擇支付方式與金額");
         
-        const payNames = {cash:'現金', cathay:'國泰', taishin:'台新', fubon:'富邦'};
         db.months[currentMonth].budgets[currentCat].spent += a;
         if(currentPay !== 'cash') db.banks[currentPay].bal += a;
         
         db.months[currentMonth].history.unshift({ 
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
-            name: n, amt: a, cat: currentCat, pay: currentPay, payName: payNames[currentPay]
+            type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, payName: currentPay==='cash'?'現金':db.banks[currentPay].name,
+            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
         });
         
-        document.getElementById('itemAmt').value = ""; document.getElementById('itemName').value = "";
+        document.getElementById('itemAmt').value = "";
         saveAndRender();
     }
 
-    function saveAndRender() { localStorage.setItem("taffi_v51", JSON.stringify(db)); render(); }
+    function deleteItem(idx) {
+        if(!confirm("確定要撤銷這筆紀錄嗎？(金額將自動退回)")) return;
+        let h = db.months[currentMonth].history[idx];
+        if(h.type === 'expense') {
+            db.months[currentMonth].budgets[h.cat].spent -= h.amt;
+            if(h.pay !== 'cash') db.banks[h.pay].bal -= h.amt;
+        } else if(h.type === 'repay') {
+            // 還款撤銷，負債要加回去
+            // 先找出這是哪家銀行的還款 (這裡用名稱判斷比較簡單)
+            for(let k in db.banks) { if(h.name.includes(db.banks[k].name)) db.banks[k].bal += h.amt; }
+        } else if(h.type === 'save') {
+            // 存款撤銷，儲蓄要減掉
+            for(let s of db.savings) { if(h.name.includes(s.name)) s.bal -= h.amt; }
+        }
+        db.months[currentMonth].history.splice(idx, 1);
+        saveAndRender();
+    }
+
+    function saveAndRender() { localStorage.setItem("taffi_v52", JSON.stringify(db)); render(); }
     function switchPage(p, el) { 
         document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
         document.getElementById(p + 'Page').classList.add('active');
-        if(el) { document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); }
-        if(document.getElementById('sideNav').classList.contains('open')) toggleMenu();
-    }
-    function toggleMenu() { 
-        document.getElementById('sideNav').classList.toggle('open');
-        document.getElementById('overlay').style.display = document.getElementById('sideNav').classList.contains('open') ? 'block' : 'none';
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
     }
     function changeCat(c, el) { currentCat = c; document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); }
     function setPay(p, el) { currentPay = p; document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
