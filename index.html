@@ -85,7 +85,6 @@
         .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 10px; }
         .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; width: 100%; }
 
-        /* 支出總計樣式 */
         .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 2px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
         
         .history-item { background: var(--surface); margin-bottom: 12px; padding: 20px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
@@ -93,6 +92,10 @@
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
         .tag-save { background: #E0E7FF; color: var(--primary); }
+
+        /* 備份按鈕樣式 */
+        .backup-tool { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px; padding-bottom: 30px; }
+        .btn-tool { padding: 12px; border-radius: 14px; border: 1px dashed var(--text-sub); background: transparent; color: var(--text-sub); font-weight: 700; font-size: 12px; cursor: pointer; }
 
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 18px 12px 35px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1000; }
         .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; opacity: 0.6; }
@@ -163,6 +166,12 @@
         </div>
         <div class="section-header">📜 往來明細</div>
         <div id="historyList"></div>
+
+        <div class="section-header">⚙️ 跨瀏覽器搬移工具</div>
+        <div class="backup-tool">
+            <button class="btn-tool" onclick="exportData()">📤 複製備份代碼</button>
+            <button class="btn-tool" onclick="importData()">📥 貼上還原紀錄</button>
+        </div>
     </div>
 </div>
 
@@ -175,11 +184,6 @@
         <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none;" onclick="closeModal()">取消</button>
         <button id="modalConfirmBtn" class="submit-btn" style="margin:0;">確認</button>
     </div>
-</div>
-
-<div class="bottom-bar">
-    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
-    <div class="tab" onclick="switchPage('history', this)">📝 明細紀錄</div>
 </div>
 
 <script>
@@ -214,20 +218,6 @@
             { name: "Taffi 備用金", target: 0, bal: 0, type: "inf" }
         ]
     };
-
-    if (savedData && !savedData.isUpdated_V8) {
-        db.isUpdated_V8 = true;
-        db.savings.forEach(s => { if(s.name === "年度保險") s.target = 3000; });
-        for(let m in db.months) {
-            db.months[m].budgets = {
-                fixed: { goal: 1300, spent: db.months[m].budgets.fixed.spent || 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
-                taffi: { goal: 3000, spent: db.months[m].budgets.taffi.spent || 0, icon: "🐶", name: "Taffi基本支出", sub: "飼料$1000、美容$1000、醫療$500、零食$500" },
-                food: { goal: 10000, spent: db.months[m].budgets.food.spent || 0, icon: "🍽️", name: "飲食支出", sub: "早餐$1000、午餐$4000、晚餐$5000、其他$500" },
-                fun: { goal: 5000, spent: db.months[m].budgets.fun.spent || 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" }
-            };
-        }
-        localStorage.setItem("taffi_v55", JSON.stringify(db));
-    }
 
     function initMonthData(m) {
         if(!db.months[m]) {
@@ -347,10 +337,7 @@
         db.months[currentMonth].history.forEach((h, idx) => {
             let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
             let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
-            
-            // 計算支出總計 (只計 expense 類型)
             if(h.type === 'expense') totalExpenseAmt += h.amt;
-
             hHtml += `<div class="history-item">
                 <div><span class="tag ${tagClass}">${tagMap[h.type]}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
                 <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small></div>
@@ -430,16 +417,49 @@
     }
 
     function saveAndRender() { localStorage.setItem("taffi_v55", JSON.stringify(db)); render(); }
+    
     function switchPage(p, el) {
         document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
         document.getElementById(p + 'Page').classList.add('active');
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
     }
+    
     function changeMonth() { currentMonth = document.getElementById('monthPicker').value; render(); }
+
+    // 搬移功能實作
+    function exportData() {
+        const dataStr = localStorage.getItem("taffi_v55");
+        const el = document.createElement('textarea');
+        el.value = dataStr;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert("備份代碼已複製！請去 Safari 開啟網頁後點擊「貼上還原紀錄」。");
+    }
+
+    function importData() {
+        const input = prompt("請貼上剛才複製的備份代碼：");
+        if(input) {
+            try {
+                JSON.parse(input);
+                localStorage.setItem("taffi_v55", input);
+                location.reload();
+            } catch(e) {
+                alert("代碼格式不正確，請重新複製一次。");
+            }
+        }
+    }
 
     document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
 </script>
+
+<div class="bottom-bar">
+    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
+    <div class="tab" onclick="switchPage('history', this)">📝 明細紀錄</div>
+</div>
+
 </body>
 </html>
