@@ -190,14 +190,20 @@
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
-    // 確保資料庫有基本的銀行結構
-    let db = JSON.parse(localStorage.getItem("taffi_v55")) || {
+    // 銀行初始債務設定
+    const initialBanks = {
+        cathay: { name: "國泰世華", bal: 56570 },
+        taishin: { name: "台新銀行", bal: 22000 },
+        fubon: { name: "富邦銀行", bal: 36773 }
+    };
+
+    // 讀取 localStorage
+    let savedData = JSON.parse(localStorage.getItem("taffi_v55"));
+
+    // 資料庫初始化
+    let db = savedData || {
         months: {},
-        banks: {
-            cathay: { name: "國泰世華", bal: 0 },
-            taishin: { name: "台新銀行", bal: 0 },
-            fubon: { name: "富邦銀行", bal: 0 }
-        },
+        banks: initialBanks,
         savings: [
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
             { name: "年度保險", target: 12000, bal: 0, type: "fixed" },
@@ -206,6 +212,13 @@
             { name: "Taffi 備用金", target: 0, bal: 0, type: "inf" }
         ]
     };
+
+    // 如果妳已經有舊資料，強制同步新的初始負債（針對 GitHub 更新後第一次進入）
+    if (savedData && !savedData.isBankUpdated_V2) {
+        db.banks = initialBanks;
+        db.isBankUpdated_V2 = true; // 標記已更新，避免未來覆蓋妳手動記帳的結果
+        localStorage.setItem("taffi_v55", JSON.stringify(db));
+    }
 
     function initMonthData(m) {
         if(!db.months[m]) {
@@ -226,7 +239,7 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
-        // 1. 預算監控 (維持顯示 sub 項目)
+        // 預算監控
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -252,11 +265,11 @@
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 2. 信用卡還款 (修正：正確讀取 db.banks[k].bal)
+        // 信用卡還款 (讀取 db.banks)
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
-            let currentBal = b.bal || 0; // 確保若 bal 為 undefined 則顯示 0
+            let currentBal = b.bal || 0;
             bankHtml += `<div class="repay-card">
                 <div class="repay-info">
                     <b>${b.name}</b>
@@ -267,7 +280,7 @@
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
 
-        // 3. 年度存錢 (維持原樣)
+        // 年度存錢
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
