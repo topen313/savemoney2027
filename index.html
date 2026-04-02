@@ -79,12 +79,14 @@
         .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; }
 
-        /* 年度存錢排版修正 */
         .save-card { background: var(--surface); border-radius: 28px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; }
         .save-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; width: 100%; }
         .save-title { font-weight: 900; font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 10px; }
         .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; width: 100%; }
+
+        /* 支出總計樣式 */
+        .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 2px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
         
         .history-item { background: var(--surface); margin-bottom: 12px; padding: 20px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .tag { font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 900; margin-right: 8px; }
@@ -151,6 +153,14 @@
     </div>
 
     <div id="historyPage" class="page">
+        <div class="section-header">💸 消費摘要</div>
+        <div class="total-expense-card">
+            <div>
+                <b style="font-size:15px; color:var(--text-sub);">本月消費總支出</b><br>
+                <small style="color:var(--text-sub); font-size:11px;">僅計算快速記帳之明細</small>
+            </div>
+            <b id="historyTotalAmt" style="font-family:Montserrat; font-size:28px; color:var(--danger)">$0</b>
+        </div>
         <div class="section-header">📜 往來明細</div>
         <div id="historyList"></div>
     </div>
@@ -205,8 +215,8 @@
         ]
     };
 
-    if (savedData && !savedData.isUpdated_V7) {
-        db.isUpdated_V7 = true;
+    if (savedData && !savedData.isUpdated_V8) {
+        db.isUpdated_V8 = true;
         db.savings.forEach(s => { if(s.name === "年度保險") s.target = 3000; });
         for(let m in db.months) {
             db.months[m].budgets = {
@@ -333,15 +343,21 @@
 
     function renderHistory() {
         let hHtml = "";
+        let totalExpenseAmt = 0;
         db.months[currentMonth].history.forEach((h, idx) => {
             let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
             let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
+            
+            // 計算支出總計 (只計 expense 類型)
+            if(h.type === 'expense') totalExpenseAmt += h.amt;
+
             hHtml += `<div class="history-item">
                 <div><span class="tag ${tagClass}">${tagMap[h.type]}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
                 <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small></div>
             </div>`;
         });
         document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>尚無紀錄</div>";
+        document.getElementById('historyTotalAmt').innerText = "$" + totalExpenseAmt.toLocaleString();
     }
 
     function changeCat(c, el) {
