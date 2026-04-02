@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>維恩計畫 V55 PREMIUM - FIX</title>
+    <title>維恩計畫 V55 PREMIUM - FINAL FIX</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -37,7 +37,6 @@
         .page.active { display: block; }
         @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 頂部預算卡片 */
         .status-card {
             background: var(--surface); border-radius: 28px; padding: 24px;
             margin-bottom: 24px; box-shadow: var(--shadow);
@@ -49,11 +48,9 @@
         .card { background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
         .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 28px 0 14px 6px; letter-spacing: 1.5px; text-transform: uppercase; }
 
-        /* 進度條動畫 */
         .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 12px 0; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s; }
         
-        /* 快速記帳區 */
         .quick-panel { background: var(--surface); border-radius: 28px; padding: 22px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
         .cat-item { background: #F8FAFC; border-radius: 16px; padding: 12px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.2s; }
@@ -62,7 +59,6 @@
         .sub-cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px; padding-bottom: 5px; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
         .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; animation: subIn 0.3s ease backwards; }
-        @keyframes subIn { from { opacity: 0; transform: translateX(5px); } to { opacity: 1; transform: translateX(0); } }
         .sub-item.active { background: var(--text-main); color: white; }
 
         .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 5px 0; }
@@ -73,7 +69,7 @@
         .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); }
         .submit-btn:active { transform: scale(0.97); }
 
-        /* V55 存錢卡片優化樣式 */
+        /* 存錢卡片樣式 */
         .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); transition: 0.3s; position: relative; }
         .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
         .save-title { font-weight: 900; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
@@ -82,14 +78,27 @@
         .save-amount { font-size: 11px; color: var(--text-sub); font-weight: 700; }
         .save-amount b { color: var(--text-main); font-family: 'Montserrat'; font-size: 14px; }
 
-        /* 明細樣式 */
+        /* 信用卡還款區 - 更新樣式 */
+        .bank-card {
+            background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 12px;
+            border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
+            transition: transform 0.2s;
+        }
+        .bank-card:active { transform: scale(0.98); }
+        .bank-info { display: flex; flex-direction: column; gap: 4px; }
+        .bank-name { font-weight: 900; font-size: 16px; color: var(--text-main); }
+        .bank-debt { font-family: 'Montserrat'; font-size: 13px; font-weight: 700; color: var(--danger); }
+        .repay-btn { 
+            padding: 10px 18px; border-radius: 12px; border: none; 
+            background: var(--text-main); color: white; font-weight: 900; font-size: 14px; 
+        }
+
         .history-item { background: var(--surface); margin-bottom: 10px; padding: 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
         .tag { font-size: 10px; padding: 3px 8px; border-radius: 7px; font-weight: 900; margin-right: 6px; }
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
         .tag-save { background: #E0E7FF; color: var(--primary); }
 
-        /* 彈窗 */
         .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 32px; z-index: 3000; width: 90%; max-width: 380px; display: none; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
         #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2500; display: none; }
@@ -97,54 +106,6 @@
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 15px 10px 30px; border-top: 1px solid var(--border); z-index: 1000; }
         .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; }
         .tab.active { color: var(--primary); }
-
-        /* 修正 1：信用卡還款區樣式更新 */
-        .bank-card {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .bank-card:active {
-            transform: scale(0.98);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .bank-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .bank-name {
-            font-weight: 900;
-            font-size: 16px;
-            color: var(--text-main);
-        }
-        .bank-debt {
-            font-family: 'Montserrat';
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--danger);
-        }
-        .repay-btn {
-            padding: 10px 20px;
-            border-radius: 12px;
-            border: none;
-            background: var(--text-main);
-            color: white;
-            font-weight: 900;
-            font-size: 14px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .repay-btn:active {
-            opacity: 0.9;
-        }
-
     </style>
 </head>
 <body>
@@ -243,8 +204,8 @@
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
             { name: "年度保險", target: 12000, bal: 0, type: "fixed" },
             { name: "眉毛美容", target: 4500, bal: 0, type: "fixed" },
-            { name: "旅遊基金", target: "無限存", bal: 0, type: "inf" },
-            { name: "Taffi 備用金", target: "無限存", bal: 0, type: "inf" }
+            { name: "旅遊基金", target: 0, bal: 0, type: "inf" },
+            { name: "Taffi 備用金", target: 0, bal: 0, type: "inf" }
         ]
     };
 
@@ -252,10 +213,10 @@
         if(!db.months[m]) {
             db.months[m] = {
                 budgets: {
-                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "日常支出" },
-                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi 預算" },
-                    food: { goal: 9000, spent: 0, icon: "🍽️", name: "食物預算" },
-                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂預算" }
+                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "日常支出", sub: "電信費 $500、Gogoro $499、iCloud $300" },
+                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi 預算", sub: "飼料 $1,000、美容 $1,000、其他 $1,000" },
+                    food: { goal: 9000, spent: 0, icon: "🍽️", name: "食物預算", sub: "每日伙食開銷" },
+                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂預算", sub: "美甲、羽球、購物、健身" }
                 },
                 history: []
             };
@@ -267,7 +228,6 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
-        // 渲染預算
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -277,25 +237,28 @@
             let color = ratio > 90 ? 'var(--danger)' : (ratio > 60 ? 'var(--warning)' : 'var(--primary)');
             bHtml += `<div class="card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <b>${b.icon} ${b.name}</b>
-                    <b style="font-family:Montserrat">$${rem.toLocaleString()}</b>
+                    <div>
+                        <b style="font-size:16px;">${b.icon} ${b.name}</b><br>
+                        <small style="color:var(--text-sub); font-size:11px;">${b.sub}</small>
+                    </div>
+                    <b style="font-family:Montserrat; font-size:18px; color:var(--primary)">$${rem.toLocaleString()}</b>
                 </div>
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
-                <small style="color:var(--text-sub)">預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</small>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:700;">
+                    <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
+                    <span>${Math.round(ratio)}%</span>
+                </div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 渲染存錢 (V55 優化版) - 修正 2：含金額項目寫入金額
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
             let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
-            
-            // 修正 2：根據目標類型顯示金額
             let amountDisplay = isFixed ? `已存 <b>$${s.bal.toLocaleString()}</b> / 目標 $${s.target.toLocaleString()}` : `已存 <b>$${s.bal.toLocaleString()}</b> / 無限存`;
 
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
@@ -312,11 +275,9 @@
         });
         document.getElementById('saveArea').innerHTML = sHtml;
 
-        // 銀行與細項 - 修正 1：信用卡還款區變美觀
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
-            // 使用全新的樣式
             bankHtml += `<div class="bank-card">
                 <div class="bank-info">
                     <div class="bank-name">${b.name}</div>
@@ -330,7 +291,6 @@
         renderSubCats();
         renderHistory();
 
-        // 日期
         const now = new Date();
         const daysLeft = new Date(now.getFullYear(), currentMonth, 0).getDate() - now.getDate() + 1;
         document.getElementById('daysLeft').innerText = `${currentMonth}月剩餘約 ${Math.max(1, daysLeft)} 天`;
