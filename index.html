@@ -50,7 +50,6 @@
             border: 1px solid var(--border); transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .card:active { transform: scale(0.98); box-shadow: none; }
         .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 28px 0 14px 6px; letter-spacing: 1.5px; text-transform: uppercase; }
 
         .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 12px 0; overflow: hidden; }
@@ -63,8 +62,7 @@
         
         .sub-cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px; padding-bottom: 5px; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
-        .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; animation: subIn 0.4s ease backwards; }
-        @keyframes subIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; }
         .sub-item.active { background: var(--text-main); color: white; }
 
         .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 5px 0; }
@@ -78,15 +76,13 @@
         .repay-card {
             background: var(--surface); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px;
             border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
-            animation: cardFade 0.5s ease backwards;
         }
-        @keyframes cardFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .repay-info b { font-size: 16px; color: var(--text-main); display: block; }
         .repay-info small { color: var(--danger); font-weight: 900; font-family: 'Montserrat'; font-size: 14px; }
         .repay-btn-action { padding: 10px 20px; border-radius: 14px; border: none; background: var(--text-main); color: white; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; }
         .repay-btn-action:active { transform: scale(0.9); }
 
-        .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); transition: 0.3s; }
+        .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
         .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
         .save-title { font-weight: 900; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
         .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 8px; }
@@ -194,12 +190,13 @@
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
+    // 確保資料庫有基本的銀行結構
     let db = JSON.parse(localStorage.getItem("taffi_v55")) || {
         months: {},
         banks: {
-            cathay: { name: "國泰世華", bal: 56570 },
-            taishin: { name: "台新銀行", bal: 22000 },
-            fubon: { name: "富邦銀行", bal: 36773 }
+            cathay: { name: "國泰世華", bal: 0 },
+            taishin: { name: "台新銀行", bal: 0 },
+            fubon: { name: "富邦銀行", bal: 0 }
         },
         savings: [
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
@@ -229,6 +226,7 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
+        // 1. 預算監控 (維持顯示 sub 項目)
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -247,38 +245,44 @@
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
                 <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900;">
                     <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
+                    <span style="color:var(--primary)">${Math.round(ratio)}%</span>
                 </div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
+        // 2. 信用卡還款 (修正：正確讀取 db.banks[k].bal)
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
+            let currentBal = b.bal || 0; // 確保若 bal 為 undefined 則顯示 0
             bankHtml += `<div class="repay-card">
                 <div class="repay-info">
                     <b>${b.name}</b>
-                    <small>負債: $${b.bal.toLocaleString()}</small>
+                    <small>負債: $${currentBal.toLocaleString()}</small>
                 </div>
                 <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
 
+        // 3. 年度存錢 (維持原樣)
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
+            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
                 <div class="save-info">
                     <div class="save-title">${isFixed?'📍':'✨'} ${s.name}</div>
-                    <span class="save-percent">${isFixed?percent+'%':'🔥 持續存'}</span>
+                    ${percentTag}
                 </div>
                 <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${barWidth}%; background:linear-gradient(90deg, #818CF8, var(--primary))"></div></div>
                 <div class="save-footer">
                     <div class="save-amount">已存 <b>$${s.bal.toLocaleString()}</b> ${isFixed?' / 目標 $'+s.target.toLocaleString():''}</div>
+                    <div style="font-size:10px; color:var(--primary); font-weight:900;">＋ 點擊存入</div>
                 </div>
             </div>`;
         });
@@ -339,7 +343,10 @@
         let n = document.getElementById('itemName').value;
         if(!a || !currentPay || !n) return alert("請填齊！");
         db.months[currentMonth].budgets[currentCat].spent += a;
-        if(currentPay !== 'cash') db.banks[currentPay].bal += a;
+        if(currentPay !== 'cash') {
+            if(!db.banks[currentPay].bal) db.banks[currentPay].bal = 0;
+            db.banks[currentPay].bal += a;
+        }
         db.months[currentMonth].history.unshift({ type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
         document.getElementById('itemAmt').value = "";
         saveAndRender();
@@ -407,5 +414,3 @@
 </script>
 </body>
 </html>
-
-
