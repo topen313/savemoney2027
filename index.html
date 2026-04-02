@@ -8,108 +8,109 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
         :root {
-            --bg: #F8FAFC;
+            --bg: #F0F2F5;
             --surface: #FFFFFF;
             --primary: #6366F1;
             --primary-light: #EEF2FF;
+            --primary-grad: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
             --success: #10B981;
             --danger: #F43F5E;
             --warning: #F59E0B;
-            --text-main: #1E293B;
+            --text-main: #0F172A;
             --text-sub: #64748B;
             --border: #E2E8F0;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 100px; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 120px; }
 
         .top-nav {
-            position: sticky; top: 0; background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px); padding: 12px 20px; z-index: 1000;
+            position: sticky; top: 0; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 16px 24px; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01);
         }
-        .month-selector { border: none; background: var(--primary-light); color: var(--primary); padding: 8px 16px; border-radius: 14px; font-weight: 900; font-size: 14px; outline: none; }
+        .month-selector { border: 1.5px solid var(--primary-light); background: var(--surface); color: var(--primary); padding: 8px 14px; border-radius: 12px; font-weight: 900; font-size: 14px; outline: none; box-shadow: var(--shadow); }
 
-        .container { padding: 16px; max-width: 500px; margin: auto; }
-        .page { display: none; animation: pageIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+        .page { display: none; animation: pageIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .page.active { display: block; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         .status-card {
-            background: var(--surface); border-radius: 28px; padding: 24px;
-            margin-bottom: 24px; box-shadow: var(--shadow);
-            border: 1px solid rgba(255,255,255,0.8); position: relative; overflow: hidden;
+            background: var(--primary-grad); border-radius: 32px; padding: 28px;
+            margin-bottom: 28px; box-shadow: 0 20px 40px -10px rgba(99,102,241,0.4);
+            position: relative; overflow: hidden; color: white;
         }
-        .status-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: var(--primary); }
-        .status-val { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: var(--primary); letter-spacing: -1px; }
+        .status-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .status-val { font-family: 'Montserrat'; font-size: 42px; font-weight: 900; letter-spacing: -1.5px; margin: 4px 0; }
 
         .card { 
-            background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; 
-            border: 1px solid var(--border); transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            background: var(--surface); border-radius: 24px; padding: 22px; margin-bottom: 16px; 
+            border: 1px solid rgba(255,255,255,0.7); transition: all 0.3s ease;
+            box-shadow: var(--shadow);
         }
-        .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 28px 0 14px 6px; letter-spacing: 1.5px; text-transform: uppercase; }
+        .section-header { font-size: 14px; font-weight: 900; color: var(--text-sub); margin: 32px 0 16px 8px; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 12px 0; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s; }
+        .progress-bg { height: 12px; background: #F1F5F9; border-radius: 20px; margin: 14px 0; overflow: hidden; border: 1px solid #E2E8F0; }
+        .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s; }
         
-        .quick-panel { background: var(--surface); border-radius: 28px; padding: 22px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
-        .cat-item { background: #F8FAFC; border-radius: 16px; padding: 12px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.2s; }
-        .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99,102,241,0.2); }
+        .quick-panel { background: var(--surface); border-radius: 32px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .cat-item { background: #F8FAFC; border-radius: 18px; padding: 14px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cat-item.active { background: var(--primary-grad); color: white; border-color: transparent; transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(99,102,241,0.3); }
         
-        .sub-cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px; padding-bottom: 5px; }
+        .sub-cat-grid { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding: 4px 0; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
-        .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; }
+        .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; transition: 0.2s; }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 5px 0; }
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 14px; padding: 12px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.2s; }
-        .pay-btn.active { background: var(--text-main); color: white; }
+        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 48px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 10px 0; letter-spacing: -2px; }
+        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.3s; }
+        .pay-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
 
-        .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); transition: 0.3s; }
-        .submit-btn:active { transform: scale(0.96); opacity: 0.9; }
+        .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .submit-btn:active { transform: scale(0.94); }
 
         .repay-card {
-            background: var(--surface); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px;
-            border: 1px solid var(--border); display: block;
+            background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px;
+            border: 1px solid var(--border); display: block; box-shadow: var(--shadow);
         }
-        .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .repay-info b { font-size: 16px; color: var(--text-main); display: block; }
+        .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .repay-info b { font-size: 16px; color: var(--text-main); display: block; letter-spacing: 0.5px; }
         .repay-info small { color: var(--danger); font-weight: 900; font-family: 'Montserrat'; font-size: 14px; }
-        .repay-btn-action { padding: 10px 20px; border-radius: 14px; border: none; background: var(--text-main); color: white; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; }
-        .repay-btn-action:active { transform: scale(0.9); }
+        .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.3s; }
 
-        .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
-        .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
-        .save-title { font-weight: 900; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-        .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 8px; }
-        .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .save-amount { font-size: 11px; color: var(--text-sub); font-weight: 700; }
-        .save-amount b { color: var(--text-main); font-family: 'Montserrat'; font-size: 14px; }
-
-        .history-item { background: var(--surface); margin-bottom: 10px; padding: 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
-        .tag { font-size: 10px; padding: 3px 8px; border-radius: 7px; font-weight: 900; margin-right: 6px; }
+        .save-card { background: var(--surface); border-radius: 28px; padding: 22px; margin-bottom: 16px; border: 1.5px solid rgba(255,255,255,0.7); box-shadow: var(--shadow); transition: 0.3s; }
+        .save-card:active { transform: scale(0.98); }
+        .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; }
+        .save-title { font-weight: 900; font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 10px; }
+        
+        .history-item { background: var(--surface); margin-bottom: 12px; padding: 20px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .tag { font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 900; margin-right: 8px; }
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
         .tag-save { background: #E0E7FF; color: var(--primary); }
 
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 32px; z-index: 3000; width: 90%; max-width: 380px; display: none; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); transition: 0.3s; }
-        .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
-        #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2500; display: none; }
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 18px 12px 35px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1000; box-shadow: 0 -10px 25px -5px rgba(0,0,0,0.05); }
+        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; transition: 0.3s; opacity: 0.6; }
+        .tab.active { color: var(--primary); opacity: 1; transform: translateY(-2px); }
 
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 15px 10px 30px; border-top: 1px solid var(--border); z-index: 1000; }
-        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; }
-        .tab.active { color: var(--primary); }
+        /* Modal 美化 */
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 32px; border-radius: 40px; z-index: 3000; width: 92%; max-width: 400px; display: none; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <div style="font-weight:900; font-size: 18px;">維恩計畫 <span style="color:var(--primary)">V55</span></div>
+    <div style="font-weight:900; font-size: 20px; letter-spacing: -0.5px;">維恩計畫 <span style="color:var(--primary)">V55</span></div>
     <select id="monthPicker" class="month-selector" onchange="changeMonth()">
         <option value="4" selected>4月預算</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
     </select>
@@ -118,11 +119,11 @@
 <div class="container">
     <div id="mainPage" class="page active">
         <div class="status-card">
-            <div id="daysLeft" style="font-size:11px; font-weight:800; color:var(--text-sub); margin-bottom:4px;"></div>
+            <div id="daysLeft" style="font-size:12px; font-weight:700; opacity:0.9; margin-bottom:4px;"></div>
             <div id="totalAvailable" class="status-val">$0</div>
-            <div style="display:flex; justify-content:space-between; margin-top:2px;">
-                <small style="color:var(--text-sub); font-weight:700;">剩餘總預算</small>
-                <div id="dailyAllowance" style="color:var(--success); font-weight:900; font-size:13px;"></div>
+            <div style="display:flex; justify-content:space-between; align-items: center; margin-top:8px;">
+                <small style="opacity:0.8; font-weight:700; letter-spacing: 1px;">REMAINING BUDGET</small>
+                <div id="dailyAllowance" style="background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:10px; font-weight:900; font-size:13px;"></div>
             </div>
         </div>
 
@@ -138,7 +139,7 @@
                 <div class="cat-item" onclick="changeCat('fixed', this)">☁️ 訂閱</div>
             </div>
             <div class="sub-cat-grid" id="subCatGrid"></div>
-            <input type="text" id="itemName" style="width:100%; border:none; font-size:15px; font-weight:800; text-align:center; outline:none; background:transparent;" placeholder="輸入內容...">
+            <input type="text" id="itemName" style="width:100%; border:none; font-size:16px; font-weight:800; text-align:center; outline:none; background:transparent; color:var(--text-main)" placeholder="在此輸入消費內容...">
             <input type="number" id="itemAmt" class="amt-input" placeholder="0" pattern="\d*">
             <div class="pay-grid">
                 <div class="pay-btn" onclick="setPay('cash', this)">💵 現金</div>
@@ -162,12 +163,12 @@
     </div>
 </div>
 
-<div id="modalOverlay" onclick="closeModal()"></div>
+<div id="modalOverlay" onclick="closeModal()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); z-index:2500; display:none;"></div>
 <div id="actionModal" class="modal">
-    <h3 id="modalTitle" style="margin:0; font-weight:900;">標題</h3>
-    <p id="modalSub" style="font-size:12px; color:var(--text-sub); margin: 10px 0 20px;"></p>
-    <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:30px;" placeholder="0">
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+    <h3 id="modalTitle" style="margin:0; font-weight:900; font-size:22px;">標題</h3>
+    <p id="modalSub" style="font-size:14px; color:var(--text-sub); margin: 12px 0 24px;"></p>
+    <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:35px; color:var(--text-main)" placeholder="0">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
         <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none;" onclick="closeModal()">取消</button>
         <button id="modalConfirmBtn" class="submit-btn" style="margin:0;">確認</button>
     </div>
@@ -191,33 +192,34 @@
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
-    // 銀行初始債務設定
     const initialBanks = {
         cathay: { name: "國泰世華", bal: 56570, limit: 100000 },
         taishin: { name: "台新銀行", bal: 22000, limit: 100000 },
         fubon: { name: "富邦銀行", bal: 36773, limit: 100000 }
     };
 
-    // 讀取 localStorage
     let savedData = JSON.parse(localStorage.getItem("taffi_v55"));
 
-    // 資料庫初始化
     let db = savedData || {
         months: {},
         banks: initialBanks,
         savings: [
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
-            { name: "年度保險", target: 12000, bal: 0, type: "fixed" },
+            { name: "年度保險", target: 3000, bal: 0, type: "fixed" }, // 已更正為 3000
             { name: "眉毛美容", target: 4500, bal: 0, type: "fixed" },
             { name: "旅遊基金", target: 0, bal: 0, type: "inf" },
             { name: "Taffi 備用金", target: 0, bal: 0, type: "inf" }
         ]
     };
 
-    // 強制更新標記 (確保最新預算邏輯生效)
-    if (savedData && !savedData.isBudgetUpdated_V4) {
-        db.isBudgetUpdated_V4 = true;
-        // 重新初始化各月預算以符合最新需求
+    // 強制更新標記 V5 (更新保險金額與美化標記)
+    if (savedData && !savedData.isUpdated_V5) {
+        db.isUpdated_V5 = true;
+        // 更新儲蓄目標
+        db.savings.forEach(s => {
+            if(s.name === "年度保險") s.target = 3000;
+        });
+        // 更新預算細項
         for(let m in db.months) {
             db.months[m].budgets = {
                 fixed: { goal: 1300, spent: db.months[m].budgets.fixed.spent || 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
@@ -244,11 +246,9 @@
     }
 
     function getGradientColor(ratio) {
-        // 從 Primary (#6366F1) 漸變到 Danger (#F43F5E)
-        // 簡化邏輯：50% 以下保持 primary，50% 以上開始變黃變紅
-        if (ratio < 50) return 'var(--primary)';
-        if (ratio < 80) return 'var(--warning)';
-        return 'var(--danger)';
+        if (ratio < 50) return '#6366F1';
+        if (ratio < 80) return '#F59E0B';
+        return '#F43F5E';
     }
 
     function render() {
@@ -256,7 +256,6 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
-        // 預算監控 (更新後版本)
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -264,19 +263,19 @@
             totalRem += rem;
             let ratio = Math.min((b.spent / b.goal) * 100, 100);
             let color = getGradientColor(ratio);
-            let warningText = ratio >= 50 ? '<span style="color:var(--danger); font-size:10px; margin-left:5px;">⚠️ 已達50%!</span>' : '';
+            let warningText = ratio >= 50 ? '<span style="color:#F43F5E; font-size:10px; font-weight:900; margin-left:6px; background:#FFE4E6; padding:2px 6px; border-radius:6px;">⚠️ ALERT 50%</span>' : '';
 
             bHtml += `<div class="card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                     <div>
-                        <b>${b.icon} ${b.name}</b>${warningText}<br>
-                        <small style="color:var(--text-sub); font-size:11px; font-weight:700;">${b.sub || ''}</small>
+                        <b style="font-size:16px;">${b.icon} ${b.name}</b>${warningText}<br>
+                        <small style="color:var(--text-sub); font-size:11px; font-weight:700; line-height:1.6">${b.sub || ''}</small>
                     </div>
-                    <b style="font-family:Montserrat; font-size:18px; color:var(--primary)">$${rem.toLocaleString()}</b>
+                    <b style="font-family:Montserrat; font-size:20px; color:var(--primary)">$${rem.toLocaleString()}</b>
                 </div>
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
-                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900;">
-                    <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900; margin-top:4px;">
+                    <span>USED $${b.spent.toLocaleString()} / $${b.goal.toLocaleString()}</span>
                     <span style="color:${color}">${Math.round(ratio)}%</span>
                 </div>
             </div>`;
@@ -284,7 +283,6 @@
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 信用卡還款
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
@@ -299,27 +297,26 @@
                     </div>
                     <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
                 </div>
-                <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.7"></div></div>
+                <div class="progress-bg" style="height:6px; margin:0; border:none; background:#F8FAFC;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.6"></div></div>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
 
-        // 年度存錢
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
-            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
+            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">NON-STOP</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
                 <div class="save-info">
                     <div class="save-title">${isFixed?'📍':'✨'} ${s.name}</div>
                     ${percentTag}
                 </div>
-                <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${barWidth}%; background:linear-gradient(90deg, #818CF8, var(--primary))"></div></div>
-                <div class="save-footer">
-                    <div class="save-amount">已存 <b>$${s.bal.toLocaleString()}</b> ${isFixed?' / 目標 $'+s.target.toLocaleString():''}</div>
-                    <div style="font-size:10px; color:var(--primary); font-weight:900;">＋ 點擊存入</div>
+                <div class="progress-bg" style="height:8px; margin:0; border:none;"><div class="progress-fill" style="width:${barWidth}%; background:var(--primary-grad)"></div></div>
+                <div class="save-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                    <div style="font-size:12px; color:var(--text-sub); font-weight:700;">已存 <b style="color:var(--text-main); font-family:Montserrat; font-size:15px;">$${s.bal.toLocaleString()}</b> ${isFixed?' / $'+s.target.toLocaleString():''}</div>
+                    <div style="font-size:11px; color:var(--primary); font-weight:900;">DEPOSIT ＋</div>
                 </div>
             </div>`;
         });
@@ -330,8 +327,8 @@
 
         const now = new Date();
         const daysLeft = new Date(now.getFullYear(), currentMonth, 0).getDate() - now.getDate() + 1;
-        document.getElementById('daysLeft').innerText = `${currentMonth}月剩餘約 ${Math.max(1, daysLeft)} 天`;
-        document.getElementById('dailyAllowance').innerText = `今日可花：$${Math.floor(totalRem/Math.max(1, daysLeft)).toLocaleString()}`;
+        document.getElementById('daysLeft').innerText = `APRIL · 剩餘 ${Math.max(1, daysLeft)} 天`;
+        document.getElementById('dailyAllowance').innerText = `今日預算：$${Math.floor(totalRem/Math.max(1, daysLeft)).toLocaleString()}`;
     }
 
     function renderSubCats() {
@@ -339,12 +336,11 @@
         grid.innerHTML = "";
         subCategories[currentCat].forEach(sub => {
             const div = document.createElement('div');
-            div.className = 'sub-item';
+            div.className = 'sub-item' + (document.getElementById('itemName').value === sub ? ' active' : '');
             div.innerText = sub;
             div.onclick = () => {
                 document.getElementById('itemName').value = sub;
-                document.querySelectorAll('.sub-item').forEach(i => i.classList.remove('active'));
-                div.classList.add('active');
+                renderSubCats();
             };
             grid.appendChild(div);
         });
@@ -355,11 +351,11 @@
         db.months[currentMonth].history.forEach((h, idx) => {
             let tag = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
             hHtml += `<div class="history-item">
-                <div><span class="tag ${tag}">${h.type}</span><b>${h.name}</b><br><small>${h.time}</small></div>
-                <div style="text-align:right;"><b style="font-family:Montserrat">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:700" onclick="deleteItem(${idx})">撤銷</small></div>
+                <div><span class="tag ${tag}">${h.type.toUpperCase()}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
+                <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">UNDO</small></div>
             </div>`;
         });
-        document.getElementById('historyList').innerHTML = hHtml || "<p style='text-align:center; padding:40px; color:var(--text-sub)'>尚無明細</p>";
+        document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>NO RECORDS YET</div>";
     }
 
     function changeCat(c, el) {
@@ -378,7 +374,7 @@
     function submitExpense() {
         let a = Number(document.getElementById('itemAmt').value);
         let n = document.getElementById('itemName').value;
-        if(!a || !currentPay || !n) return alert("請填齊！");
+        if(!a || !currentPay || !n) return alert("資料不完整喔！");
         db.months[currentMonth].budgets[currentCat].spent += a;
         if(currentPay !== 'cash') {
             if(!db.banks[currentPay].bal) db.banks[currentPay].bal = 0;
@@ -392,8 +388,8 @@
     function openActionModal(type, target) {
         activeAction = { type, target };
         const modal = document.getElementById('actionModal');
-        document.getElementById('modalTitle').innerText = type==='repay'?'還款確認':'存款確認';
-        document.getElementById('modalSub').innerText = "目標: " + (type==='repay'?db.banks[target].name:db.savings[target].name);
+        document.getElementById('modalTitle').innerText = type==='repay'?'Repay Memory':'Saving Plan';
+        document.getElementById('modalSub').innerText = "Target: " + (type==='repay'?db.banks[target].name:db.savings[target].name);
         modal.style.display = 'block';
         document.getElementById('modalOverlay').style.display = 'block';
         setTimeout(() => modal.classList.add('active'), 10);
@@ -423,7 +419,7 @@
     }
 
     function deleteItem(idx) {
-        if(!confirm("確定撤銷？")) return;
+        if(!confirm("確定要撤銷這筆紀錄嗎？")) return;
         let h = db.months[currentMonth].history[idx];
         if(h.type === 'expense') {
             db.months[currentMonth].budgets[h.cat].spent -= h.amt;
