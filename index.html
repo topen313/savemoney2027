@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>維恩計畫 V55 PREMIUM - FINAL</title>
+    <title>維恩計畫 V55 PREMIUM</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -45,7 +45,6 @@
         .status-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: var(--primary); }
         .status-val { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: var(--primary); letter-spacing: -1px; }
 
-        /* 通用卡片美化 */
         .card { 
             background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; 
             border: 1px solid var(--border); transition: all 0.3s ease;
@@ -76,7 +75,6 @@
         .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); transition: 0.3s; }
         .submit-btn:active { transform: scale(0.96); opacity: 0.9; }
 
-        /* 還款卡片美化 */
         .repay-card {
             background: var(--surface); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px;
             border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
@@ -199,9 +197,9 @@
     let db = JSON.parse(localStorage.getItem("taffi_v55")) || {
         months: {},
         banks: {
-            cathay: { name: "國泰世華", bal: 0 },
-            taishin: { name: "台新銀行", bal: 0 },
-            fubon: { name: "富邦銀行", bal: 0 }
+            cathay: { name: "國泰世華", bal: 56570 },
+            taishin: { name: "台新銀行", bal: 22000 },
+            fubon: { name: "富邦銀行", bal: 36773 }
         },
         savings: [
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
@@ -231,7 +229,6 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
-        // 渲染預算監控 (確保顯示「含 xxx」項目且無 k)
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -250,14 +247,12 @@
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
                 <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900;">
                     <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
-                    <span style="color:var(--primary)">${Math.round(ratio)}%</span>
                 </div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 渲染信用卡區 (美化更新且讀取正確金額)
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
@@ -271,22 +266,19 @@
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
 
-        // 渲染存錢
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
-            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
                 <div class="save-info">
                     <div class="save-title">${isFixed?'📍':'✨'} ${s.name}</div>
-                    ${percentTag}
+                    <span class="save-percent">${isFixed?percent+'%':'🔥 持續存'}</span>
                 </div>
                 <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${barWidth}%; background:linear-gradient(90deg, #818CF8, var(--primary))"></div></div>
                 <div class="save-footer">
                     <div class="save-amount">已存 <b>$${s.bal.toLocaleString()}</b> ${isFixed?' / 目標 $'+s.target.toLocaleString():''}</div>
-                    <div style="font-size:10px; color:var(--primary); font-weight:900;">＋ 點擊存入</div>
                 </div>
             </div>`;
         });
@@ -415,3 +407,5 @@
 </script>
 </body>
 </html>
+
+
