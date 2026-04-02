@@ -75,8 +75,9 @@
 
         .repay-card {
             background: var(--surface); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px;
-            border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid var(--border); display: block;
         }
+        .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .repay-info b { font-size: 16px; color: var(--text-main); display: block; }
         .repay-info small { color: var(--danger); font-weight: 900; font-family: 'Montserrat'; font-size: 14px; }
         .repay-btn-action { padding: 10px 20px; border-radius: 14px; border: none; background: var(--text-main); color: white; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; }
@@ -192,9 +193,9 @@
 
     // 銀行初始債務設定
     const initialBanks = {
-        cathay: { name: "國泰世華", bal: 56570 },
-        taishin: { name: "台新銀行", bal: 22000 },
-        fubon: { name: "富邦銀行", bal: 36773 }
+        cathay: { name: "國泰世華", bal: 56570, limit: 100000 },
+        taishin: { name: "台新銀行", bal: 22000, limit: 100000 },
+        fubon: { name: "富邦銀行", bal: 36773, limit: 100000 }
     };
 
     // 讀取 localStorage
@@ -213,10 +214,18 @@
         ]
     };
 
-    // 如果妳已經有舊資料，強制同步新的初始負債（針對 GitHub 更新後第一次進入）
-    if (savedData && !savedData.isBankUpdated_V2) {
-        db.banks = initialBanks;
-        db.isBankUpdated_V2 = true; // 標記已更新，避免未來覆蓋妳手動記帳的結果
+    // 強制更新標記 (確保最新預算邏輯生效)
+    if (savedData && !savedData.isBudgetUpdated_V4) {
+        db.isBudgetUpdated_V4 = true;
+        // 重新初始化各月預算以符合最新需求
+        for(let m in db.months) {
+            db.months[m].budgets = {
+                fixed: { goal: 1300, spent: db.months[m].budgets.fixed.spent || 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
+                taffi: { goal: 3000, spent: db.months[m].budgets.taffi.spent || 0, icon: "🐶", name: "Taffi基本支出", sub: "飼料$1000、美容$1000、醫療$500、零食$500" },
+                food: { goal: 10000, spent: db.months[m].budgets.food.spent || 0, icon: "🍽️", name: "飲食支出", sub: "早餐$1000、午餐$4000、晚餐$5000、其他$500" },
+                fun: { goal: 5000, spent: db.months[m].budgets.fun.spent || 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" }
+            };
+        }
         localStorage.setItem("taffi_v55", JSON.stringify(db));
     }
 
@@ -224,14 +233,22 @@
         if(!db.months[m]) {
             db.months[m] = {
                 budgets: {
-                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "日常支出", sub: "含電信費 $500、Gogoro $499、iCloud $300" },
-                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi 預算", sub: "含飼料 $1,000、美容 $1,000" },
-                    food: { goal: 9000, spent: 0, icon: "🍽️", name: "食物預算", sub: "每月伙食開銷" },
-                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂預算", sub: "含美甲、羽球、健身" }
+                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
+                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi基本支出", sub: "飼料$1000、美容$1000、醫療$500、零食$500" },
+                    food: { goal: 10000, spent: 0, icon: "🍽️", name: "飲食支出", sub: "早餐$1000、午餐$4000、晚餐$5000、其他$500" },
+                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" }
                 },
                 history: []
             };
         }
+    }
+
+    function getGradientColor(ratio) {
+        // 從 Primary (#6366F1) 漸變到 Danger (#F43F5E)
+        // 簡化邏輯：50% 以下保持 primary，50% 以上開始變黃變紅
+        if (ratio < 50) return 'var(--primary)';
+        if (ratio < 80) return 'var(--warning)';
+        return 'var(--danger)';
     }
 
     function render() {
@@ -239,18 +256,20 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
-        // 預算監控
+        // 預算監控 (更新後版本)
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
             let rem = b.goal - b.spent;
             totalRem += rem;
             let ratio = Math.min((b.spent / b.goal) * 100, 100);
-            let color = ratio > 90 ? 'var(--danger)' : (ratio > 60 ? 'var(--warning)' : 'var(--primary)');
+            let color = getGradientColor(ratio);
+            let warningText = ratio >= 50 ? '<span style="color:var(--danger); font-size:10px; margin-left:5px;">⚠️ 已達50%!</span>' : '';
+
             bHtml += `<div class="card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                     <div>
-                        <b>${b.icon} ${b.name}</b><br>
+                        <b>${b.icon} ${b.name}</b>${warningText}<br>
                         <small style="color:var(--text-sub); font-size:11px; font-weight:700;">${b.sub || ''}</small>
                     </div>
                     <b style="font-family:Montserrat; font-size:18px; color:var(--primary)">$${rem.toLocaleString()}</b>
@@ -258,24 +277,29 @@
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
                 <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900;">
                     <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
-                    <span style="color:var(--primary)">${Math.round(ratio)}%</span>
+                    <span style="color:${color}">${Math.round(ratio)}%</span>
                 </div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        // 信用卡還款 (讀取 db.banks)
+        // 信用卡還款
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
             let currentBal = b.bal || 0;
+            let limit = b.limit || 100000;
+            let ratio = Math.min((currentBal / limit) * 100, 100);
             bankHtml += `<div class="repay-card">
-                <div class="repay-info">
-                    <b>${b.name}</b>
-                    <small>負債: $${currentBal.toLocaleString()}</small>
+                <div class="repay-header">
+                    <div class="repay-info">
+                        <b>${b.name}</b>
+                        <small>負債: $${currentBal.toLocaleString()}</small>
+                    </div>
+                    <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
                 </div>
-                <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
+                <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.7"></div></div>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
