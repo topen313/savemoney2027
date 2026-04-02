@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>維恩計畫 V55 PREMIUM - FINAL FIX</title>
+    <title>維恩計畫 V55 PREMIUM</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -45,7 +45,8 @@
         .status-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: var(--primary); }
         .status-val { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: var(--primary); letter-spacing: -1px; }
 
-        .card { background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
+        .card { background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); transition: transform 0.2s; }
+        .card:active { transform: scale(0.98); }
         .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 28px 0 14px 6px; letter-spacing: 1.5px; text-transform: uppercase; }
 
         .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 12px 0; overflow: hidden; }
@@ -59,18 +60,19 @@
         .sub-cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px; padding-bottom: 5px; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
         .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; animation: subIn 0.3s ease backwards; }
+        @keyframes subIn { from { opacity: 0; transform: translateX(5px); } to { opacity: 1; transform: translateX(0); } }
         .sub-item.active { background: var(--text-main); color: white; }
 
         .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 5px 0; }
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 14px; padding: 12px 2px; font-weight: 800; font-size: 11px; text-align: center; }
+        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 14px; padding: 12px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.2s; }
         .pay-btn.active { background: var(--text-main); color: white; }
 
-        .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); }
+        .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); transition: 0.2s; }
         .submit-btn:active { transform: scale(0.97); }
 
-        /* 存錢卡片樣式 */
         .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); transition: 0.3s; position: relative; }
+        .save-card:active { transform: scale(0.98); box-shadow: var(--shadow); }
         .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
         .save-title { font-weight: 900; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
         .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 8px; }
@@ -78,22 +80,23 @@
         .save-amount { font-size: 11px; color: var(--text-sub); font-weight: 700; }
         .save-amount b { color: var(--text-main); font-family: 'Montserrat'; font-size: 14px; }
 
-        /* 信用卡還款區 - 更新樣式 */
-        .bank-card {
-            background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 12px;
+        /* 信用卡還款區更新美化樣式 */
+        .repay-card {
+            background: var(--surface); border-radius: 22px; padding: 18px 22px; margin-bottom: 12px;
             border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
         }
-        .bank-card:active { transform: scale(0.98); }
-        .bank-info { display: flex; flex-direction: column; gap: 4px; }
-        .bank-name { font-weight: 900; font-size: 16px; color: var(--text-main); }
-        .bank-debt { font-family: 'Montserrat'; font-size: 13px; font-weight: 700; color: var(--danger); }
-        .repay-btn { 
-            padding: 10px 18px; border-radius: 12px; border: none; 
-            background: var(--text-main); color: white; font-weight: 900; font-size: 14px; 
+        .repay-card:active { transform: scale(0.97); background: #fcfcfc; }
+        .repay-info b { font-size: 16px; color: var(--text-main); display: block; margin-bottom: 2px; }
+        .repay-info small { color: var(--danger); font-weight: 700; font-family: 'Montserrat'; font-size: 13px; }
+        .repay-btn-action {
+            padding: 10px 18px; border-radius: 14px; border: none; background: var(--text-main);
+            color: white; font-weight: 900; font-size: 13px; letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .history-item { background: var(--surface); margin-bottom: 10px; padding: 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+        .history-item { background: var(--surface); margin-bottom: 10px; padding: 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
         .tag { font-size: 10px; padding: 3px 8px; border-radius: 7px; font-weight: 900; margin-right: 6px; }
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
@@ -104,8 +107,8 @@
         #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2500; display: none; }
 
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 15px 10px 30px; border-top: 1px solid var(--border); z-index: 1000; }
-        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; }
-        .tab.active { color: var(--primary); }
+        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; transition: 0.2s; }
+        .tab.active { color: var(--primary); transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -213,10 +216,10 @@
         if(!db.months[m]) {
             db.months[m] = {
                 budgets: {
-                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "日常支出", sub: "電信費 $500、Gogoro $499、iCloud $300" },
-                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi 預算", sub: "飼料 $1,000、美容 $1,000、其他 $1,000" },
-                    food: { goal: 9000, spent: 0, icon: "🍽️", name: "食物預算", sub: "每日伙食開銷" },
-                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂預算", sub: "美甲、羽球、購物、健身" }
+                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "日常支出" },
+                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi 預算" },
+                    food: { goal: 9000, spent: 0, icon: "🍽️", name: "食物預算" },
+                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂預算" }
                 },
                 history: []
             };
@@ -228,6 +231,7 @@
         let mData = db.months[currentMonth];
         let totalRem = 0;
         
+        // 渲染預算 (移除 k 並格式化)
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
@@ -237,29 +241,25 @@
             let color = ratio > 90 ? 'var(--danger)' : (ratio > 60 ? 'var(--warning)' : 'var(--primary)');
             bHtml += `<div class="card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <div>
-                        <b style="font-size:16px;">${b.icon} ${b.name}</b><br>
-                        <small style="color:var(--text-sub); font-size:11px;">${b.sub}</small>
-                    </div>
-                    <b style="font-family:Montserrat; font-size:18px; color:var(--primary)">$${rem.toLocaleString()}</b>
+                    <b>${b.icon} ${b.name}</b>
+                    <b style="font-family:Montserrat; color:var(--primary)">$${rem.toLocaleString()}</b>
                 </div>
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
-                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:700;">
-                    <span>預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</span>
-                    <span>${Math.round(ratio)}%</span>
-                </div>
+                <small style="color:var(--text-sub); font-weight:700;">預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</small>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
+        // 渲染存錢 (修正：不使用 k 並完整顯示金額)
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
             let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
-            let amountDisplay = isFixed ? `已存 <b>$${s.bal.toLocaleString()}</b> / 目標 $${s.target.toLocaleString()}` : `已存 <b>$${s.bal.toLocaleString()}</b> / 無限存`;
+            
+            let amountLabel = isFixed ? `已存 <b>$${s.bal.toLocaleString()}</b> / 目標 $${s.target.toLocaleString()}` : `已存 <b>$${s.bal.toLocaleString()}</b> / 無限存中`;
 
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
                 <div class="save-info">
@@ -268,22 +268,23 @@
                 </div>
                 <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${barWidth}%; background:linear-gradient(90deg, #818CF8, var(--primary))"></div></div>
                 <div class="save-footer">
-                    <div class="save-amount">${amountDisplay}</div>
+                    <div class="save-amount">${amountLabel}</div>
                     <div style="font-size:10px; color:var(--primary); font-weight:900;">＋ 點擊存入</div>
                 </div>
             </div>`;
         });
         document.getElementById('saveArea').innerHTML = sHtml;
 
+        // 信用卡還款區美化更新
         let bankHtml = "";
         for(let k in db.banks) {
             let b = db.banks[k];
-            bankHtml += `<div class="bank-card">
-                <div class="bank-info">
-                    <div class="bank-name">${b.name}</div>
-                    <div class="bank-debt">負債: $${b.bal.toLocaleString()}</div>
+            bankHtml += `<div class="repay-card">
+                <div class="repay-info">
+                    <b>${b.name}</b>
+                    <small>負債: $${b.bal.toLocaleString()}</small>
                 </div>
-                <button class="repay-btn" onclick="openActionModal('repay', '${k}')">還款</button>
+                <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">立即還款</button>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
@@ -319,7 +320,7 @@
             let tag = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
             hHtml += `<div class="history-item">
                 <div><span class="tag ${tag}">${h.type}</span><b>${h.name}</b><br><small>${h.time}</small></div>
-                <div style="text-align:right;"><b style="font-family:Montserrat">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer" onclick="deleteItem(${idx})">撤銷</small></div>
+                <div style="text-align:right;"><b style="font-family:Montserrat">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:700" onclick="deleteItem(${idx})">撤銷</small></div>
             </div>`;
         });
         document.getElementById('historyList').innerHTML = hHtml || "<p style='text-align:center; padding:40px; color:var(--text-sub)'>尚無明細</p>";
@@ -411,3 +412,4 @@
 </script>
 </body>
 </html>
+
