@@ -59,7 +59,11 @@
         .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s; }
         
         .quick-panel { background: var(--surface); border-radius: 32px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .cat-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); /* 欄位改為 5 */
+    gap: 6px; /* 間項縮小一點點 */
+    margin-bottom: 20px;
         .cat-item { background: #F8FAFC; border-radius: 18px; padding: 14px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.3s; cursor: pointer;}
         .cat-item.active { background: var(--primary-grad); color: white; border-color: transparent; transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(99,102,241,0.3); }
         
@@ -136,10 +140,12 @@
         <div class="section-header">✍️ 快速記帳</div>
         <div class="quick-panel">
             <div class="cat-grid" id="catGrid">
-                <div class="cat-item active" onclick="changeCat('food', this)">🍽️ 飲食</div>
-                <div class="cat-item" onclick="changeCat('fun', this)">🎯 娛樂</div>
-                <div class="cat-item" onclick="changeCat('taffi', this)">🐶 Taffi</div>
-                <div class="cat-item" onclick="changeCat('fixed', this)">☁️ 訂閱</div>
+    <div class="cat-item active" onclick="changeCat('food', this)">🍽️ 飲食</div>
+    <div class="cat-item" onclick="changeCat('fun', this)">🎯 娛樂</div>
+    <div class="cat-item" onclick="changeCat('taffi', this)">🐶 Taffi</div>
+    <div class="cat-item" onclick="changeCat('fixed', this)">☁️ 訂閱</div>
+    <div class="cat-item" onclick="changeCat('other', this)">🧧 其他</div>
+</div>
             </div>
             <div class="sub-cat-grid" id="subCatGrid"></div>
             <input type="text" id="itemName" style="width:100%; border:none; font-size:16px; font-weight:800; text-align:center; outline:none; background:transparent;" placeholder="輸入消費內容...">
@@ -220,7 +226,8 @@
         food: ["早餐", "午餐", "晚餐", "外送", "零食", "其他"],
         fun: ["美甲", "健身", "購物", "羽球", "電影", "其他"],
         taffi: ["飼料", "美容", "醫療", "零食", "玩具", "其他"],
-        fixed: ["電信費", "Gogoro", "iCloud", "其他"]
+        fixed: ["電信費", "Gogoro", "iCloud", "其他"],
+        other: ["人情", "欠錢", "雜項", "其他"]
     };
 
     const initialBanks = {
@@ -249,7 +256,8 @@
                     fixed: { goal: 1300, spent: 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
                     taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi基本支出", sub: "飼料$1000、美容$1000、醫療$500、零食$500" },
                     food: { goal: 10000, spent: 0, icon: "🍽️", name: "飲食支出", sub: "早餐$1000、午餐$4000、晚餐$5000、其他$500" },
-                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" }
+                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" },
+                    other: { goal: 5000, spent: 0, icon: "🧧", name: "其他預算", sub: "人情、欠錢、其他雜項" }
                 },
                 history: []
             };
