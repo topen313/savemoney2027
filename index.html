@@ -8,107 +8,95 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
         :root {
-            --bg: #F0F2F5;
+            --bg: #F8FAFC;
             --surface: #FFFFFF;
             --primary: #6366F1;
             --primary-light: #EEF2FF;
-            --primary-grad: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
             --success: #10B981;
             --danger: #F43F5E;
             --warning: #F59E0B;
-            --text-main: #0F172A;
+            --text-main: #1E293B;
             --text-sub: #64748B;
             --border: #E2E8F0;
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 120px; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 100px; }
 
         .top-nav {
-            position: sticky; top: 0; background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 16px 24px; z-index: 1000;
+            position: sticky; top: 0; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px); padding: 12px 20px; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            border-bottom: 1px solid var(--border);
         }
-        .month-selector { border: 1.5px solid var(--primary-light); background: var(--surface); color: var(--primary); padding: 8px 14px; border-radius: 12px; font-weight: 900; font-size: 14px; outline: none; }
+        .month-selector { border: none; background: var(--primary-light); color: var(--primary); padding: 8px 16px; border-radius: 14px; font-weight: 900; font-size: 14px; outline: none; }
 
-        .container { padding: 20px; max-width: 500px; margin: auto; }
-        .page { display: none; animation: pageIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .container { padding: 16px; max-width: 500px; margin: auto; }
+        .page { display: none; animation: pageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .page.active { display: block; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .status-card {
-            background: var(--primary-grad); border-radius: 32px; padding: 28px;
-            margin-bottom: 28px; box-shadow: 0 20px 40px -10px rgba(99,102,241,0.4);
-            position: relative; overflow: hidden; color: white;
+            background: var(--surface); border-radius: 28px; padding: 24px;
+            margin-bottom: 24px; box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.8); position: relative; overflow: hidden;
         }
-        .status-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
-        .status-val { font-family: 'Montserrat'; font-size: 42px; font-weight: 900; letter-spacing: -1.5px; margin: 4px 0; }
+        .status-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: var(--primary); }
+        .status-val { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: var(--primary); letter-spacing: -1px; }
 
-        .card { 
-            background: var(--surface); border-radius: 24px; padding: 22px; margin-bottom: 16px; 
-            border: 1px solid rgba(255,255,255,0.7); transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-        }
-        .section-header { font-size: 14px; font-weight: 900; color: var(--text-sub); margin: 32px 0 16px 8px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
-        .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .card { background: var(--surface); border-radius: 22px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
+        .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 28px 0 14px 6px; letter-spacing: 1.5px; text-transform: uppercase; }
 
-        .progress-bg { height: 12px; background: #F1F5F9; border-radius: 20px; margin: 14px 0; overflow: hidden; border: 1px solid #E2E8F0; }
-        .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s; }
+        .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 12px 0; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s; }
         
-        .quick-panel { background: var(--surface); border-radius: 32px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-        .cat-item { background: #F8FAFC; border-radius: 18px; padding: 14px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.3s; }
-        .cat-item.active { background: var(--primary-grad); color: white; border-color: transparent; transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(99,102,241,0.3); }
+        .quick-panel { background: var(--surface); border-radius: 28px; padding: 22px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+        .cat-item { background: #F8FAFC; border-radius: 16px; padding: 12px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.2s; }
+        .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99,102,241,0.2); }
         
-        .sub-cat-grid { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding: 4px 0; }
+        .sub-cat-grid { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px; padding-bottom: 5px; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
-        .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; }
+        .sub-item { background: var(--primary-light); border-radius: 12px; padding: 8px 16px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; animation: subIn 0.3s ease backwards; }
+        @keyframes subIn { from { opacity: 0; transform: translateX(5px); } to { opacity: 1; transform: translateX(0); } }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 48px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 10px 0; }
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.3s; }
+        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 5px 0; }
+        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 14px; padding: 12px 2px; font-weight: 800; font-size: 11px; text-align: center; }
         .pay-btn.active { background: var(--text-main); color: white; }
 
-        .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4); cursor: pointer; }
+        .submit-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--primary); color: white; font-weight: 900; border: none; margin-top: 18px; box-shadow: 0 8px 20px rgba(99,102,241,0.25); }
+        .submit-btn:active { transform: scale(0.97); }
 
-        .repay-card { background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; }
+        .save-card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); transition: 0.3s; position: relative; }
+        .save-info { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
+        .save-title { font-weight: 900; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 2px 8px; border-radius: 8px; }
+        .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .save-amount { font-size: 11px; color: var(--text-sub); font-weight: 700; }
+        .save-amount b { color: var(--text-main); font-family: 'Montserrat'; font-size: 14px; }
 
-        .save-card { background: var(--surface); border-radius: 28px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; }
-        .save-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; width: 100%; }
-        .save-title { font-weight: 900; font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 10px; }
-        .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; width: 100%; }
-
-        .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 2px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
-        
-        .history-item { background: var(--surface); margin-bottom: 12px; padding: 20px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .tag { font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 900; margin-right: 8px; }
+        .history-item { background: var(--surface); margin-bottom: 10px; padding: 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+        .tag { font-size: 10px; padding: 3px 8px; border-radius: 7px; font-weight: 900; margin-right: 6px; }
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
         .tag-save { background: #E0E7FF; color: var(--primary); }
 
-        /* 備份按鈕樣式 */
-        .backup-tool { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px; padding-bottom: 30px; }
-        .btn-tool { padding: 12px; border-radius: 14px; border: 1px dashed var(--text-sub); background: transparent; color: var(--text-sub); font-weight: 700; font-size: 12px; cursor: pointer; }
-
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 18px 12px 35px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1000; }
-        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; opacity: 0.6; }
-        .tab.active { color: var(--primary); opacity: 1; }
-
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 32px; border-radius: 40px; z-index: 3000; width: 92%; max-width: 400px; display: none; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25); transition: 0.4s; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 32px; z-index: 3000; width: 90%; max-width: 380px; display: none; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
+        #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2500; display: none; }
+
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 15px 10px 30px; border-top: 1px solid var(--border); z-index: 1000; }
+        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; }
+        .tab.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <div style="font-weight:900; font-size: 20px;">維恩計畫 <span style="color:var(--primary)">V55</span></div>
+    <div style="font-weight:900; font-size: 18px;">維恩計畫 <span style="color:var(--primary)">V55</span></div>
     <select id="monthPicker" class="month-selector" onchange="changeMonth()">
         <option value="4" selected>4月預算</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
     </select>
@@ -117,11 +105,11 @@
 <div class="container">
     <div id="mainPage" class="page active">
         <div class="status-card">
-            <div id="daysLeft" style="font-size:12px; font-weight:700; opacity:0.9; margin-bottom:4px;"></div>
+            <div id="daysLeft" style="font-size:11px; font-weight:800; color:var(--text-sub); margin-bottom:4px;"></div>
             <div id="totalAvailable" class="status-val">$0</div>
-            <div style="display:flex; justify-content:space-between; align-items: center; margin-top:8px;">
-                <small style="opacity:0.8; font-weight:700;">剩餘總預算</small>
-                <div id="dailyAllowance" style="background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:10px; font-weight:900; font-size:13px;"></div>
+            <div style="display:flex; justify-content:space-between; margin-top:2px;">
+                <small style="color:var(--text-sub); font-weight:700;">剩餘總預算</small>
+                <div id="dailyAllowance" style="color:var(--success); font-weight:900; font-size:13px;"></div>
             </div>
         </div>
 
@@ -137,7 +125,7 @@
                 <div class="cat-item" onclick="changeCat('fixed', this)">☁️ 訂閱</div>
             </div>
             <div class="sub-cat-grid" id="subCatGrid"></div>
-            <input type="text" id="itemName" style="width:100%; border:none; font-size:16px; font-weight:800; text-align:center; outline:none; background:transparent;" placeholder="輸入消費內容...">
+            <input type="text" id="itemName" style="width:100%; border:none; font-size:15px; font-weight:800; text-align:center; outline:none; background:transparent;" placeholder="輸入內容...">
             <input type="number" id="itemAmt" class="amt-input" placeholder="0" pattern="\d*">
             <div class="pay-grid">
                 <div class="pay-btn" onclick="setPay('cash', this)">💵 現金</div>
@@ -151,39 +139,30 @@
         <div class="section-header">💳 信用卡還款</div>
         <div id="bankArea"></div>
 
-        <div class="section-header">🏦 年度存錢累積</div>
+        <div class="section-header">🏦 年度存錢累積 (成就解鎖)</div>
         <div id="saveArea"></div>
     </div>
 
     <div id="historyPage" class="page">
-        <div class="section-header">💸 消費摘要</div>
-        <div class="total-expense-card">
-            <div>
-                <b style="font-size:15px; color:var(--text-sub);">本月消費總支出</b><br>
-                <small style="color:var(--text-sub); font-size:11px;">僅計算快速記帳之明細</small>
-            </div>
-            <b id="historyTotalAmt" style="font-family:Montserrat; font-size:28px; color:var(--danger)">$0</b>
-        </div>
         <div class="section-header">📜 往來明細</div>
         <div id="historyList"></div>
-
-        <div class="section-header">⚙️ 跨瀏覽器搬移工具</div>
-        <div class="backup-tool">
-            <button class="btn-tool" onclick="exportData()">📤 複製備份代碼</button>
-            <button class="btn-tool" onclick="importData()">📥 貼上還原紀錄</button>
-        </div>
     </div>
 </div>
 
-<div id="modalOverlay" onclick="closeModal()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); z-index:2500; display:none;"></div>
+<div id="modalOverlay" onclick="closeModal()"></div>
 <div id="actionModal" class="modal">
     <h3 id="modalTitle" style="margin:0; font-weight:900;">標題</h3>
-    <p id="modalSub" style="font-size:14px; color:var(--text-sub); margin: 12px 0 24px;"></p>
-    <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:35px;" placeholder="0">
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <p id="modalSub" style="font-size:12px; color:var(--text-sub); margin: 10px 0 20px;"></p>
+    <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:30px;" placeholder="0">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none;" onclick="closeModal()">取消</button>
         <button id="modalConfirmBtn" class="submit-btn" style="margin:0;">確認</button>
     </div>
+</div>
+
+<div class="bottom-bar">
+    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
+    <div class="tab" onclick="switchPage('history', this)">📝 明細紀錄</div>
 </div>
 
 <script>
@@ -199,23 +178,19 @@
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
-    const initialBanks = {
-        cathay: { name: "國泰世華", bal: 56570, limit: 100000 },
-        taishin: { name: "台新銀行", bal: 22000, limit: 100000 },
-        fubon: { name: "富邦銀行", bal: 36773, limit: 100000 }
-    };
-
-    let savedData = JSON.parse(localStorage.getItem("taffi_v55"));
-
-    let db = savedData || {
+    let db = JSON.parse(localStorage.getItem("taffi_v55")) || {
         months: {},
-        banks: initialBanks,
+        banks: {
+            cathay: { name: "國泰世華", bal: 0 },
+            taishin: { name: "台新銀行", bal: 0 },
+            fubon: { name: "富邦銀行", bal: 0 }
+        },
         savings: [
             { name: "機車保養", target: 3000, bal: 0, type: "fixed" },
-            { name: "年度保險", target: 3000, bal: 0, type: "fixed" },
+            { name: "年度保險", target: 12000, bal: 0, type: "fixed" },
             { name: "眉毛美容", target: 4500, bal: 0, type: "fixed" },
-            { name: "旅遊基金", target: 0, bal: 0, type: "inf" },
-            { name: "Taffi 備用金", target: 0, bal: 0, type: "inf" }
+            { name: "旅遊基金", target: "無限存", bal: 0, type: "inf" },
+            { name: "Taffi 備用金", target: "無限存", bal: 0, type: "inf" }
         ]
     };
 
@@ -223,20 +198,20 @@
         if(!db.months[m]) {
             db.months[m] = {
                 budgets: {
-                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "訂閱支出", sub: "電信費$500、Gogoro$499、iCloud$300" },
-                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi基本支出", sub: "飼料$1000、美容$1000、醫療$500、零食$500" },
-                    food: { goal: 10000, spent: 0, icon: "🍽️", name: "飲食支出", sub: "早餐$1000、午餐$4000、晚餐$5000、其他$500" },
-                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂支出", sub: "美甲$1400、健身$1080、購物$1500、羽球$500" }
+                    fixed: { goal: 1300, spent: 0, icon: "☁️", name: "訂閱支出", detail: "含電信費、Gogoro、iCloud" },
+                    taffi: { goal: 3000, spent: 0, icon: "🐶", name: "Taffi基本支出", detail: "含飼料、美容、醫療、零食" },
+                    food: { goal: 10000, spent: 0, icon: "🍽️", name: "飲食支出", detail: "含早、午、晚餐、其他" },
+                    fun: { goal: 5000, spent: 0, icon: "🎯", name: "娛樂支出", detail: "含美甲、健身、購物、羽球" }
                 },
                 history: []
             };
         }
     }
 
-    function getGradientColor(ratio) {
-        if (ratio < 50) return '#6366F1';
-        if (ratio < 80) return '#F59E0B';
-        return '#F43F5E';
+    function getInterpolatedColor(ratio) {
+        if (ratio < 50) return 'var(--primary)';
+        if (ratio < 85) return 'var(--warning)';
+        return 'var(--danger)';
     }
 
     function render() {
@@ -250,73 +225,65 @@
             let rem = b.goal - b.spent;
             totalRem += rem;
             let ratio = Math.min((b.spent / b.goal) * 100, 100);
-            let color = getGradientColor(ratio);
-            let warningText = ratio >= 50 ? '<span style="color:#F43F5E; font-size:10px; font-weight:900; margin-left:6px; background:#FFE4E6; padding:2px 6px; border-radius:6px;">⚠️ 警告 50%</span>' : '';
-
+            let color = getInterpolatedColor(ratio);
+            let warning = ratio >= 50 ? `<span style="color:var(--danger); font-size:10px; animation:pulse 1s infinite;">⚠️ 超過 50%</span>` : '';
+            
             bHtml += `<div class="card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                     <div>
-                        <b style="font-size:16px;">${b.icon} ${b.name}</b>${warningText}<br>
-                        <small style="color:var(--text-sub); font-size:11px; font-weight:700; line-height:1.6">${b.sub || ''}</small>
+                        <b style="font-size:15px;">${b.icon} ${b.name}</b><br>
+                        <small style="color:var(--text-sub); font-size:10px;">${b.detail}</small>
                     </div>
-                    <b style="font-family:Montserrat; font-size:20px; color:var(--primary)">$${rem.toLocaleString()}</b>
+                    <div style="text-align:right;">
+                        <b style="font-family:Montserrat; display:block;">$${rem.toLocaleString()}</b>
+                        ${warning}
+                    </div>
                 </div>
                 <div class="progress-bg"><div class="progress-fill" style="width:${ratio}%; background:${color}"></div></div>
-                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-sub); font-weight:900; margin-top:4px;">
-                    <span>已用 $${b.spent.toLocaleString()} / $${b.goal.toLocaleString()}</span>
-                    <span style="color:${color}">${Math.round(ratio)}%</span>
+                <div style="display:flex; justify-content:space-between;">
+                    <small style="color:var(--text-sub)">預算 $${b.goal.toLocaleString()} / 已花 $${b.spent.toLocaleString()}</small>
+                    <small style="font-weight:900; color:${color}">${Math.round(ratio)}%</small>
                 </div>
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
-        let bankHtml = "";
-        for(let k in db.banks) {
-            let b = db.banks[k];
-            let currentBal = b.bal || 0;
-            let limit = b.limit || 100000;
-            let ratio = Math.min((currentBal / limit) * 100, 100);
-            bankHtml += `<div class="repay-card">
-                <div class="repay-header">
-                    <div class="repay-info">
-                        <b style="font-size:16px;">${b.name}</b>
-                        <small style="color:var(--danger); font-family:Montserrat; font-weight:900;">負債: $${currentBal.toLocaleString()}</small>
-                    </div>
-                    <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
-                </div>
-                <div class="progress-bg" style="height:6px; margin:0; border:none; background:#F8FAFC;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.6"></div></div>
-            </div>`;
-        }
-        document.getElementById('bankArea').innerHTML = bankHtml;
-
         let sHtml = "";
         db.savings.forEach((s, idx) => {
             let isFixed = s.type === 'fixed';
             let percent = isFixed ? Math.min(Math.round((s.bal / s.target) * 100), 100) : null;
-            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">持續存</span>`;
+            let percentTag = isFixed ? `<span class="save-percent">${percent}%</span>` : `<span class="save-percent" style="background:#FEF3C7; color:#D97706;">🔥 持續存</span>`;
             let barWidth = isFixed ? percent : (s.bal > 0 ? 100 : 0);
             sHtml += `<div class="save-card" onclick="openActionModal('save', ${idx})">
                 <div class="save-info">
                     <div class="save-title">${isFixed?'📍':'✨'} ${s.name}</div>
                     ${percentTag}
                 </div>
-                <div class="progress-bg" style="height:8px; margin:0; border:none;"><div class="progress-fill" style="width:${barWidth}%; background:var(--primary-grad)"></div></div>
+                <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${barWidth}%; background:linear-gradient(90deg, #818CF8, var(--primary))"></div></div>
                 <div class="save-footer">
-                    <div style="font-size:12px; color:var(--text-sub); font-weight:700;">已存 <b style="color:var(--text-main); font-family:Montserrat; font-size:15px;">$${s.bal.toLocaleString()}</b> ${isFixed?' / $'+s.target.toLocaleString():''}</div>
-                    <div style="font-size:11px; color:var(--primary); font-weight:900;">存入 ＋</div>
+                    <div class="save-amount">已存 <b>$${s.bal.toLocaleString()}</b> ${isFixed?' / 目標 $'+s.target.toLocaleString():''}</div>
+                    <div style="font-size:10px; color:var(--primary); font-weight:900;">＋ 點擊存入</div>
                 </div>
             </div>`;
         });
         document.getElementById('saveArea').innerHTML = sHtml;
 
+        let bankHtml = "";
+        for(let k in db.banks) {
+            let b = db.banks[k];
+            bankHtml += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div><b>${b.name}</b><br><small style="color:var(--danger)">負債: $${b.bal.toLocaleString()}</small></div>
+                <button style="padding:8px 16px; border-radius:10px; border:none; background:var(--text-main); color:white; font-weight:900;" onclick="openActionModal('repay', '${k}')">還款</button>
+            </div>`;
+        }
+        document.getElementById('bankArea').innerHTML = bankHtml;
         renderSubCats();
         renderHistory();
-
         const now = new Date();
         const daysLeft = new Date(now.getFullYear(), currentMonth, 0).getDate() - now.getDate() + 1;
-        document.getElementById('daysLeft').innerText = `本月剩餘 ${Math.max(1, daysLeft)} 天`;
-        document.getElementById('dailyAllowance').innerText = `今日預算：$${Math.floor(totalRem/Math.max(1, daysLeft)).toLocaleString()}`;
+        document.getElementById('daysLeft').innerText = `${currentMonth}月剩餘約 ${Math.max(1, daysLeft)} 天`;
+        document.getElementById('dailyAllowance').innerText = `今日可花：$${Math.floor(totalRem/Math.max(1, daysLeft)).toLocaleString()}`;
     }
 
     function renderSubCats() {
@@ -324,27 +291,29 @@
         grid.innerHTML = "";
         subCategories[currentCat].forEach(sub => {
             const div = document.createElement('div');
-            div.className = 'sub-item' + (document.getElementById('itemName').value === sub ? ' active' : '');
+            div.className = 'sub-item';
             div.innerText = sub;
-            div.onclick = () => { document.getElementById('itemName').value = sub; renderSubCats(); };
+            div.onclick = () => {
+                document.getElementById('itemName').value = sub;
+                document.querySelectorAll('.sub-item').forEach(i => i.classList.remove('active'));
+                div.classList.add('active');
+            };
             grid.appendChild(div);
         });
     }
 
     function renderHistory() {
         let hHtml = "";
-        let totalExpenseAmt = 0;
         db.months[currentMonth].history.forEach((h, idx) => {
-            let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
-            let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
-            if(h.type === 'expense') totalExpenseAmt += h.amt;
+            let tag = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
+            // 顯示日期與時間
+            let displayTime = h.date ? `${h.date} ${h.time}` : h.time;
             hHtml += `<div class="history-item">
-                <div><span class="tag ${tagClass}">${tagMap[h.type]}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
-                <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small></div>
+                <div><span class="tag ${tag}">${h.type}</span><b>${h.name}</b><br><small>${displayTime}</small></div>
+                <div style="text-align:right;"><b style="font-family:Montserrat">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer" onclick="deleteItem(${idx})">撤銷</small></div>
             </div>`;
         });
-        document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>尚無紀錄</div>";
-        document.getElementById('historyTotalAmt').innerText = "$" + totalExpenseAmt.toLocaleString();
+        document.getElementById('historyList').innerHTML = hHtml || "<p style='text-align:center; padding:40px; color:var(--text-sub)'>尚無明細</p>";
     }
 
     function changeCat(c, el) {
@@ -363,10 +332,22 @@
     function submitExpense() {
         let a = Number(document.getElementById('itemAmt').value);
         let n = document.getElementById('itemName').value;
-        if(!a || !currentPay || !n) return alert("資料填一下喔！");
+        if(!a || !currentPay || !n) return alert("請填齊！");
+        let now = new Date();
+        let dateStr = (now.getMonth() + 1) + "/" + now.getDate();
+        let timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
         db.months[currentMonth].budgets[currentCat].spent += a;
         if(currentPay !== 'cash') db.banks[currentPay].bal += a;
-        db.months[currentMonth].history.unshift({ type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+        db.months[currentMonth].history.unshift({ 
+            type: 'expense', 
+            name: n, 
+            amt: a, 
+            cat: currentCat, 
+            pay: currentPay, 
+            date: dateStr,
+            time: timeStr 
+        });
         document.getElementById('itemAmt').value = "";
         saveAndRender();
     }
@@ -374,22 +355,39 @@
     function openActionModal(type, target) {
         activeAction = { type, target };
         const modal = document.getElementById('actionModal');
-        document.getElementById('modalTitle').innerText = type==='repay'?'還款確認':'存錢確認';
+        document.getElementById('modalTitle').innerText = type==='repay'?'還款確認':'存款確認';
         document.getElementById('modalSub').innerText = "目標: " + (type==='repay'?db.banks[target].name:db.savings[target].name);
         modal.style.display = 'block';
         document.getElementById('modalOverlay').style.display = 'block';
         setTimeout(() => modal.classList.add('active'), 10);
+        document.getElementById('modalConfirmBtn').onclick = confirmAction;
     }
 
     function confirmAction() {
         const amt = Number(document.getElementById('modalAmt').value);
         if(!amt) return;
+        let now = new Date();
+        let dateStr = (now.getMonth() + 1) + "/" + now.getDate();
+        let timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
         if(activeAction.type === 'repay') {
             db.banks[activeAction.target].bal -= amt;
-            db.months[currentMonth].history.unshift({ type: 'repay', name: db.banks[activeAction.target].name+"還款", amt: amt, time: new Date().toLocaleTimeString() });
+            db.months[currentMonth].history.unshift({ 
+                type: 'repay', 
+                name: db.banks[activeAction.target].name+"還款", 
+                amt: amt, 
+                date: dateStr,
+                time: timeStr 
+            });
         } else {
             db.savings[activeAction.target].bal += amt;
-            db.months[currentMonth].history.unshift({ type: 'save', name: db.savings[activeAction.target].name+"存款", amt: amt, time: new Date().toLocaleTimeString() });
+            db.months[currentMonth].history.unshift({ 
+                type: 'save', 
+                name: db.savings[activeAction.target].name+"存款", 
+                amt: amt, 
+                date: dateStr,
+                time: timeStr 
+            });
         }
         document.getElementById('modalAmt').value = "";
         closeModal();
@@ -398,11 +396,14 @@
 
     function closeModal() {
         document.getElementById('actionModal').classList.remove('active');
-        setTimeout(() => { document.getElementById('actionModal').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none'; }, 300);
+        setTimeout(() => {
+            document.getElementById('actionModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }, 300);
     }
 
     function deleteItem(idx) {
-        if(!confirm("確定要撤銷嗎？")) return;
+        if(!confirm("確定撤銷？")) return;
         let h = db.months[currentMonth].history[idx];
         if(h.type === 'expense') {
             db.months[currentMonth].budgets[h.cat].spent -= h.amt;
@@ -417,49 +418,18 @@
     }
 
     function saveAndRender() { localStorage.setItem("taffi_v55", JSON.stringify(db)); render(); }
-    
     function switchPage(p, el) {
         document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
         document.getElementById(p + 'Page').classList.add('active');
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
     }
-    
     function changeMonth() { currentMonth = document.getElementById('monthPicker').value; render(); }
 
-    // 搬移功能實作
-    function exportData() {
-        const dataStr = localStorage.getItem("taffi_v55");
-        const el = document.createElement('textarea');
-        el.value = dataStr;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        alert("備份代碼已複製！請去 Safari 開啟網頁後點擊「貼上還原紀錄」。");
-    }
-
-    function importData() {
-        const input = prompt("請貼上剛才複製的備份代碼：");
-        if(input) {
-            try {
-                JSON.parse(input);
-                localStorage.setItem("taffi_v55", input);
-                location.reload();
-            } catch(e) {
-                alert("代碼格式不正確，請重新複製一次。");
-            }
-        }
-    }
-
-    document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
 </script>
-
-<div class="bottom-bar">
-    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
-    <div class="tab" onclick="switchPage('history', this)">📝 明細紀錄</div>
-</div>
-
+<style>
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+</style>
 </body>
 </html>
