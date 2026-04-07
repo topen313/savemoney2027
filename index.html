@@ -332,21 +332,31 @@
     }
 
     function renderHistory() {
-        let hHtml = "";
-        let totalExpenseAmt = 0;
-        db.months[currentMonth].history.forEach((h, idx) => {
-            let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
-            let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
-            if(h.type === 'expense') totalExpenseAmt += h.amt;
-            hHtml += `<div class="history-item">
-                <div><span class="tag ${tagClass}">${tagMap[h.type]}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
-                <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small></div>
-            </div>`;
-        });
-        document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>尚無紀錄</div>";
-        document.getElementById('historyTotalAmt').innerText = "$" + totalExpenseAmt.toLocaleString();
-    }
+    let hHtml = "";
+    let totalExpenseAmt = 0;
+    db.months[currentMonth].history.forEach((h, idx) => {
+        let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
+        let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
+        if(h.type === 'expense') totalExpenseAmt += h.amt;
+        
+        // 修改這裡：判斷是否有日期，有的話就顯示
+        let displayTime = h.date ? `${h.date} ${h.time}` : h.time;
 
+        hHtml += `<div class="history-item">
+            <div>
+                <span class="tag ${tagClass}">${tagMap[h.type]}</span>
+                <b style="font-size:15px;">${h.name}</b><br>
+                <small style="color:var(--text-sub); font-weight:700;">${displayTime}</small>
+            </div>
+            <div style="text-align:right;">
+                <b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br>
+                <small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small>
+            </div>
+        </div>`;
+    });
+    document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>尚無紀錄</div>";
+    document.getElementById('historyTotalAmt').innerText = "$" + totalExpenseAmt.toLocaleString();
+}
     function changeCat(c, el) {
         currentCat = c;
         document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
@@ -360,16 +370,32 @@
         el.classList.add('active');
     }
 
-    function submitExpense() {
-        let a = Number(document.getElementById('itemAmt').value);
-        let n = document.getElementById('itemName').value;
-        if(!a || !currentPay || !n) return alert("資料填一下喔！");
-        db.months[currentMonth].budgets[currentCat].spent += a;
-        if(currentPay !== 'cash') db.banks[currentPay].bal += a;
-        db.months[currentMonth].history.unshift({ type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-        document.getElementById('itemAmt').value = "";
-        saveAndRender();
-    }
+    ffunction submitExpense() {
+    let a = Number(document.getElementById('itemAmt').value);
+    let n = document.getElementById('itemName').value;
+    if(!a || !currentPay || !n) return alert("資料填一下喔！");
+    
+    // 新增這兩行獲取日期
+    let now = new Date();
+    let dateStr = (now.getMonth() + 1) + "/" + now.getDate(); // 格式如 4/7
+
+    db.months[currentMonth].budgets[currentCat].spent += a;
+    if(currentPay !== 'cash') db.banks[currentPay].bal += a;
+    
+    // 在物件中加入 date: dateStr
+    db.months[currentMonth].history.unshift({ 
+        type: 'expense', 
+        name: n, 
+        amt: a, 
+        cat: currentCat, 
+        pay: currentPay, 
+        date: dateStr, // 加入日期
+        time: now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+    });
+    
+    document.getElementById('itemAmt').value = "";
+    saveAndRender();
+}
 
     function openActionModal(type, target) {
         activeAction = { type, target };
@@ -382,19 +408,36 @@
     }
 
     function confirmAction() {
-        const amt = Number(document.getElementById('modalAmt').value);
-        if(!amt) return;
-        if(activeAction.type === 'repay') {
-            db.banks[activeAction.target].bal -= amt;
-            db.months[currentMonth].history.unshift({ type: 'repay', name: db.banks[activeAction.target].name+"還款", amt: amt, time: new Date().toLocaleTimeString() });
-        } else {
-            db.savings[activeAction.target].bal += amt;
-            db.months[currentMonth].history.unshift({ type: 'save', name: db.savings[activeAction.target].name+"存款", amt: amt, time: new Date().toLocaleTimeString() });
-        }
-        document.getElementById('modalAmt').value = "";
-        closeModal();
-        saveAndRender();
+    const amt = Number(document.getElementById('modalAmt').value);
+    if(!amt) return;
+    
+    let now = new Date();
+    let dateStr = (now.getMonth() + 1) + "/" + now.getDate();
+    let timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    if(activeAction.type === 'repay') {
+        db.banks[activeAction.target].bal -= amt;
+        db.months[currentMonth].history.unshift({ 
+            type: 'repay', 
+            name: db.banks[activeAction.target].name+"還款", 
+            amt: amt, 
+            date: dateStr, // 加入日期
+            time: timeStr 
+        });
+    } else {
+        db.savings[activeAction.target].bal += amt;
+        db.months[currentMonth].history.unshift({ 
+            type: 'save', 
+            name: db.savings[activeAction.target].name+"存款", 
+            amt: amt, 
+            date: dateStr, // 加入日期
+            time: timeStr 
+        });
     }
+    document.getElementById('modalAmt').value = "";
+    closeModal();
+    saveAndRender();
+}
 
     function closeModal() {
         document.getElementById('actionModal').classList.remove('active');
