@@ -68,9 +68,6 @@
         .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer;}
         .sub-item.active { background: var(--text-main); color: white; }
 
-        .date-input-wrap { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; gap: 8px; color: var(--text-sub); font-size: 13px; font-weight: 700; }
-        .date-picker-custom { border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; font-family: 'Montserrat'; font-weight: 700; color: var(--primary); background: #F8FAFC; outline: none; cursor: pointer; }
-
         .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 48px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 10px 0; }
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.3s; cursor: pointer;}
@@ -78,9 +75,12 @@
 
         .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4); cursor: pointer; }
 
-        .repay-card { background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; }
+        .date-input-wrap { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; gap: 8px; color: var(--text-sub); font-size: 13px; font-weight: 700; }
+        .date-picker-custom { border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; font-family: 'Montserrat'; font-weight: 700; color: var(--primary); background: #F8FAFC; outline: none; cursor: pointer; }
+
+        .repay-card { background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; z-index: 5; }
+        .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; }
 
         .save-card { background: var(--surface); border-radius: 28px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; cursor: pointer; }
         .save-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; width: 100%; }
@@ -105,8 +105,6 @@
 
         .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 32px; border-radius: 40px; z-index: 3000; width: 92%; max-width: 400px; display: none; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25); transition: 0.4s; }
         .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
-
-        .detail-list-wrap { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
 
         .date-divider {
             font-size: 11px; font-weight: 900; color: var(--text-sub); background: #F1F5F9;
@@ -164,7 +162,7 @@
             <button class="submit-btn" onclick="submitExpense()">確認送出紀錄</button>
         </div>
 
-        <div class="section-header">💳 信用卡管理 (點擊查看明細)</div>
+        <div class="section-header">💳 信用卡還款</div>
         <div id="bankArea"></div>
 
         <div class="section-header">🏦 年度存錢累積</div>
@@ -203,20 +201,9 @@
     </div>
 </div>
 
-<div id="bankDetailModal" class="modal">
-    <h3 id="bankDetailTitle" style="margin:0; font-weight:900;">銀行明細</h3>
-    <p style="font-size:13px; color:var(--text-sub); margin: 8px 0 20px;">本月刷卡紀錄：</p>
-    <div id="bankDetailList" class="detail-list-wrap"></div>
-    <div style="border-top: 1px solid var(--border); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-weight: 700; color: var(--text-sub);">本月小計</span>
-        <b id="bankDetailTotal" style="font-family: Montserrat; font-size: 24px; color: var(--danger);">$0</b>
-    </div>
-    <button class="submit-btn" style="margin-top:20px; background:#1E293B;" onclick="closeAllModals()">關閉</button>
-</div>
-
 <div id="detailModal" class="modal" style="max-height: 85vh; overflow: hidden; display: none; flex-direction: column; padding: 24px;">
     <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 id="detailModalTitle" style="margin:0; font-weight:900;">分類明細</h3>
+        <h3 id="detailModalTitle" style="margin:0; font-weight:900;">明細</h3>
         <button onclick="closeDetailModal()" style="background: var(--primary-light); border:none; border-radius:12px; padding:8px 16px; font-weight:900; color:var(--primary); font-size:13px; cursor:pointer;">關閉</button>
     </div>
     <div id="detailList" style="flex: 1; overflow-y: auto; padding-right: 4px;"></div>
@@ -226,11 +213,16 @@
     </div>
 </div>
 
+<div class="bottom-bar">
+    <div class="tab active" onclick="switchPage('main', this)">🏠 儀表板</div>
+    <div class="tab" onclick="switchPage('history', this)">📝 明細紀錄</div>
+</div>
+
 <script>
     let currentMonth = "4";
     let currentCat = 'food';
     let currentPay = '';
-    let currentPayName = '';
+    let currentPayName = ''; 
     let activeAction = {};
     let currentDetailCat = '';
 
@@ -243,9 +235,9 @@
     };
 
     const initialBanks = {
-        cathay: { name: "國泰世華", bal: 0, limit: 100000 },
-        taishin: { name: "台新銀行", bal: 0, limit: 100000 },
-        fubon: { name: "富邦銀行", bal: 0, limit: 100000 }
+        cathay: { name: "國泰世華", bal: 56570, limit: 100000 },
+        taishin: { name: "台新銀行", bal: 22000, limit: 100000 },
+        fubon: { name: "富邦銀行", bal: 36773, limit: 100000 }
     };
 
     let savedData = JSON.parse(localStorage.getItem("taffi_v55"));
@@ -328,13 +320,13 @@
             let currentBal = b.bal || 0;
             let limit = b.limit || 100000;
             let ratio = Math.min((currentBal / limit) * 100, 100);
-            bankHtml += `<div class="repay-card" onclick="openBankDetail('${k}')">
+            bankHtml += `<div class="repay-card">
                 <div class="repay-header">
-                    <div class="repay-info">
-                        <b style="font-size:16px;">${b.name}</b>
-                        <small style="color:var(--danger); font-family:Montserrat; font-weight:900;">本月累計: $${currentBal.toLocaleString()}</small>
+                    <div class="repay-info" onclick="openBankDetailModal('${k}')" style="cursor:pointer; flex:1;">
+                        <b style="font-size:16px;">${b.name} 🔍</b><br>
+                        <small style="color:var(--danger); font-family:Montserrat; font-weight:900;">負債: $${currentBal.toLocaleString()}</small>
                     </div>
-                    <button class="repay-btn-action" onclick="event.stopPropagation(); openActionModal('repay', '${k}')">還款</button>
+                    <button class="repay-btn-action" onclick="openActionModal('repay', '${k}')">還款</button>
                 </div>
                 <div class="progress-bg" style="height:6px; margin:0; border:none; background:#F8FAFC;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.6"></div></div>
             </div>`;
@@ -408,38 +400,6 @@
         document.getElementById('historyTotalAmt').innerText = "$" + totalExpenseAmt.toLocaleString();
     }
 
-    function openBankDetail(bankKey) {
-        const bank = db.banks[bankKey];
-        document.getElementById('bankDetailTitle').innerText = `${bank.name} 明細`;
-        
-        const history = db.months[currentMonth].history;
-        const filtered = history.filter(h => h.pay === bankKey && h.type === 'expense');
-        
-        let html = "";
-        let total = 0;
-        if (filtered.length === 0) {
-            html = "<div style='text-align:center; padding:20px; color:var(--text-sub);'>本月尚無刷卡紀錄</div>";
-        } else {
-            filtered.forEach(h => {
-                total += h.amt;
-                html += `
-                    <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f8f9fa;">
-                        <div>
-                            <b style="font-size:14px;">${h.name}</b><br>
-                            <small style="color:var(--text-sub);">${h.date} ${h.time}</small>
-                        </div>
-                        <b style="font-family:Montserrat; font-size:14px;">$${h.amt.toLocaleString()}</b>
-                    </div>`;
-            });
-        }
-        document.getElementById('bankDetailList').innerHTML = html;
-        document.getElementById('bankDetailTotal').innerText = "$" + total.toLocaleString();
-        
-        document.getElementById('bankDetailModal').style.display = 'block';
-        document.getElementById('modalOverlay').style.display = 'block';
-        setTimeout(() => document.getElementById('bankDetailModal').classList.add('active'), 10);
-    }
-
     function changeCat(c, el) {
         currentCat = c;
         document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
@@ -449,7 +409,7 @@
 
     function setPay(p, el) {
         currentPay = p;
-        currentPayName = el.innerText.split(' ')[1];
+        currentPayName = el.innerText.split(' ')[1]; 
         document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
     }
@@ -477,44 +437,43 @@
         setDefaultDate();
     }
 
+    // 開啟分類明細
     function openDetailModal(cat) {
         currentDetailCat = cat;
         const budget = db.months[currentMonth].budgets[cat];
-        document.getElementById('detailModalTitle').innerText = `${budget.icon} ${budget.name}`;
-        renderDetailList();
+        document.getElementById('detailModalTitle').innerText = `${budget.icon} ${budget.name} 明細`;
+        renderDetailList(cat);
         document.getElementById('detailModal').style.display = 'flex';
         document.getElementById('modalOverlay').style.display = 'block';
         setTimeout(() => document.getElementById('detailModal').classList.add('active'), 10);
     }
 
-    function renderDetailList() {
+    // 新增：開啟銀行信用卡明細
+    function openBankDetailModal(bankKey) {
+        const bank = db.banks[bankKey];
+        document.getElementById('detailModalTitle').innerText = `${bank.name} 刷卡明細`;
+        renderBankDetailList(bankKey);
+        document.getElementById('detailModal').style.display = 'flex';
+        document.getElementById('modalOverlay').style.display = 'block';
+        setTimeout(() => document.getElementById('detailModal').classList.add('active'), 10);
+    }
+
+    function renderDetailList(cat) {
         const history = db.months[currentMonth].history;
-        const filtered = history.map((h, i) => ({...h, idx: i}))
-                               .filter(h => h.cat === currentDetailCat && h.type === 'expense');
+        const filtered = history.map((h, i) => ({...h, idx: i})).filter(h => h.cat === cat && h.type === 'expense');
         const listWrap = document.getElementById('detailList');
-        let html = "";
-        let lastDate = "";
-        let total = 0;
+        let html = "", total = 0, lastDate = "";
 
         if (filtered.length === 0) {
             html = "<div style='text-align:center; padding:40px 0; color:var(--text-sub);'>尚無紀錄</div>";
         } else {
             filtered.forEach((h) => {
-                if (h.date !== lastDate) {
-                    html += `<div class="date-divider">📅 ${h.date}</div>`;
-                    lastDate = h.date;
-                }
+                if (h.date !== lastDate) { html += `<div class="date-divider">📅 ${h.date}</div>`; lastDate = h.date; }
                 total += h.amt;
-                html += `
-                    <div class="history-item" style="padding: 14px; margin-bottom: 8px;">
-                        <div>
-                            <b style="font-size:14px;">${h.name}</b><br>
-                            <small style="color:var(--text-sub); font-size:11px;">${h.time} · ${h.payName}</small>
-                        </div>
-                        <div style="text-align:right;">
-                            <b style="font-family:Montserrat; font-size:14px;">-$${h.amt.toLocaleString()}</b><br>
-                            <small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteFromDetail(${h.idx})">撤銷</small>
-                        </div>
+                html += `<div class="history-item" style="padding: 14px; margin-bottom: 8px;">
+                        <div><b style="font-size:14px;">${h.name}</b><br><small style="color:var(--text-sub); font-size:11px;">${h.time} · ${h.payName}</small></div>
+                        <div style="text-align:right;"><b style="font-family:Montserrat; font-size:14px;">-$${h.amt.toLocaleString()}</b><br>
+                        <small style="color:var(--danger); cursor:pointer; font-size:10px;" onclick="deleteFromDetail(${h.idx})">撤銷</small></div>
                     </div>`;
             });
         }
@@ -522,35 +481,49 @@
         document.getElementById('detailTotal').innerText = "$" + total.toLocaleString();
     }
 
-    function deleteFromDetail(idx) {
-        deleteItem(idx);
-        renderDetailList();
+    function renderBankDetailList(bankKey) {
+        const history = db.months[currentMonth].history;
+        const filtered = history.filter(h => h.pay === bankKey && h.type === 'expense');
+        const listWrap = document.getElementById('detailList');
+        let html = "", total = 0, lastDate = "";
+
+        if (filtered.length === 0) {
+            html = "<div style='text-align:center; padding:40px 0; color:var(--text-sub);'>本月此卡尚無消費</div>";
+        } else {
+            filtered.forEach((h) => {
+                if (h.date !== lastDate) { html += `<div class="date-divider">📅 ${h.date}</div>`; lastDate = h.date; }
+                total += h.amt;
+                html += `<div class="history-item" style="padding: 14px; margin-bottom: 8px;">
+                        <div><b style="font-size:14px;">${h.name}</b><br><small style="color:var(--text-sub); font-size:11px;">${h.time}</small></div>
+                        <div style="text-align:right;"><b style="font-family:Montserrat; font-size:14px; color:var(--danger)">-$${h.amt.toLocaleString()}</b></div>
+                    </div>`;
+            });
+        }
+        listWrap.innerHTML = html;
+        document.getElementById('detailTotal').innerText = "$" + total.toLocaleString();
     }
+
+    function deleteFromDetail(idx) { deleteItem(idx); closeDetailModal(); }
 
     function closeDetailModal() {
         document.getElementById('detailModal').classList.remove('active');
-        setTimeout(() => { 
-            document.getElementById('detailModal').style.display = 'none'; 
-            document.getElementById('modalOverlay').style.display = 'none'; 
-        }, 300);
+        setTimeout(() => { document.getElementById('detailModal').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none'; }, 300);
     }
 
     function openActionModal(type, target) {
         activeAction = { type, target };
-        const modal = document.getElementById('actionModal');
         document.getElementById('modalTitle').innerText = type==='repay'?'還款確認':'存錢確認';
         document.getElementById('modalSub').innerText = "目標: " + (type==='repay'?db.banks[target].name:db.savings[target].name);
-        modal.style.display = 'block';
+        document.getElementById('actionModal').style.display = 'block';
         document.getElementById('modalOverlay').style.display = 'block';
-        setTimeout(() => modal.classList.add('active'), 10);
+        setTimeout(() => document.getElementById('actionModal').classList.add('active'), 10);
     }
 
     function confirmAction() {
         const amt = Number(document.getElementById('modalAmt').value);
         if(!amt) return;
-        let now = new Date();
-        let dateStr = (now.getMonth() + 1) + "/" + now.getDate();
-        let timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        let dateStr = (new Date().getMonth() + 1) + "/" + new Date().getDate();
+        let timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
         if(activeAction.type === 'repay') {
             db.banks[activeAction.target].bal -= amt;
@@ -566,12 +539,7 @@
 
     function closeModal() {
         document.getElementById('actionModal').classList.remove('active');
-        document.getElementById('bankDetailModal').classList.remove('active');
-        setTimeout(() => { 
-            document.getElementById('actionModal').style.display = 'none'; 
-            document.getElementById('bankDetailModal').style.display = 'none'; 
-            document.getElementById('modalOverlay').style.display = 'none'; 
-        }, 300);
+        setTimeout(() => { document.getElementById('actionModal').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none'; }, 300);
     }
 
     function closeAllModals() { closeModal(); closeDetailModal(); }
@@ -592,14 +560,12 @@
     }
 
     function saveAndRender() { localStorage.setItem("taffi_v55", JSON.stringify(db)); render(); }
-    
     function switchPage(p, el) {
         document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
         document.getElementById(p + 'Page').classList.add('active');
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
     }
-    
     function changeMonth() { currentMonth = document.getElementById('monthPicker').value; render(); }
 
     function exportData() {
