@@ -549,23 +549,23 @@
         }
     }
 
-        // 🌟 只帶入資料、不自動送出的完美版本
+           // 🌟 物理防禦版：只帶入資料，並徹底阻斷任何自動送出的可能
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const amt = urlParams.get('amt');
         let pay = urlParams.get('pay'); 
         
-        // 預設填入項目名稱
-        document.getElementById('itemName').value = "捷徑記帳"; 
-
-        // 1. 自動帶入金額
+        // 1. 自動帶入金額（但不觸發任何輸入框的變更事件，防止被監聽）
         if (amt) {
-            document.getElementById('itemAmt').value = amt;
+            const amtInput = document.getElementById('itemAmt');
+            if (amtInput) {
+                amtInput.value = amt;
+            }
         }
         
         // 2. 自動判定並勾選預設卡片
         if (pay) {
-            // 如果是選選單裡的 Open 錢包，就自動對應到現金(cash)，其他都是國泰(cathay)
+            // 如果是 Open 錢包，就自動對應到現金(cash)，其他都是國泰(cathay)
             if (pay.includes("Open") || pay === "cash") {
                 pay = "cash";
             } else {
@@ -574,17 +574,25 @@
 
             const payBtn = document.getElementById(`btn-${pay}`);
             if (payBtn) {
-                setPay(pay, payBtn); // 自動幫妳點選卡片
+                // 解除 active 狀態再重新填入，單純改變外觀，不觸發點擊
+                document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
+                payBtn.classList.add('active');
+                currentPay = pay; // 直接改全域變數，不呼叫會觸發送出的 setPay 函式
             }
         }
 
-        // 3. 🛑 移除自動送出邏輯，讓畫面停留在輸入好的狀態
+        // 3. 🛑 關鍵防禦：清除網址參數，並且「不聚焦」在任何會觸發 Enter 的地方
         if (amt) {
-            document.getElementById('itemAmt').focus();
-            // 清除網址參數，避免下次重新整理網頁時又帶入舊資料
-            window.history.replaceState({}, document.title, window.location.pathname);
+            // 讓網頁游標隨便停在空白處，不聚焦在金額輸入框，防止鍵盤 Enter 送出
+            document.body.focus();
+            
+            // 立刻洗掉網址列的參數，這樣網頁就算想抓參數去自動送出，也抓不到東西！
+            setTimeout(() => {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }, 50);
         }
     });
+
     document.getElementById('monthPicker').value = currentMonth;
     document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
