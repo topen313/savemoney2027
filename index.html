@@ -72,11 +72,9 @@
         .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; transition: 0.2s; }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        /* 輸入區改為上下排列，確保絕對不會被擠出螢幕之外 */
         .input-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 10px 0 18px; width: 100%; }
         .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; padding: 0; }
         
-        /* 放在金額下方的精緻一鍵送出大鈕 */
         .amt-submit-node { background: var(--primary-grad); color: white; border: none; width: 64px; height: 40px; border-radius: 20px; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px -3px rgba(124, 115, 230, 0.35); cursor: pointer; transition: transform 0.1s ease; }
         .amt-submit-node:active { transform: scale(0.92); }
 
@@ -507,7 +505,7 @@
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
-        alert("備份代碼已複製！請去 Safari 開啟網頁後點擊「貼上還原紀錄」。");
+        alert("備份代碼已複製！请去 Safari 開啟網頁後點擊「貼上還原紀錄」。");
     }
 
     function importData() {
@@ -551,6 +549,7 @@
         }
     }
 
+    // ⭐ 核心修正：接收到捷徑傳過來的資料時，填入並自動觸發「➔ 送出鈕」
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const amt = urlParams.get('amt');
@@ -574,7 +573,15 @@
             }
         }
 
-        if (amt) {
+        // 🚀 全自動關鍵：如果「金額」和「卡片」都有，就幫妳一秒自動按送出！
+        if (amt && pay) {
+            setTimeout(() => {
+                submitExpense();
+                // 記完帳後，自動把網址的參數拿掉，以免一直重複記帳
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert("🎉 捷徑自動記帳成功！");
+            }, 150);
+        } else if (amt) {
             document.getElementById('itemAmt').focus();
         }
     });
