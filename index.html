@@ -549,35 +549,37 @@
         }
     }
 
-    // ⭐ 核心修正：接收到捷徑傳過來的資料時，填入並自動觸發「➔ 送出鈕」
+    // ⭐ 完美終極監聽器：接收捷徑傳過來的資料並自動判定預設卡片
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const amt = urlParams.get('amt');
-        const pay = urlParams.get('pay'); 
-        const name = urlParams.get('name'); 
+        let pay = urlParams.get('pay'); 
         
-        if (name) {
-            document.getElementById('itemName').value = name;
-        } else {
-            document.getElementById('itemName').value = "捷徑記帳"; 
-        }
+        document.getElementById('itemName').value = "捷徑記帳"; 
 
         if (amt) {
             document.getElementById('itemAmt').value = amt;
         }
         
         if (pay) {
+            // 🌟 智慧判定：如果是 Open 錢包就預設現金(cash)，其他通通預設國泰(cathay)
+            if (pay.includes("Open")) {
+                pay = "cash";
+            } else {
+                pay = "cathay";
+            }
+
             const payBtn = document.getElementById(`btn-${pay}`);
             if (payBtn) {
                 setPay(pay, payBtn);
             }
         }
 
-        // 🚀 全自動關鍵：如果「金額」和「卡片」都有，就幫妳一秒自動按送出！
+        // 🚀 全自動：金額和卡片都判定好後，0.1 秒內自動送出
         if (amt && pay) {
             setTimeout(() => {
                 submitExpense();
-                // 記完帳後，自動把網址的參數拿掉，以免一直重複記帳
+                // 清理網址參數避免重新整理時重複記帳
                 window.history.replaceState({}, document.title, window.location.pathname);
                 alert("🎉 捷徑自動記帳成功！");
             }, 150);
