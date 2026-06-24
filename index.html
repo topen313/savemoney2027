@@ -12,7 +12,6 @@
             --surface: #FFFFFF;
             --primary: #7C73E6;
             --primary-light: #F3F2FF;
-            /* 調整為韓系低飽和度燕麥柔紫漸層 */
             --primary-grad: linear-gradient(135deg, #9A93EC 0%, #7C73E6 100%);
             --success: #10B981;
             --danger: #F43F5E;
@@ -33,7 +32,6 @@
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid rgba(226, 232, 240, 0.5);
         }
-        /* 乾淨的標題，不帶任何版號 */
         .nav-title { font-weight: 900; font-size: 20px; letter-spacing: -0.5px; }
         .nav-title span { color: var(--primary); }
         .month-selector { border: 1.5px solid var(--primary-light); background: var(--surface); color: var(--primary); padding: 8px 14px; border-radius: 14px; font-weight: 900; font-size: 14px; outline: none; }
@@ -43,7 +41,6 @@
         .page.active { display: block; }
         @keyframes pageIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 主視覺卡片細緻化 */
         .status-card {
             background: var(--primary-grad); border-radius: 32px; padding: 26px 28px;
             margin-bottom: 24px; box-shadow: 0 20px 35px -10px rgba(124, 115, 230, 0.35);
@@ -75,7 +72,7 @@
         .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; transition: 0.2s; }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        /* 一鍵送出整合型輸入框區域 */
+        /* 整合型金額輸入框 + 右側一鍵送出小圓鈕 */
         .input-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px 0; position: relative; }
         .amt-input { flex: 1; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; padding: 0; }
         .amt-submit-node { background: var(--primary-grad); color: white; border: none; width: 54px; height: 54px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px -4px rgba(124, 115, 230, 0.4); cursor: pointer; transition: transform 0.1s ease; }
@@ -84,8 +81,6 @@
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.2s; }
         .pay-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
-
-        .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(124, 115, 230, 0.3); cursor: pointer; display: none; } /* 隱藏舊有底部大按鈕，全面改用一鍵送出 */
 
         .repay-card { background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); -webkit-user-select: none; user-select: none; }
         .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -99,7 +94,6 @@
 
         .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 1.5px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
         
-        /* 歷史明細優化為大 Icon 視覺流 */
         .history-item { background: var(--surface); margin-bottom: 12px; padding: 16px 20px; border-radius: 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .history-left { display: flex; align-items: center; gap: 14px; }
         .history-icon-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -161,14 +155,14 @@
             
             <div class="input-container">
                 <input type="number" id="itemAmt" class="amt-input" placeholder="0" pattern="\d*">
-                <button class="amt-submit-node" onclick="submitExpense()">➔</button>
+                <button class="amt-submit-node" id="amtSubmitNode" onclick="submitExpense()">➔</button>
             </div>
 
             <div class="pay-grid">
-                <div class="pay-btn" onclick="setPay('cash', this)">💵 現金</div>
-                <div class="pay-btn" onclick="setPay('cathay', this)">💳 國泰</div>
-                <div class="pay-btn" onclick="setPay('taishin', this)">💳 台新</div>
-                <div class="pay-btn" onclick="setPay('fubon', this)">💳 富邦</div>
+                <div class="pay-btn" id="btn-cash" onclick="setPay('cash', this)">💵 現金</div>
+                <div class="pay-btn" id="btn-cathay" onclick="setPay('cathay', this)">💳 國泰</div>
+                <div class="pay-btn" id="btn-taishin" onclick="setPay('taishin', this)">💳 台新</div>
+                <div class="pay-btn" id="btn-fubon" onclick="setPay('fubon', this)">💳 富邦</div>
             </div>
         </div>
 
@@ -205,8 +199,8 @@
     <p id="modalSub" style="font-size:14px; color:var(--text-sub); margin: 12px 0 24px;"></p>
     <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:35px;" placeholder="0">
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-        <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none; display:block;" onclick="closeModal()">取消</button>
-        <button id="modalConfirmBtn" class="submit-btn" style="margin:0; display:block;">確認</button>
+        <button style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none; border:none; padding:15px; border-radius:20px; font-weight:900;" onclick="closeModal()">取消</button>
+        <button id="modalConfirmBtn" style="margin:0; background:var(--primary-grad); color:white; border:none; padding:15px; border-radius:20px; font-weight:900;">確認</button>
     </div>
 </div>
 
@@ -220,7 +214,7 @@
     const subCategories = {
         food: ["早餐", "午餐", "晚餐", "外送", "零食", "其他"],
         fun: ["美甲", "健身", "購物", "羽球", "電影", "其他"],
-        taffi: ["飼料", "美容", "醫療", "零食", "玩具", "其他"],
+        taffi: ["飼料", "美容", "醫療", "零言", "玩具", "其他"],
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
@@ -264,14 +258,10 @@
         return '#F43F5E';
     }
 
-    /**
-     * 【精緻化修正：修改 3 註解】
-     * 依據信用卡卡債額度比例，呈現柔和三色視覺警告
-     */
     function getBankProgressColor(ratio) {
-        if (ratio < 40) return '#94A3B8'; // 輕度：高級灰藍
-        if (ratio < 80) return '#F59E0B'; // 中度：沉穩亮橘
-        return '#F43F5E'; // 高危：霧面警告紅
+        if (ratio < 40) return '#94A3B8';
+        if (ratio < 80) return '#F59E0B';
+        return '#F43F5E';
     }
 
     function render() {
@@ -316,7 +306,7 @@
             let currentBal = b.bal || 0;
             let limit = b.limit || 100000;
             let ratio = Math.min((currentBal / limit) * 100, 100);
-            let barColor = getBankProgressColor(ratio); // 套用三色視覺
+            let barColor = getBankProgressColor(ratio);
             
             bankHtml += `<div class="repay-card" 
                 ontouchstart="startBankLongPress('${k}')" 
@@ -365,7 +355,6 @@
         let dayAllowanceVal = Math.floor(totalRem / finalDays);
         document.getElementById('dailyAllowance').innerText = `$${dayAllowanceVal.toLocaleString()}`;
 
-        // 動態更新今日可花微型進度環/條
         let dayRatio = totalGoal > 0 ? Math.min((totalRem / totalGoal) * 100, 100) : 100;
         document.getElementById('cardMiniFill').style.width = `${dayRatio}%`;
     }
@@ -386,10 +375,6 @@
         });
     }
 
-    /**
-     * 【精緻化修正：修改 4 註解】
-     * 渲染歷史紀錄明細，將其升級為含左側類別大圓形 Icon 的高感視覺排版
-     */
     function renderHistory() {
         let hHtml = "";
         let totalExpenseAmt = 0;
@@ -397,7 +382,6 @@
             let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
             let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
             
-            // 根據記帳大分類配發精緻 Icon 的樣式
             let iconStr = "📝";
             let circleClass = "history-circle-other";
             if(h.type === 'expense') {
@@ -406,11 +390,8 @@
                 else if(h.cat === 'fun') { iconStr = "🎯"; circleClass = "history-circle-fun"; }
                 else if(h.cat === 'taffi') { iconStr = "🐶"; circleClass = "history-circle-taffi"; }
                 else if(h.cat === 'fixed') { iconStr = "☁️"; circleClass = "history-circle-fixed"; }
-            } else if(h.type === 'repay') {
-                iconStr = "💳";
-            } else if(h.type === 'save') {
-                iconStr = "🏦";
-            }
+            } else if(h.type === 'repay') { iconStr = "💳"; } 
+            else if(h.type === 'save') { iconStr = "🏦"; }
 
             hHtml += `<div class="history-item">
                 <div class="history-left">
@@ -441,19 +422,18 @@
     function setPay(p, el) {
         currentPay = p;
         document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
+        if(el) el.classList.add('active');
     }
 
     function submitExpense() {
         let a = Number(document.getElementById('itemAmt').value);
         let n = document.getElementById('itemName').value;
-        if(!a || !currentPay || !n) return alert("資料填一下喔！");
+        if(!a || !currentPay || !n) return alert("消費內容、金額、支付工具都要選好喔！");
         db.months[currentMonth].budgets[currentCat].spent += a;
         if(currentPay !== 'cash') db.banks[currentPay].bal += a;
         db.months[currentMonth].history.unshift({ type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
         document.getElementById('itemAmt').value = "";
         
-        // 微特效：送出時讓卡片與數字產生輕微縮放震動，增加觸覺真實感
         const card = document.getElementById('statusCard');
         card.style.transform = "scale(0.96)";
         setTimeout(() => { card.style.transform = "scale(1)"; }, 100);
@@ -569,6 +549,54 @@
         }
     }
 
+    /**
+     * 【新增功能：半自動快速記帳流核心監聽】
+     * 1. 網頁開啟時偵測網址參數，自動帶入捷徑傳過來的金額與支付工具。
+     * 2. 監聽虛擬鍵盤 Enter 鍵，按完直接一鍵送出。
+     */
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const amt = urlParams.get('amt');
+        const pay = urlParams.get('pay'); // 傳入參數如 cash, cathay, taishin, fubon
+        const name = urlParams.get('name'); // 可選，可由捷徑直接帶入預設名稱，如「捷徑記帳」
+        
+        if (name) {
+            document.getElementById('itemName').value = name;
+        } else {
+            document.getElementById('itemName').value = "捷徑記帳"; // 預設防呆名稱
+        }
+
+        if (amt) {
+            document.getElementById('itemAmt').value = amt;
+        }
+        
+        if (pay) {
+            const payBtn = document.getElementById(`btn-${pay}`);
+            if (payBtn) {
+                setPay(pay, payBtn);
+            }
+        }
+
+        if (amt) {
+            // 自動聚焦到金額欄位，方便按完直接完成
+            document.getElementById('itemAmt').focus();
+        }
+    });
+
+    // 鍵盤「前往 / Enter」直接送出事件監聽
+    document.getElementById('itemAmt').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            submitExpense();
+        }
+    });
+    document.getElementById('itemName').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            document.getElementById('itemAmt').focus();
+        }
+    });
+
     document.getElementById('monthPicker').value = currentMonth;
     document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
@@ -581,5 +609,3 @@
 
 </body>
 </html>
-
-```
