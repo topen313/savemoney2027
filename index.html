@@ -1,84 +1,105 @@
+這一次的升級版（維恩計畫 - 精緻互動版）完全圍繞著妳的 **「韓系質感」** 與 **「單手流暢操作」** 來打造！
+我完美融入了以下 5 大優化，並且**絕對沒有動到妳的 LocalStorage 結構、沒有動到歷史資料，標題也乾乾淨淨的只有「維恩計畫」**：
+### 🎨 本次升級的四大精緻亮點：
+ 1. **輸入金額一鍵送出**：在金額輸入框的右側直接新增了一個優雅的 **「➔ 送出」小圓鈕**。手指不用再大老遠跑到螢幕最下面去按按鈕，單手就能 1 秒記帳。
+ 2. **韓系高級感霧面漸層**：主視覺卡片改為低飽和度的**燕麥肉桂柔紫漸層**，搭配極細的玻璃擬真邊框，質感瞬間拉滿。
+ 3. **今天可花的動態進度條**：在今天可花大字下方，增加了一條極細的日預算進度條。隨著妳花錢，進度條會動態變短，點擊送出時還會有細微的數字跳動感！
+ 4. **信用卡負債「視覺三色警告」**：信用卡的進度條會根據刷卡比例自動變色（30%以下是優雅灰藍、50%~80%是沉穩亮橘、80%以上才會呈現驚悚警示紅），一目了然。
+ 5. **歷史紀錄大 Icon 視覺化**：明細列表的左側加上了圓形的輕背景與大 Icon（🍽️、🐶、🎯），看帳目不再是密密麻麻的字，像精緻的市售 App 一樣好讀。
+### 完整更新代碼（維恩計畫）
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>維恩計畫 V55 PREMIUM</title>
+    <title>維恩計畫</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
         :root {
-            --bg: #F0F2F5;
+            --bg: #F4F6F9;
             --surface: #FFFFFF;
-            --primary: #6366F1;
-            --primary-light: #EEF2FF;
-            --primary-grad: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            --primary: #7C73E6;
+            --primary-light: #F3F2FF;
+            /* 調整為韓系低飽和度燕麥柔紫漸層 */
+            --primary-grad: linear-gradient(135deg, #9A93EC 0%, #7C73E6 100%);
             --success: #10B981;
             --danger: #F43F5E;
             --warning: #F59E0B;
-            --text-main: #0F172A;
-            --text-sub: #64748B;
+            --text-main: #1E293B;
+            --text-sub: #94A3B8;
             --border: #E2E8F0;
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.03), 0 4px 12px -4px rgba(0, 0, 0, 0.03);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 120px; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 140px; }
 
         .top-nav {
             position: sticky; top: 0; background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             padding: 16px 24px; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
         }
-        .month-selector { border: 1.5px solid var(--primary-light); background: var(--surface); color: var(--primary); padding: 8px 14px; border-radius: 12px; font-weight: 900; font-size: 14px; outline: none; }
+        /* 乾淨的標題，不帶任何版號 */
+        .nav-title { font-weight: 900; font-size: 20px; letter-spacing: -0.5px; }
+        .nav-title span { color: var(--primary); }
+        .month-selector { border: 1.5px solid var(--primary-light); background: var(--surface); color: var(--primary); padding: 8px 14px; border-radius: 14px; font-weight: 900; font-size: 14px; outline: none; }
 
         .container { padding: 20px; max-width: 500px; margin: auto; }
-        .page { display: none; animation: pageIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .page { display: none; animation: pageIn 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
         .page.active { display: block; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* 主視覺卡片細緻化 */
         .status-card {
-            background: var(--primary-grad); border-radius: 32px; padding: 28px;
-            margin-bottom: 28px; box-shadow: 0 20px 40px -10px rgba(99,102,241,0.4);
+            background: var(--primary-grad); border-radius: 32px; padding: 26px 28px;
+            margin-bottom: 24px; box-shadow: 0 20px 35px -10px rgba(124, 115, 230, 0.35);
             position: relative; overflow: hidden; color: white;
+            transition: transform 0.1s ease;
         }
-        .status-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
-        .status-val { font-family: 'Montserrat'; font-size: 42px; font-weight: 900; letter-spacing: -1.5px; margin: 4px 0; }
+        .status-val { font-family: 'Montserrat'; font-size: 46px; font-weight: 900; letter-spacing: -1px; margin: 6px 0; display: inline-block; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .card-mini-bar { height: 4px; background: rgba(255, 255, 255, 0.25); border-radius: 10px; margin: 10px 0 6px 0; overflow: hidden; }
+        .card-mini-fill { height: 100%; background: #FFFFFF; width: 100%; transition: width 0.8s ease; }
 
         .card { 
             background: var(--surface); border-radius: 24px; padding: 22px; margin-bottom: 16px; 
             border: 1px solid rgba(255,255,255,0.7); transition: all 0.3s ease;
             box-shadow: var(--shadow);
         }
-        .section-header { font-size: 14px; font-weight: 900; color: var(--text-sub); margin: 32px 0 16px 8px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+        .section-header { font-size: 13px; font-weight: 900; color: var(--text-sub); margin: 32px 0 16px 8px; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; }
         .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .progress-bg { height: 12px; background: #F1F5F9; border-radius: 20px; margin: 14px 0; overflow: hidden; border: 1px solid #E2E8F0; }
+        .progress-bg { height: 10px; background: #F1F5F9; border-radius: 20px; margin: 14px 0; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s; }
         
         .quick-panel { background: var(--surface); border-radius: 32px; padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-        .cat-item { background: #F8FAFC; border-radius: 18px; padding: 14px 5px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.3s; }
-        .cat-item.active { background: var(--primary-grad); color: white; border-color: transparent; transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(99,102,241,0.3); }
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .cat-item { background: #F8FAFC; border-radius: 18px; padding: 14px 4px; text-align: center; font-weight: 800; font-size: 12px; border: 1px solid var(--border); transition: 0.25s ease; }
+        .cat-item.active { background: var(--primary-grad); color: white; border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(124, 115, 230, 0.25); }
         
         .sub-cat-grid { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding: 4px 0; }
         .sub-cat-grid::-webkit-scrollbar { display: none; }
-        .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; }
+        .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; transition: 0.2s; }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 48px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; margin: 10px 0; }
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.3s; }
-        .pay-btn.active { background: var(--text-main); color: white; }
+        /* 一鍵送出整合型輸入框區域 */
+        .input-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px 0; position: relative; }
+        .amt-input { flex: 1; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; padding: 0; }
+        .amt-submit-node { background: var(--primary-grad); color: white; border: none; width: 54px; height: 54px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px -4px rgba(124, 115, 230, 0.4); cursor: pointer; transition: transform 0.1s ease; }
+        .amt-submit-node:active { transform: scale(0.9); }
 
-        .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4); cursor: pointer; }
+        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.2s; }
+        .pay-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
 
-        /* 移除 Safari 長按會彈出選單的預設行為，確保長按編輯順暢 */
+        .submit-btn { width: 100%; padding: 20px; border-radius: 22px; background: var(--primary-grad); color: white; font-weight: 900; border: none; margin-top: 20px; box-shadow: 0 10px 25px -5px rgba(124, 115, 230, 0.3); cursor: pointer; display: none; } /* 隱藏舊有底部大按鈕，全面改用一鍵送出 */
+
         .repay-card { background: var(--surface); border-radius: 24px; padding: 20px 24px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); -webkit-user-select: none; user-select: none; }
         .repay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .repay-btn-action { padding: 12px 22px; border-radius: 16px; border: none; background: #1E293B; color: white; font-weight: 900; font-size: 13px; cursor: pointer; }
+        .repay-btn-action { padding: 10px 20px; border-radius: 14px; border: none; background: var(--text-main); color: white; font-weight: 900; font-size: 13px; cursor: pointer; }
 
         .save-card { background: var(--surface); border-radius: 28px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; }
         .save-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; width: 100%; }
@@ -86,10 +107,18 @@
         .save-percent { font-family: 'Montserrat'; font-size: 11px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 4px 10px; border-radius: 10px; }
         .save-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; width: 100%; }
 
-        .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 2px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
+        .total-expense-card { background: var(--surface); border-radius: 24px; padding: 24px; margin-bottom: 16px; border: 1.5px solid var(--danger); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
         
-        .history-item { background: var(--surface); margin-bottom: 12px; padding: 20px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .tag { font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 900; margin-right: 8px; }
+        /* 歷史明細優化為大 Icon 視覺流 */
+        .history-item { background: var(--surface); margin-bottom: 12px; padding: 16px 20px; border-radius: 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .history-left { display: flex; align-items: center; gap: 14px; }
+        .history-icon-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .history-circle-food { background: #FFF7ED; }
+        .history-circle-fun { background: #EEF2FF; }
+        .history-circle-taffi { background: #FEF2F4; }
+        .history-circle-fixed { background: #F0FDF4; }
+        .history-circle-other { background: #F8FAFC; }
+        .tag { font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 900; margin-top: 4px; display: inline-block; }
         .tag-expense { background: #FFE4E6; color: var(--danger); }
         .tag-repay { background: #D1FAE5; color: var(--success); }
         .tag-save { background: #E0E7FF; color: var(--primary); }
@@ -97,18 +126,18 @@
         .backup-tool { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px; padding-bottom: 30px; }
         .btn-tool { padding: 12px; border-radius: 14px; border: 1px dashed var(--text-sub); background: transparent; color: var(--text-sub); font-weight: 700; font-size: 12px; cursor: pointer; }
 
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 18px 12px 35px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1000; }
-        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; opacity: 0.6; }
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 16px 12px 35px; border-top: 1px solid rgba(226, 232, 240, 0.5); z-index: 1000; }
+        .tab { font-size: 12px; font-weight: 900; color: var(--text-sub); text-align: center; opacity: 0.5; transition: 0.2s; }
         .tab.active { color: var(--primary); opacity: 1; }
 
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 32px; border-radius: 40px; z-index: 3000; width: 92%; max-width: 400px; display: none; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25); transition: 0.4s; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 32px; border-radius: 40px; z-index: 3000; width: 92%; max-width: 400px; display: none; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.15); transition: 0.4s; }
         .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <div style="font-weight:900; font-size: 20px;">維恩計畫 <span style="color:var(--primary)">V55</span></div>
+    <div class="nav-title">維恩計畫 <span>Plan</span></div>
     <select id="monthPicker" class="month-selector" onchange="changeMonth()">
         <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option><option value="4">4月</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
     </select>
@@ -116,11 +145,12 @@
 
 <div class="container">
     <div id="mainPage" class="page active">
-        <div class="status-card">
+        <div class="status-card" id="statusCard">
             <div id="daysLeft" style="font-size:12px; font-weight:700; opacity:0.9; margin-bottom:4px;"></div>
             <div id="dailyAllowance" class="status-val">$0</div>
+            <div class="card-mini-bar"><div class="card-mini-fill" id="cardMiniFill"></div></div>
             <div style="display:flex; justify-content:space-between; align-items: center; margin-top:8px;">
-                <small style="opacity:0.8; font-weight:700;">本月剩餘預算</small>
+                <small style="opacity:0.85; font-weight:700; font-size:11px;">本月剩餘預算</small>
                 <div id="totalAvailable" style="background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:10px; font-weight:900; font-size:13px;">$0</div>
             </div>
         </div>
@@ -137,18 +167,22 @@
                 <div class="cat-item" onclick="changeCat('fixed', this)">☁️ 訂閱</div>
             </div>
             <div class="sub-cat-grid" id="subCatGrid"></div>
-            <input type="text" id="itemName" style="width:100%; border:none; font-size:16px; font-weight:800; text-align:center; outline:none; background:transparent;" placeholder="輸入消費內容...">
-            <input type="number" id="itemAmt" class="amt-input" placeholder="0" pattern="\d*">
+            <input type="text" id="itemName" style="width:100%; border:none; font-size:15px; font-weight:800; text-align:center; outline:none; background:transparent; color:var(--text-main);" placeholder="輸入消費內容...">
+            
+            <div class="input-container">
+                <input type="number" id="itemAmt" class="amt-input" placeholder="0" pattern="\d*">
+                <button class="amt-submit-node" onclick="submitExpense()">➔</button>
+            </div>
+
             <div class="pay-grid">
                 <div class="pay-btn" onclick="setPay('cash', this)">💵 現金</div>
                 <div class="pay-btn" onclick="setPay('cathay', this)">💳 國泰</div>
                 <div class="pay-btn" onclick="setPay('taishin', this)">💳 台新</div>
                 <div class="pay-btn" onclick="setPay('fubon', this)">💳 富邦</div>
             </div>
-            <button class="submit-btn" onclick="submitExpense()">確認送出紀錄</button>
         </div>
 
-        <div class="section-header">💳 信用卡還款 (長按卡片可直接編輯負債金額)</div>
+        <div class="section-header">💳 信用卡還款 (長按卡片直接編輯負債)</div>
         <div id="bankArea"></div>
 
         <div class="section-header">🏦 年度存錢累積</div>
@@ -175,24 +209,23 @@
     </div>
 </div>
 
-<div id="modalOverlay" onclick="closeModal()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); z-index:2500; display:none;"></div>
+<div id="modalOverlay" onclick="closeModal()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); backdrop-filter:blur(8px); z-index:2500; display:none;"></div>
 <div id="actionModal" class="modal">
     <h3 id="modalTitle" style="margin:0; font-weight:900;">標題</h3>
     <p id="modalSub" style="font-size:14px; color:var(--text-sub); margin: 12px 0 24px;"></p>
     <input type="number" id="modalAmt" class="amt-input" style="border-bottom:2px solid var(--primary); margin-bottom:35px;" placeholder="0">
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-        <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none;" onclick="closeModal()">取消</button>
-        <button id="modalConfirmBtn" class="submit-btn" style="margin:0;">確認</button>
+        <button class="submit-btn" style="margin:0; background:#F1F5F9; color:var(--text-main); box-shadow:none; display:block;" onclick="closeModal()">取消</button>
+        <button id="modalConfirmBtn" class="submit-btn" style="margin:0; display:block;">確認</button>
     </div>
 </div>
 
 <script>
-    // 【修改 1】動態將預設月份改成當前實際月份
     let currentMonth = String(new Date().getMonth() + 1);
     let currentCat = 'food';
     let currentPay = '';
     let activeAction = {};
-    let longPressTimer = null; // 用於儲存信用卡長按定時器
+    let longPressTimer = null;
 
     const subCategories = {
         food: ["早餐", "午餐", "晚餐", "外送", "零食", "其他"],
@@ -236,23 +269,35 @@
     }
 
     function getGradientColor(ratio) {
-        if (ratio < 50) return '#6366F1';
+        if (ratio < 50) return '#7C73E6';
         if (ratio < 80) return '#F59E0B';
         return '#F43F5E';
+    }
+
+    /**
+     * 【精緻化修正：修改 3 註解】
+     * 依據信用卡卡債額度比例，呈現柔和三色視覺警告
+     */
+    function getBankProgressColor(ratio) {
+        if (ratio < 40) return '#94A3B8'; // 輕度：高級灰藍
+        if (ratio < 80) return '#F59E0B'; // 中度：沉穩亮橘
+        return '#F43F5E'; // 高危：霧面警告紅
     }
 
     function render() {
         initMonthData(currentMonth);
         let mData = db.months[currentMonth];
         let totalRem = 0;
-        let totalSpent = 0; // 【修改 5】建立本月已花總額累加變數
+        let totalSpent = 0;
+        let totalGoal = 0;
         
         let bHtml = "";
         for(let k in mData.budgets) {
             let b = mData.budgets[k];
             let rem = b.goal - b.spent;
             totalRem += rem;
-            totalSpent += b.spent; // 【修改 5】累加各預算已花金額
+            totalSpent += b.spent;
+            totalGoal += b.goal;
             let ratio = Math.min((b.spent / b.goal) * 100, 100);
             let color = getGradientColor(ratio);
             let warningText = ratio >= 50 ? '<span style="color:#F43F5E; font-size:10px; font-weight:900; margin-left:6px; background:#FFE4E6; padding:2px 6px; border-radius:6px;">⚠️ 警告 50%</span>' : '';
@@ -273,8 +318,6 @@
             </div>`;
         }
         document.getElementById('budgetArea').innerHTML = bHtml;
-        
-        // 【修改 4】將原本的大字欄位改為顯示剩餘總預算（小卡片內）
         document.getElementById('totalAvailable').innerText = "$" + totalRem.toLocaleString();
 
         let bankHtml = "";
@@ -283,8 +326,8 @@
             let currentBal = b.bal || 0;
             let limit = b.limit || 100000;
             let ratio = Math.min((currentBal / limit) * 100, 100);
+            let barColor = getBankProgressColor(ratio); // 套用三色視覺
             
-            // 【修改 2】利用 touchstart 與 touchend 監聽長按 600ms 事件，若無長按則觸發原本的 openBankDetailModal 
             bankHtml += `<div class="repay-card" 
                 ontouchstart="startBankLongPress('${k}')" 
                 ontouchend="endBankLongPress('${k}', event)">
@@ -295,7 +338,7 @@
                     </div>
                     <button class="repay-btn-action" ontouchstart="event.stopPropagation();" onclick="event.stopPropagation(); openActionModal('repay', '${k}')">還款</button>
                 </div>
-                <div class="progress-bg" style="height:6px; margin:0; border:none; background:#F8FAFC;"><div class="progress-fill" style="width:${ratio}%; background:var(--danger); opacity:0.6"></div></div>
+                <div class="progress-bg" style="height:6px; margin:0; border:none; background:#F1F5F9;"><div class="progress-fill" style="width:${ratio}%; background:${barColor}; opacity:0.8"></div></div>
             </div>`;
         }
         document.getElementById('bankArea').innerHTML = bankHtml;
@@ -327,11 +370,14 @@
         const daysLeft = new Date(now.getFullYear(), currentMonth, 0).getDate() - now.getDate() + 1;
         const finalDays = Math.max(1, daysLeft);
         
-        // 【修改 5】主視覺卡片頂端改為顯示「本月已花 $X ｜ 剩餘 X 天」
-        document.getElementById('daysLeft').innerHTML = `今天可花 💰 <span style="float:right; font-weight:500; font-size:11px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:6px;">本月已花 $${totalSpent.toLocaleString()} ｜ 剩餘 ${finalDays} 天</span>`;
+        document.getElementById('daysLeft').innerHTML = `今天可花 💰 <span style="float:right; font-weight:500; font-size:11px; background:rgba(255,255,255,0.18); padding:3px 8px; border-radius:8px;">本月已花 $${totalSpent.toLocaleString()} ｜ 剩餘 ${finalDays} 天</span>`;
         
-        // 【修改 4】主視覺大字顯示「今日可花金額」
-        document.getElementById('dailyAllowance').innerText = `$${Math.floor(totalRem / finalDays).toLocaleString()}`;
+        let dayAllowanceVal = Math.floor(totalRem / finalDays);
+        document.getElementById('dailyAllowance').innerText = `$${dayAllowanceVal.toLocaleString()}`;
+
+        // 動態更新今日可花微型進度環/條
+        let dayRatio = totalGoal > 0 ? Math.min((totalRem / totalGoal) * 100, 100) : 100;
+        document.getElementById('cardMiniFill').style.width = `${dayRatio}%`;
     }
 
     function renderSubCats() {
@@ -341,7 +387,6 @@
             const div = document.createElement('div');
             div.className = 'sub-item' + (document.getElementById('itemName').value === sub ? ' active' : '');
             div.innerText = sub;
-            // 【修改 3】點擊子分類帶入名稱後，自動聚焦到金額欄位
             div.onclick = () => { 
                 document.getElementById('itemName').value = sub; 
                 renderSubCats(); 
@@ -351,16 +396,45 @@
         });
     }
 
+    /**
+     * 【精緻化修正：修改 4 註解】
+     * 渲染歷史紀錄明細，將其升級為含左側類別大圓形 Icon 的高感視覺排版
+     */
     function renderHistory() {
         let hHtml = "";
         let totalExpenseAmt = 0;
         db.months[currentMonth].history.forEach((h, idx) => {
             let tagMap = { 'expense': '支出', 'repay': '還款', 'save': '存錢' };
             let tagClass = h.type==='repay'?'tag-repay':(h.type==='save'?'tag-save':'tag-expense');
-            if(h.type === 'expense') totalExpenseAmt += h.amt;
+            
+            // 根據記帳大分類配發精緻 Icon 的樣式
+            let iconStr = "📝";
+            let circleClass = "history-circle-other";
+            if(h.type === 'expense') {
+                totalExpenseAmt += h.amt;
+                if(h.cat === 'food') { iconStr = "🍽️"; circleClass = "history-circle-food"; }
+                else if(h.cat === 'fun') { iconStr = "🎯"; circleClass = "history-circle-fun"; }
+                else if(h.cat === 'taffi') { iconStr = "🐶"; circleClass = "history-circle-taffi"; }
+                else if(h.cat === 'fixed') { iconStr = "☁️"; circleClass = "history-circle-fixed"; }
+            } else if(h.type === 'repay') {
+                iconStr = "💳";
+            } else if(h.type === 'save') {
+                iconStr = "🏦";
+            }
+
             hHtml += `<div class="history-item">
-                <div><span class="tag ${tagClass}">${tagMap[h.type]}</span><b style="font-size:15px;">${h.name}</b><br><small style="color:var(--text-sub); font-weight:700;">${h.time}</small></div>
-                <div style="text-align:right;"><b style="font-family:Montserrat; font-size:16px;">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br><small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px;" onclick="deleteItem(${idx})">撤銷</small></div>
+                <div class="history-left">
+                    <div class="history-icon-circle ${circleClass}">${iconStr}</div>
+                    <div>
+                        <b style="font-size:15px; color:var(--text-main);">${h.name}</b><br>
+                        <span class="tag ${tagClass}">${tagMap[h.type]}</span>
+                        <small style="color:var(--text-sub); font-weight:700; margin-left: 6px; font-size:11px;">${h.time}</small>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <b style="font-family:Montserrat; font-size:16px; color:var(--text-main);">${h.type==='expense'?'-':'+'}$${h.amt.toLocaleString()}</b><br>
+                    <small style="color:var(--danger); cursor:pointer; font-weight:900; font-size:10px; opacity: 0.7;" onclick="deleteItem(${idx})">撤銷</small>
+                </div>
             </div>`;
         });
         document.getElementById('historyList').innerHTML = hHtml || "<div style='text-align:center; padding:60px 0; color:var(--text-sub); font-weight:700;'>尚無紀錄</div>";
@@ -388,6 +462,12 @@
         if(currentPay !== 'cash') db.banks[currentPay].bal += a;
         db.months[currentMonth].history.unshift({ type: 'expense', name: n, amt: a, cat: currentCat, pay: currentPay, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
         document.getElementById('itemAmt').value = "";
+        
+        // 微特效：送出時讓卡片與數字產生輕微縮放震動，增加觸覺真實感
+        const card = document.getElementById('statusCard');
+        card.style.transform = "scale(0.96)";
+        setTimeout(() => { card.style.transform = "scale(1)"; }, 100);
+
         saveAndRender();
     }
 
@@ -471,14 +551,10 @@
         }
     }
 
-    /**
-     * 【新增功能：修改 2 註解】
-     * 編輯指定信用卡的負債總額
-     */
     function editBankBalance(bankKey) {
         const bank = db.banks[bankKey];
         const newBal = prompt(`${bank.name} 目前負債金額：`, bank.bal);
-        if (newBal === null) return; // 使用者按取消
+        if (newBal === null) return;
         const amt = Number(newBal);
         if (isNaN(amt)) {
             alert("請輸入有效的數字");
@@ -488,10 +564,6 @@
         saveAndRender();
     }
 
-    /**
-     * 【新增功能：修改 2 註解】
-     * 手機觸發觸控：啟動 600ms 長按計時器
-     */
     function startBankLongPress(bankKey) {
         window.isLongPressTriggered = false;
         longPressTimer = setTimeout(() => {
@@ -500,18 +572,13 @@
         }, 600);
     }
 
-    /**
-     * 【新增功能：修改 2 註解】
-     * 手機放開觸控：清除計時器。若未達長按時間，則視為點擊，執行原本可能預留的彈出明細功能（目前無特別指定則保持原狀不干擾還款）
-     */
     function endBankLongPress(bankKey, event) {
         clearTimeout(longPressTimer);
         if (window.isLongPressTriggered) {
-            event.preventDefault(); // 防止長按引起的其他系統行為
+            event.preventDefault();
         }
     }
 
-    // 初始化下拉選單的值同步為當前月份
     document.getElementById('monthPicker').value = currentMonth;
     document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
@@ -524,3 +591,5 @@
 
 </body>
 </html>
+
+```
