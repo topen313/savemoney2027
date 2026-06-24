@@ -72,11 +72,13 @@
         .sub-item { background: var(--primary-light); border-radius: 14px; padding: 10px 18px; font-size: 12px; font-weight: 800; color: var(--primary); white-space: nowrap; transition: 0.2s; }
         .sub-item.active { background: var(--text-main); color: white; }
 
-        /* 整合型金額輸入框 + 右側一鍵送出小圓鈕 */
-        .input-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px 0; position: relative; }
-        .amt-input { flex: 1; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; padding: 0; }
-        .amt-submit-node { background: var(--primary-grad); color: white; border: none; width: 54px; height: 54px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px -4px rgba(124, 115, 230, 0.4); cursor: pointer; transition: transform 0.1s ease; }
-        .amt-submit-node:active { transform: scale(0.9); }
+        /* 輸入區改為上下排列，確保絕對不會被擠出螢幕之外 */
+        .input-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 10px 0 18px; width: 100%; }
+        .amt-input { width: 100%; border: none; font-family: 'Montserrat'; font-size: 44px; font-weight: 900; color: var(--primary); text-align: center; background: transparent; outline: none; padding: 0; }
+        
+        /* 放在金額下方的精緻一鍵送出大鈕 */
+        .amt-submit-node { background: var(--primary-grad); color: white; border: none; width: 64px; height: 40px; border-radius: 20px; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px -3px rgba(124, 115, 230, 0.35); cursor: pointer; transition: transform 0.1s ease; }
+        .amt-submit-node:active { transform: scale(0.92); }
 
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .pay-btn { background: #F8FAFC; border: 1px solid var(--border); border-radius: 16px; padding: 14px 2px; font-weight: 800; font-size: 11px; text-align: center; transition: 0.2s; }
@@ -214,7 +216,7 @@
     const subCategories = {
         food: ["早餐", "午餐", "晚餐", "外送", "零食", "其他"],
         fun: ["美甲", "健身", "購物", "羽球", "電影", "其他"],
-        taffi: ["飼料", "美容", "醫療", "零言", "玩具", "其他"],
+        taffi: ["飼料", "美容", "醫療", "零食", "玩具", "其他"],
         fixed: ["電信費", "Gogoro", "iCloud", "其他"]
     };
 
@@ -549,21 +551,16 @@
         }
     }
 
-    /**
-     * 【新增功能：半自動快速記帳流核心監聽】
-     * 1. 網頁開啟時偵測網址參數，自動帶入捷徑傳過來的金額與支付工具。
-     * 2. 監聽虛擬鍵盤 Enter 鍵，按完直接一鍵送出。
-     */
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const amt = urlParams.get('amt');
-        const pay = urlParams.get('pay'); // 傳入參數如 cash, cathay, taishin, fubon
-        const name = urlParams.get('name'); // 可選，可由捷徑直接帶入預設名稱，如「捷徑記帳」
+        const pay = urlParams.get('pay'); 
+        const name = urlParams.get('name'); 
         
         if (name) {
             document.getElementById('itemName').value = name;
         } else {
-            document.getElementById('itemName').value = "捷徑記帳"; // 預設防呆名稱
+            document.getElementById('itemName').value = "捷徑記帳"; 
         }
 
         if (amt) {
@@ -578,12 +575,10 @@
         }
 
         if (amt) {
-            // 自動聚焦到金額欄位，方便按完直接完成
             document.getElementById('itemAmt').focus();
         }
     });
 
-    // 鍵盤「前往 / Enter」直接送出事件監聽
     document.getElementById('itemAmt').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault(); 
