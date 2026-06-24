@@ -549,21 +549,24 @@
         }
     }
 
-    // ⭐ 完美終極監聽器：接收捷徑傳過來的資料並自動判定預設卡片
+        // 🌟 只帶入資料、不自動送出的完美版本
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const amt = urlParams.get('amt');
         let pay = urlParams.get('pay'); 
         
+        // 預設填入項目名稱
         document.getElementById('itemName').value = "捷徑記帳"; 
 
+        // 1. 自動帶入金額
         if (amt) {
             document.getElementById('itemAmt').value = amt;
         }
         
+        // 2. 自動判定並勾選預設卡片
         if (pay) {
-            // 🌟 智慧判定：如果是 Open 錢包就預設現金(cash)，其他通通預設國泰(cathay)
-            if (pay.includes("Open")) {
+            // 如果是選選單裡的 Open 錢包，就自動對應到現金(cash)，其他都是國泰(cathay)
+            if (pay.includes("Open") || pay === "cash") {
                 pay = "cash";
             } else {
                 pay = "cathay";
@@ -571,36 +574,17 @@
 
             const payBtn = document.getElementById(`btn-${pay}`);
             if (payBtn) {
-                setPay(pay, payBtn);
+                setPay(pay, payBtn); // 自動幫妳點選卡片
             }
         }
 
-        // 🚀 全自動：金額和卡片都判定好後，0.1 秒內自動送出
-        if (amt && pay) {
-            setTimeout(() => {
-                submitExpense();
-                // 清理網址參數避免重新整理時重複記帳
-                window.history.replaceState({}, document.title, window.location.pathname);
-                alert("🎉 捷徑自動記帳成功！");
-            }, 150);
-        } else if (amt) {
+        // 3. 🛑 移除自動送出邏輯，讓畫面停留在輸入好的狀態
+        if (amt) {
             document.getElementById('itemAmt').focus();
+            // 清除網址參數，避免下次重新整理網頁時又帶入舊資料
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
-
-    document.getElementById('itemAmt').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault(); 
-            submitExpense();
-        }
-    });
-    document.getElementById('itemName').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault(); 
-            document.getElementById('itemAmt').focus();
-        }
-    });
-
     document.getElementById('monthPicker').value = currentMonth;
     document.getElementById('modalConfirmBtn').onclick = confirmAction;
     render();
